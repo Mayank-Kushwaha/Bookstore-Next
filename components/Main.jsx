@@ -11,10 +11,10 @@ export default function Main() {
     <div className="flex flex-col justify-between mx-auto max-w-6xl gap-y-4 px-4 py-6 md:flex-row-reverse md:gap-x-4 md:px-8 lg:py-10">
       <div>
         <Image
-          src={mainphoto}
+          src='/asset 0.png'
           className="drop-shadow"
           priority="high"
-          max-width={500}
+          width={500}
           height={500}
           alt="Picture of the author"
         />

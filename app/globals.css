@@ -1,0 +1,106 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --foreground-rgb: 0, 0, 0;
+  --background-start-rgb: 214, 219, 220;
+  --background-end-rgb: 255, 255, 255;
+}
+
+@media (prefers-color-scheme: feDiffuseLighting) {
+  :root {
+    --foreground-rgb: 255, 255, 255;
+    --background-start-rgb: 0, 0, 0;
+    --background-end-rgb: 0, 0, 0;
+  }
+}
+.link-underline {
+  border-bottom-width: 0;
+  background-image: linear-gradient(transparent, transparent), linear-gradient(#fff, #fff);
+  background-size: 0 3px;
+  background-position: 0 100%;
+  background-repeat: no-repeat;
+  transition: background-size .5s ease-in-out;
+}
+
+.link-underline-black {
+  background-image: linear-gradient(transparent, transparent), linear-gradient(rgb(34, 189, 255), rgb(34, 203, 255))
+}
+
+.link-underline:hover {
+  background-size: 100% 3px;
+  background-position: 0 100%
+}
+.drop-shadow {
+  --tw-drop-shadow: drop-shadow(0 35px 35px rgb(0, 0, 0, 0.4));
+  filter: var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow);
+}
+.bounce {
+  animation: bounce 1s infinite;
+  scale: 1.5;
+  image-rendering: optimizeQuality;
+
+}
+
+@keyframes bounce {
+  0%, 100% {
+    transform: translateY(-25%);
+    animation-timing-function: cubic-bezier(0.8, 0, 1, 1);
+  }
+  50% {
+    transform: translateY(0);
+    animation-timing-function: cubic-bezier(0, 0, 0.2, 1);
+  }
+}
+.icon-top{
+  scale: 1.5;
+}
+.icon-bottom{
+  cursor: pointer;
+  scale: 1.5;
+  opacity: 80%;
+
+}
+.nav-main{
+  border-bottom: rgb(148, 148, 148);
+
+}
+
+#modal .bg-skin-dark {
+  display: none; /* Initially hidden */
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 30;
+  height: 100%;
+  width: 100%;
+  background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+}
+
+/* Styles for the modal content */
+#modal .close {
+  display: none; /* Initially hidden */
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 30;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: #ffffff;
+  padding: 1rem;
+  transition: all 0.3s ease-in-out;
+  transition-duration: 2s;
+  transform: translateX(-100%); /* Off-screen by default */
+}
+
+/* Show the modal when isOpen is true */
+#modal .open {
+  display: flex;
+  transition-duration: 500ms;
+  transition: all 0.3s ease-in-out;
+  transform: translateX(0); /* Bring the modal on-screen */
+}

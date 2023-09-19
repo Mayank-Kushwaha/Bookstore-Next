@@ -2,11 +2,11 @@ import Link from "next/link";
 import Image from "next/image";
 import { IoIosArrowForward } from "react-icons/io";
 import { FaRegHeart } from "react-icons/fa";
-import photo1 from "../assets/asset 1.jpeg";
-import photo2 from "../assets/asset 2.jpeg";
-import photo3 from "../assets/asset 3.jpeg";
-import photo4 from "../assets/asset 4.jpeg";
-import photo5 from "../assets/asset 5.jpeg";
+import photo1 from "../public/asset 1.jpeg";
+import photo2 from "../public/asset 2.jpeg";
+import photo3 from "../public/asset 3.jpeg";
+import photo4 from "../public/asset 4.jpeg";
+import photo5 from "../public/asset 5.jpeg";
 
 export default function Books(params) {
   return (

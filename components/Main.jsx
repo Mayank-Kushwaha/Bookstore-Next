@@ -1,5 +1,5 @@
 import Image from "next/image";
-import mainphoto from "../assets/asset 0.png";
+import mainphoto from "../public/asset 0.png";
 import { IoMailUnreadOutline } from "react-icons/io5";
 import { PiTelegramLogo } from "react-icons/pi";
 import { SlSocialInstagram } from "react-icons/sl";

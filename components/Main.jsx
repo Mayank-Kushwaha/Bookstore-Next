@@ -1,3 +1,4 @@
+import React from 'react';
 import Image from "next/image";
 import { IoMailUnreadOutline } from "react-icons/io5";
 import { PiTelegramLogo } from "react-icons/pi";

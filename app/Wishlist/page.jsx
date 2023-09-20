@@ -1,3 +1,4 @@
+import React from 'react';
 import Link from "next/link";
 import { BsBoxSeam } from "react-icons/bs";
 import { MdArrowBackIos } from "react-icons/md";

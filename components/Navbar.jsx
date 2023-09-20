@@ -110,7 +110,7 @@ export default function Navbar() {
           </Link>
         </div>
         <div className="flex mt-2 md:hidden">
-          <BiSearch className="icon-top mr-6" />
+          <Link href="/Search"> <BiSearch className="icon-top mr-6" /></Link>
           <Link href="/Cart"> <AiOutlineShoppingCart className="icon-top" /></Link>
         </div>
       </div>

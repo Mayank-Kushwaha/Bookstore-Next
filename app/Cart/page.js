@@ -37,10 +37,13 @@ export default function Wishlist(params) {
             Continue Shopping
           </Link>
         </div>
-      
-          <div className="others flex flex-col lg:my-0 font-MyFont divide-y">
-            <div className="pb-4">
-            <label htmlFor="order-notes" className="mb-1 font-sans font-semibold">
+
+        <div className="others flex flex-col lg:my-0 font-MyFont divide-y">
+          <div className="pb-4">
+            <label
+              htmlFor="order-notes"
+              className="mb-1 font-sans font-semibold"
+            >
               Order Notes
             </label>
             <textarea
@@ -51,7 +54,10 @@ export default function Wishlist(params) {
             ></textarea>
           </div>
           <div className="coupon-code-wrapper py-4 ">
-            <label htmlFor="coupon-code" className="mb-1 font-sans font-semibold">
+            <label
+              htmlFor="coupon-code"
+              className="mb-1 font-sans font-semibold"
+            >
               Coupon Code
             </label>
             <input
@@ -70,57 +76,20 @@ export default function Wishlist(params) {
             Continue Shopping
           </button>
           <div className="font-sans text-lg lg:block mt-4">
-          <div className="mb-4 flex items-baseline justify-between py-4">
-          <span className="text-base">Total Price :</span>
-          <span className="font-semibold">0 &#x20B9;</span>
-          </div>
-          <button
+            <div className="mb-4 flex items-baseline justify-between py-4">
+              <span className="text-base">Total Price :</span>
+              <span className="font-semibold">0 &#x20B9;</span>
+            </div>
+            <button
               type="button"
               className="bg-textgray text-white w-full flex justify-center py-2 px-2 mt-2 font-MyFont text-lg font-medium md:rounded md:py-1"
             >
-                <BsCartDash className="mt-1 mr-3"/>
+              <BsCartDash className="mt-1 mr-3" />
               <span>Checkout</span>
             </button>
-        </div>
-        </div>
-
-       
-
-      </div>
-
-      {/* <table className="w-full table-fixed  ">
-          <thead className=" place-items-center divide-x divide-y font-MyFont bg-bggray font-bold  rounded w-full">
-            <tr>
-              <th className="w-2/5">Books Title</th>
-              <th className="w-1/5 ">Price</th>
-              <th className="w-1/5  ">Quantity</th>
-              <th className="w-1/5  ">Total</th>
-            </tr>
-          </thead>
-          <tbody></tbody>
-        </table>
-
-          <div className="flex flex-col justify-center items-center my-32 text-lg font-MyFont">
-            <BsBoxSeam className="icon-w opacity-50" />
-            <span>Cart is Empty!</span>
           </div>
-          <div className="mt-6 mx-auto flex items-center justify-between ">
-            <Link
-              className="text-link hidden items-center underline decoration-dashed underline-offset-8 hover:decoration-solid md:inline-flex font-MyFont opacity-60"
-              href="/"
-            >
-              {" "}
-              <MdArrowBackIos />
-              Continue Shopping
-            </Link>
-            <button
-              type="button"
-              className="bg-textgray text-white w-full flex justify-center py-2 px-2 mt-2 font-MyFont text-lg font-medium md:w-auto md:rounded md:py-1"
-            >
-                <BsCartCheck className="mt-1 mr-3"/>
-              <span>Checkout</span>
-            </button>
-          </div> */}
+        </div>
+      </div>
     </div>
   );
 }

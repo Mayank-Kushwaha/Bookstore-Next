@@ -1,14 +1,9 @@
+import React from 'react';
 import "./globals.css";
 import Topheader from "@/components/Topheader";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import { Inter, Quicksand, Fraunces } from "next/font/google";
-
-const inter = Inter({
-  subsets: ["latin"],
-  display: "swap",
-  variable: "--font-inter",
-});
+import { Quicksand, Fraunces } from "next/font/google";
 
 const quicksand = Quicksand({
   subsets: ["latin"],

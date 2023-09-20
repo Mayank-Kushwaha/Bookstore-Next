@@ -9,7 +9,7 @@ import photo3 from "../public/asset 3.jpeg";
 import photo4 from "../public/asset 4.jpeg";
 import photo5 from "../public/asset 5.jpeg";
 
-export default function Books(params) {
+export default function Books() {
   return (
     <div id="books" className="pt-14">
       <section className="mx-auto max-w-6xl px-4 py-6 md:px-8">

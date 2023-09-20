@@ -1,3 +1,4 @@
+import React from 'react';
 import Main from "@/components/Main";
 import Books from "@/components/Books";
 import Books2 from "@/components/Books2";

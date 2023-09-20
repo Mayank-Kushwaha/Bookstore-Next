@@ -14,7 +14,7 @@ export default function Contact() {
         Contact Us
       </h1>
       <div className="md:divide-x md:flex  ">
-        <div className="flex-1 pb-8 md:pb-0 md:pr-10 xl:pr-20 font-MyFont">
+        <div className="md:flex-1 pb-8 md:pb-0 md:pr-10 xl:pr-20 hidden font-MyFont">
           <div className="flex flex-row gap-x-8 mt-3 justify-center md:justify-start opacity-80 !stroke-current stroke-2 ">
             {" "}
             <Link href="https://www.facebook.com/">

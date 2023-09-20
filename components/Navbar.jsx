@@ -10,6 +10,10 @@ import {
 } from "react-icons/ai";
 import { FaRegHeart } from "react-icons/fa";
 import { HiMenuAlt2 } from "react-icons/hi";
+import { IoMailUnreadOutline } from "react-icons/io5";
+import { PiTelegramLogo } from "react-icons/pi";
+import { SlSocialInstagram } from "react-icons/sl";
+import { FiFacebook } from "react-icons/fi";
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
@@ -57,31 +61,32 @@ export default function Navbar() {
         </Link>
         <div className=" hidden md:flex text-lg font-MyFont gap-x-8 ">
           <nav className="hover:opacity-95 opacity-70 flex flex-row link link-underline link-underline-black cursor-pointer">
-            Category <GoChevronDown className="mt-1 icon-top stroke-1 ml-2" />
+            <span>Category</span>{" "}
+            <GoChevronDown className="mt-2 icon-top ml-2" />
           </nav>
           <Link
-            href="/"
+            href="/Search"
             className="hover:opacity-95 opacity-70 flex flex-row link link-underline link-underline-black"
           >
             <BiSearch className="mt-1 icon-top mr-3" />
             Search
           </Link>
           <Link
-            href="/"
+            href="/Account"
             className="hover:opacity-95 opacity-70 flex flex-row link link-underline link-underline-black"
           >
             <AiOutlineUser className="mt-1 icon-top mr-3" />
             Account
           </Link>
           <Link
-            href="/"
+            href="/Wishlist"
             className="hover:opacity-95 opacity-70 flex flex-row link link-underline link-underline-black"
           >
             <FaRegHeart className="mt-1 icon-top mr-3" />
             Wishlist
           </Link>
           <Link
-            href="/"
+            href="/Cart"
             className="hover:opacity-95 opacity-70 flex flex-row link link-underline link-underline-black"
           >
             <AiOutlineShoppingCart className="mt-1 icon-top mr-3" />
@@ -93,8 +98,8 @@ export default function Navbar() {
       <div className="sticky top-0 z-20 flex justify-between small-navbar px-4 py-6 bg-primary md:hidden ">
         {/*hidden nav section ---------------- */}
         <div className="flex md:hidden">
-              <HiMenuAlt2 className="mt-1 icon-top mr-3" onClick={openModal}/>
-               </div>
+          <HiMenuAlt2 className="mt-1 icon-top mr-3" onClick={openModal} />
+        </div>
         <div className="flex  md:hidden">
           <Link
             className="font-main text-2xl font-semibold md:text-3xl"
@@ -106,7 +111,7 @@ export default function Navbar() {
         </div>
         <div className="flex mt-2 md:hidden">
           <BiSearch className="icon-top mr-6" />
-          <AiOutlineShoppingCart className="icon-top" />
+          <Link href="/Cart"> <AiOutlineShoppingCart className="icon-top" /></Link>
         </div>
       </div>
       {/*============================================================================= */}
@@ -128,7 +133,86 @@ export default function Navbar() {
           </button>
           <div className="flex flex-col items-center justify-center gap-2 gap-x-4">
             <div className="font-main text-2xl font-medium">BookStore</div>
-            <p className="text-center font-MyFont">One of the best book stores in the World</p>
+            <p className="text-center px-6 font-MyFont">
+              One of the best book stores in the World
+            </p>
+          </div>
+          <nav className="mt-8 mb-6 self-stretch">
+            <div className="relative">
+              <ul className="flex flex-col items-start gap-x-2 divide-y divide-gray-200 text-xl md:gap-x-4 font-MyFont">
+                <li className="flex w-full flex-col">
+                  <Link
+                    href="/"
+                      onClick={closeModal}
+                    className="flex items-center gap-x-2 py-1 px-2 text-xl"
+                  >
+                    {" "}
+                    <span>Home</span>
+                  </Link>
+                </li>
+                <li className="flex w-full flex-col">
+                  <Link
+                    href="/Account"
+                      onClick={closeModal}
+                    className="flex items-center gap-x-2 py-1 px-2 text-xl"
+                  >
+                    {" "}
+                    <span>Account</span>
+                    <AiOutlineUser className="opacity-90" />
+                  </Link>
+                </li>
+                <li className="flex w-full flex-col">
+                  <Link
+                    href="/Wishlist"
+                      onClick={closeModal}
+                    className="flex items-center gap-x-2 py-1 px-2 text-xl"
+                  >
+                    {" "}
+                    <span>Whishlist</span>
+                    <FaRegHeart className="opacity-80 " />
+                  </Link>
+                </li>
+                <li className="flex w-full flex-col">
+                  <Link
+                    href="/"
+                      onClick={closeModal}
+                    className="flex items-center gap-x-2 py-1 px-2 text-xl"
+                  >
+                    {" "}
+                    <span>About Us</span>
+                  </Link>
+                </li>
+                <li className="flex w-full flex-col">
+                  <Link
+                    href="/"
+                      onClick={closeModal}
+                    className="flex items-center gap-x-2 py-1 px-2 text-xl"
+                  >
+                    {" "}
+                    <span>Contact US</span>
+                  </Link>
+                </li>
+              </ul>
+            </div>
+          </nav>
+          <div className="flex flex-row gap-x-8 mt-3 justify-center md:justify-start opacity-80 !stroke-current stroke-2 py-2 mb-0">
+            {" "}
+            <Link href="https://www.facebook.com/">
+              {" "}
+              <FiFacebook href="" className="icon-bottom " />{" "}
+            </Link>
+            <Link href="https://www.instagram.com/_mayank._k___/">
+              {" "}
+              <SlSocialInstagram className="icon-bottom" />{" "}
+            </Link>
+            <Link href="https://t.me/+919023373686">
+              {" "}
+              <PiTelegramLogo className="icon-bottom" />{" "}
+            </Link>
+            <Link href="mailto:mayankkush0842@gmail.com">
+              {" "}
+              <IoMailUnreadOutline className="icon-bottom" />
+            </Link>
           </div>
         </div>
       </div>

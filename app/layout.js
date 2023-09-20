@@ -28,7 +28,7 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en" className={`${quicksand.variable} ${fraunces.variable}`}>
-      <body className="flex min-h-screen bg-primary flex-col relative">
+      <body className="flex flex-col min-h-screen w-full bg-primary">
       <Topheader />
        <Navbar />
         {children}

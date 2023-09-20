@@ -2,12 +2,12 @@ import Link from "next/link";
 import { IoMailUnreadOutline } from "react-icons/io5";
 import { PiTelegramLogo } from "react-icons/pi";
 import { SlSocialInstagram } from "react-icons/sl";
-import { FiArrowDownCircle, FiFacebook } from "react-icons/fi";
+import { FiFacebook } from "react-icons/fi";
 
 export default function Footer() {
   return (
     <div className="mt-auto shadow-inner  ">
-      <div className="footer-container mx-auto grid max-w-6xl grid-cols-2 gap-6 px-4 py-10 md:grid-cols-4 md:grid-rows-4 md:gap-x-6 md:gap-y-0 md:px-8 lg:gap-x-8 lg:gap-y-2">
+      <div className="footer-container mx-auto grid gap-6 max-w-6xl grid-cols-2  px-4 py-10 md:grid-cols-4 md:grid-rows-4 md:gap-x-6 md:gap-y-0 md:px-8 lg:gap-x-8 lg:gap-y-2">
         <div className="bookstore-desc col-span-2 md:row-span-3">
           <h2 className="my-2 font-main text-xl font-semibold">My Bookstore</h2>
           <div className="text-sm">
@@ -63,7 +63,7 @@ export default function Footer() {
 
         <div className="services md:row-span-4">
           <h2 className="my-1 font-main text-xl font-semibold">Contact</h2>
-          <p className="mb-3 text-sm font-MyFont opacity-80">
+          <p className="mb-3 mr-4 text-sm font-MyFont opacity-80">
             Email:
             <Link
               href="mailto:mayankkush0842@gmail.com"

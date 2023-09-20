@@ -7,10 +7,10 @@ export default function Topheader() {
         <Link href="/" className="relative text-sm opacity-70 hover:opacity-95">
           About US
         </Link>
-        <Link href="/" className="text-sm opacity-70 hover:opacity-95">
+        <Link href="/Contact" className="text-sm opacity-70 hover:opacity-95">
           Contact Us
         </Link>
-        <Link href="/" className="text-sm opacity-70 hover:opacity-95">
+        <Link href="/Policy" className="text-sm opacity-70 hover:opacity-95">
           Privacy Policy
         </Link>
       </div>

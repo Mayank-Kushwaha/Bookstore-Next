@@ -27,35 +27,35 @@ export default function Footer() {
           <h2 className="my-1 font-main text-xl font-semibold">Quick Links</h2>
           <Link
             className="text-link block py-1 font-MyFont underline  decoration-dashed underline-offset-2 hover:decoration-solid   "
-            href="/about-us"
+            href="/"
           >
             About Us
           </Link>
 
           <Link
             className="text-link block py-1 font-MyFont underline decoration-dashed underline-offset-2 hover:decoration-solid "
-            href="/contact-us"
+            href="/Contact"
           >
             Contact Us
           </Link>
 
           <Link
             className="text-link block py-1 font-MyFont underline decoration-dashed underline-offset-2 hover:decoration-solid "
-            href="/faq"
+            href="/Faq"
           >
             FAQ
           </Link>
 
           <Link
             className="text-link block py-1 font-MyFont underline decoration-dashed underline-offset-2 hover:decoration-solid "
-            href="/return-policy"
+            href="/Policy"
           >
-            Return Policy
+            Privacy Policy
           </Link>
 
           <Link
             className="text-link block py-1 font-MyFont underline decoration-dashed underline-offset-2 hover:decoration-solid "
-            href="/"
+            href="/Terms"
           >
             Terms &amp; Conditions
           </Link>

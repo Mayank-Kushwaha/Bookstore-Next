@@ -185,7 +185,7 @@ export default function Navbar() {
                 </li>
                 <li className="flex w-full flex-col">
                   <Link
-                    href="/"
+                    href="/Contact"
                       onClick={closeModal}
                     className="flex items-center gap-x-2 py-1 px-2 text-xl"
                   >

@@ -1,5 +1,4 @@
 import Image from "next/image";
-import mainphoto from "../public/asset 0.png";
 import { IoMailUnreadOutline } from "react-icons/io5";
 import { PiTelegramLogo } from "react-icons/pi";
 import { SlSocialInstagram } from "react-icons/sl";
@@ -11,7 +10,7 @@ export default function Main() {
     <div className="flex flex-col justify-between mx-auto max-w-6xl gap-y-4 px-4 py-6 md:flex-row-reverse md:gap-x-4 md:px-8 lg:py-10">
       <div>
         <Image
-          src='/asset 0.png'
+          src="/asset 0.png"
           className="drop-shadow"
           priority="high"
           width={500}

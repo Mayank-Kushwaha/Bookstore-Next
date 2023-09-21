@@ -101,7 +101,7 @@
 #modal .open {
   display: flex;
   transition-duration: 500ms;
-  transition: all 0.3s ease-in-out;
+  transition: all 0.3s ease-in;
   transform: translateX(0); /* Bring the modal on-screen */
 }
 .icon-w{

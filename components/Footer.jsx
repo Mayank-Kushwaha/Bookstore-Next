@@ -28,7 +28,7 @@ export default function Footer() {
           <h2 className="my-1 font-main text-xl font-semibold">Quick Links</h2>
           <Link
             className="text-link block py-1 font-MyFont underline  decoration-dashed underline-offset-2 hover:decoration-solid   "
-            href="/"
+            href="/About"
           >
             About Us
           </Link>

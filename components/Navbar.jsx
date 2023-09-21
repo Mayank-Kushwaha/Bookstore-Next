@@ -58,7 +58,7 @@ export default function Navbar() {
       <div className="sticky top-0 z-20 md:justify-between lg:justify-around navbar px-8 py-6 bg-primary nav-main hidden md:flex ">
         <Link className="font-main text-3xl font-semibold md:flex" href="/">
           {" "}
-          BookStore{" "}
+          My-BookStore{" "}
         </Link>
         <div className=" hidden md:flex text-lg font-MyFont gap-x-8 ">
           <nav className="hover:opacity-95 opacity-70 flex flex-row link link-underline link-underline-black cursor-pointer">
@@ -110,8 +110,8 @@ export default function Navbar() {
             BookStore{" "}
           </Link>
         </div>
-        <div className="flex mt-2 md:hidden">
-          <Link href="/Search"> <BiSearch className="icon-top mr-6" /></Link>
+        <div className="flex mt-2 gap-x-6  mr-2 md:hidden">
+          <Link href="/Search"> <BiSearch className="icon-top" /></Link>
           <Link href="/Cart"> <AiOutlineShoppingCart className="icon-top" /></Link>
         </div>
       </div>
@@ -175,7 +175,7 @@ export default function Navbar() {
                 </li>
                 <li className="flex w-full flex-col">
                   <Link
-                    href="/"
+                    href="/About"
                       onClick={closeModal}
                     className="flex items-center gap-x-2 py-1 px-2 text-xl"
                   >

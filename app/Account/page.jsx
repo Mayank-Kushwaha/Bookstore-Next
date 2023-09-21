@@ -130,8 +130,7 @@ export default function Cart() {
                 <textarea
                   placeholder="No (27), 11 M, 370205, gujarat, India"
                   rows="4"
-                  className="y-1 block w-full rounded border-2 border-skin-gray bg-skin-base py-1 px-2
-                  font-normal outline-skin-accent"
+                  className="my-1 block w-full md:pr-10 rounded border-2 border-gray-300 bg-primary py-1 px-2 font-normal outline-skin-accent"
                   name="address"
                 ></textarea>
               </label>

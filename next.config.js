@@ -1,3 +1,5 @@
+const webpack = require('webpack'); // Import webpack
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
@@ -12,7 +14,7 @@ const nextConfig = {
   env: {
     BASE_URL: process.env.BASE_URL,
   },
-  webpack: function(config) {
+  webpack: (config) => { // Use an arrow function
     config.plugins.push(
       new webpack.DefinePlugin({
         'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV),

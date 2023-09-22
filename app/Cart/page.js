@@ -20,13 +20,15 @@ export default function Cart() {
                     Book Title
                   </th>
                   <th className="w-[17.5%] py-1 md:text-right">Price</th>
-                  <th className="w-[17.5%] py-1">Quantity</th>
+                  <th className="w-[17.5%] py-1">Action</th>
                   <th colSpan="2" className="w-[22.5%] py-1">
-                    Total
+                    Quantity
                   </th>
                 </tr>
               </thead>
-              <tbody></tbody>
+              <tbody>
+                
+              </tbody>
             </table>
             <div className="flex flex-col justify-center items-center my-32 text-lg font-MyFont">
             <BsBoxSeam className="icon-w opacity-50" />

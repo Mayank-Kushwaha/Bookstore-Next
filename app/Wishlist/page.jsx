@@ -3,6 +3,7 @@ import Link from "next/link";
 import { BsBoxSeam } from "react-icons/bs";
 import { MdArrowBackIos } from "react-icons/md";
 
+
 export default function Wishlist() {
   return (
     <div className="max-w-6xl w-full mx-auto px-4 py-6 justify-start md:px-8  ">

@@ -10,7 +10,7 @@ export default function Footer() {
     <div className="mt-auto shadow-inner  ">
       <div className="footer-container mx-auto grid gap-6 max-w-6xl grid-cols-2  px-4 py-10 md:grid-cols-4 md:grid-rows-4 md:gap-x-6 md:gap-y-0 md:px-8 lg:gap-x-8 lg:gap-y-2">
         <div className="bookstore-desc col-span-2 md:row-span-3">
-          <h2 className="my-2 font-main text-xl font-semibold">My Bookstore</h2>
+          <h2 className="my-2 font-main text-xl font-semibold"> Bookish Bodega</h2>
           <div className="text-sm">
             <p className="my-1 opacity-80 font-MyFont">
               We are an online bookstore that offers a wide selection of books
@@ -95,7 +95,7 @@ export default function Footer() {
             {" "}
             <Link href="https://www.facebook.com/">
               {" "}
-              <FiFacebook href="" className="icon-bottom " />{" "}
+              <FiFacebook className="icon-bottom " />{" "}
             </Link>
             <Link href="https://www.instagram.com/_mayank._k___/">
               {" "}

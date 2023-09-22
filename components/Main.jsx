@@ -1,3 +1,4 @@
+'use client'
 import React from 'react';
 import Image from "next/image";
 import { IoMailUnreadOutline } from "react-icons/io5";
@@ -5,8 +6,11 @@ import { PiTelegramLogo } from "react-icons/pi";
 import { SlSocialInstagram } from "react-icons/sl";
 import { FiArrowDownCircle, FiFacebook } from "react-icons/fi";
 import Link from "next/link";
+import { useRouter } from 'next/navigation'
 
 export default function Main() {
+  
+ const router = useRouter()
   return (
     <div className="flex flex-col justify-between mx-auto max-w-6xl gap-y-4 px-4 py-6 md:flex-row-reverse md:gap-x-4 md:px-8 lg:py-10">
       <div>
@@ -31,13 +35,15 @@ export default function Main() {
         </p>
         <p className="w-[125px] ring-1 ring-textgray ring-opacity-80 flex flex-row rounded py-3 px-4 text-lg font-main opacity-80 font-semibold">
           Browse
-          <FiArrowDownCircle className="icon-bottom ml-3 mt-2 scale-150 bounce" />
+          <FiArrowDownCircle 
+          onClick={() => router.push('#books', { scroll: true })}
+           className="icon-bottom ml-3 mt-2 scale-150 bounce" />
         </p>
         <div className="flex flex-row gap-x-8 mt-6 opacity-80 !stroke-current stroke-2 ">
           {" "}
           <Link href="https://www.facebook.com/">
             {" "}
-            <FiFacebook href="" className="icon-bottom " />{" "}
+            <FiFacebook className="icon-bottom " />{" "}
           </Link>
           <Link href="https://www.instagram.com/_mayank._k___/">
             {" "}

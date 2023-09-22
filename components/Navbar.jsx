@@ -57,7 +57,7 @@ export default function Navbar() {
       <div className="sticky top-0 z-20 md:justify-between lg:justify-around navbar px-8 py-6 bg-primary nav-main hidden md:flex ">
         <Link className="font-main text-3xl font-semibold md:flex" href="/">
           {" "}
-          My-BookStore{" "}
+          Bookish Bodega{" "}
         </Link>
         <div className=" hidden md:flex text-lg font-MyFont gap-x-8 ">
           <Link
@@ -201,7 +201,7 @@ export default function Navbar() {
             {" "}
             <Link href="https://www.facebook.com/">
               {" "}
-              <FiFacebook href="" className="icon-bottom " />{" "}
+              <FiFacebook className="icon-bottom " />{" "}
             </Link>
             <Link href="https://www.instagram.com/_mayank._k___/">
               {" "}

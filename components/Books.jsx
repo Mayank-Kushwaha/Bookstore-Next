@@ -58,10 +58,12 @@ const Books = ({ heading, order, title, result }) => {
           {books.map((book, index) => (
             <div
               key={index}
-              onClick={() => handleCardClick(book.volumeInfo.previewLink)}
-              className="flex flex-col justify-between cursor-pointer rounded border-2 border-bggray align-baseline last:hidden sm:last:flex sm:even:hidden md:last:hidden md:even:flex lg:last:flex"
+              className="flex flex-col justify-between rounded border-2 border-bggray align-baseline last:hidden sm:last:flex sm:even:hidden md:last:hidden md:even:flex lg:last:flex"
             >
-              <div className="p-4 sm:p-8 md:p-4 lg:p-8 bg-bggray">
+              <div
+                onClick={() => handleCardClick(book.volumeInfo.previewLink)}
+                className="p-4 sm:p-8 md:p-4 lg:p-8 cursor-pointer bg-bggray"
+              >
                 <Image
                   src={book.volumeInfo.imageLinks?.thumbnail}
                   priority="high"
@@ -81,26 +83,32 @@ const Books = ({ heading, order, title, result }) => {
                   <span>Price: </span>
                   <span>
                     {book.saleInfo && book.saleInfo.listPrice
-                      ? book.saleInfo.listPrice.amount <= 10
-                        ? (book.saleInfo.listPrice.amount * 100).toFixed(2)
+                      ? book.saleInfo.listPrice.amount <= 99
+                        ? (book.saleInfo.listPrice.amount * 10).toFixed(3)
                         : book.saleInfo.listPrice.amount
                       : Math.floor(Math.random() * (300 - 100 + 1)) + 100}
                   </span>
                 </div>
-                <div className="buttons flex gap-x-2">
-                  <button
-                    type="button"
-                    className="bg-textgray font-MyFont text-primary flex-1 rounded px-1 text-sm font-semibold"
+                <div className="flex cursor-pointer gap-x-2">
+                  <Link
+                    href={{
+                      pathname: "/Cart",
+                      query: queryParams,
+                    }}
+                    className="bg-textgray justify-center px-2 py-2 font-MyFont text-primary flex-1 rounded md:px-4 text-sm font-semibold"
                   >
                     Add To Cart
-                  </button>
-                  <button
-                    type="button"
-                    className="outline-btn-color basis-1/4 rounded p-1"
+                  </Link>
+                  <Link
+                    href={{
+                      pathname: "/Wishlist",
+                      query: queryParams,
+                    }}
+                    className="outline-btn-color cursor-pointer basis-1/4 rounded p-1"
                     title="Add To Wishlist"
                   >
                     <FaRegHeart className="!stroke-skin-dark inline-block h-6 w-6 stroke-black" />
-                  </button>
+                  </Link>
                 </div>
               </div>
             </div>

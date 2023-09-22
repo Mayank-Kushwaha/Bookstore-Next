@@ -1,28 +1,25 @@
 "use client";
-import React, { useEffect, useState } from "react";
-import Link from "next/link";
+import React from "react";
 import Image from "next/image";
+import { useEffect, useState } from "react";
+import { useSearchParams} from 'next/navigation'
 import { FaRegHeart } from "react-icons/fa";
-import { IoIosArrowForward } from "react-icons/io";
 
-const Books = ({ heading, order, title, result }) => {
+const SeeAll = () => {
+  const searchParams = useSearchParams()
+  const result = 40 ;
+ 
+  const heading = searchParams.get('heading')
+  const order = searchParams.get('order')
+   const title = searchParams.get('title')
+
   const [books, setBooks] = useState([]);
-  const API_KEY = process.env.NEXT_PUBLIC_BOOKSAPI;
 
-  const handleCardClick = (selfLink) => {
-    // Use window.open to open the selfLink in a new tab
-    window.open(selfLink, '_blank');
-  };
-
-  const queryParams = {
-    heading,
-    order,
-    title,
-  };
   useEffect(() => {
     async function fetchBooks() {
       try {
-        const apiUrl = `https://www.googleapis.com/books/v1/volumes?q=${heading}&key=${API_KEY}&orderBy=${order}&maxResults=${result}`;
+        // Replace this with your API call to fetch books based on heading, order, and result
+        const apiUrl = `https://www.googleapis.com/books/v1/volumes?q=${heading}&orderBy=${order}&maxResults=${result}`;
         const response = await fetch(apiUrl);
         const data = await response.json();
 
@@ -34,45 +31,34 @@ const Books = ({ heading, order, title, result }) => {
         setBooks([]);
       }
     }
-
-    fetchBooks();
-  }, [heading]);
+fetchBooks();
+   
+  }, []);
 
   return (
-    <div id="books" className="pt-14">
-      <section className="mx-auto max-w-6xl px-4 py-6 md:px-8">
-        <div className="flex items-baseline justify-between">
-          <h2 className="font-main text-2xl font-medium md:text-2xl">
-            {title}
-          </h2>
-          <Link
-            className="hidden md:flex items-center font-MyFont font-medium"
-            href={{
-              pathname: "/SeeAll",
-              query: queryParams,
-            }}
-            
-          >
-            See All
-            <IoIosArrowForward className="ml-2" />
-          </Link>
-        </div>
-
+    <div className="max-w-6xl w-full mx-auto px-4 py-6 justify-start md:px-8">
+      <h1 className="font-main text-xl my-4 flex justify-center font-semibold mr-auto md:text-2xl ">
+        {" "}
+        {title}
+      </h1>
         <div className="grid grid-cols-2 gap-4 py-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5">
           {books.map((book, index) => (
             <div
               key={index}
-              onClick={() => handleCardClick(book.volumeInfo.previewLink)}
-              className="flex flex-col justify-between cursor-pointer rounded border-2 border-bggray align-baseline last:hidden sm:last:flex sm:even:hidden md:last:hidden md:even:flex lg:last:flex"
+              className="flex flex-col justify-between rounded border-2 border-bggray align-baseline last:hidden sm:last:flex sm:even:hidden md:last:hidden md:even:flex lg:last:flex"
             >
               <div className="p-4 sm:p-8 md:p-4 lg:p-8 bg-bggray">
                 <Image
-                  src={book.volumeInfo.imageLinks?.thumbnail}
+                 src={book.volumeInfo.imageLinks?.thumbnail || '/default.png'}
                   priority="high"
                   className="inline-block align-baseline"
                   width={500}
                   height={500}
                   alt="Picture of the author"
+                  onError={(e) => {
+                    e.target.src = '/default.png';
+                  }}
+                
                 />
               </div>
               <div className="content px-4 py-4 flex flex-col justify-between   ">
@@ -110,22 +96,8 @@ const Books = ({ heading, order, title, result }) => {
             </div>
           ))}
         </div>
-
-        <div className="mt-8 flex items-center justify-center md:hidden">
-          <Link
-            className="flex items-center font-MyFont font-medium"
-            href={{
-              pathname: "/SeeAll",
-              query: queryParams,
-            }}
-          >
-            See All
-            <IoIosArrowForward className="ml-2" />
-          </Link>
-        </div>
-      </section>
     </div>
   );
-};
+}
 
-export default Books;
+export default SeeAll;

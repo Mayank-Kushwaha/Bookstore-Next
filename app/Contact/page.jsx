@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 import Link from "next/link";
 import { IoMailUnreadOutline } from "react-icons/io5";
 import { PiTelegramLogo } from "react-icons/pi";
@@ -45,7 +45,6 @@ export default function Contact() {
                 className="my-1 block w-full md:pr-10 rounded border-2 border-gray-300 bg-primary py-1 px-2 font-normal outline-skin-accent"
                 type="email"
                 name="email"
-                data-temp-mail-org="1"
               />
             </label>
           </div>

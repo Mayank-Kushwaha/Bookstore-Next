@@ -1,4 +1,17 @@
 /** @type {import('next').NextConfig} */
-const nextConfig = {}
+const nextConfig = {    
+    reactStrictMode: true,
+    images: {
+        remotePatterns: [
+          {
+            protocol: 'http',
+            hostname: 'books.google.com',
+
+          },
+        ],
+      },
+    env: {
+      BASE_URL: process.env.BASE_URL,
+    }};
 
 module.exports = nextConfig

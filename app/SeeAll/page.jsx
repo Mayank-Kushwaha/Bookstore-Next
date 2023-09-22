@@ -6,6 +6,11 @@ import { useSearchParams} from 'next/navigation'
 import { FaRegHeart } from "react-icons/fa";
 
 const SeeAll = () => {
+
+  const handleCardClick = (selfLink) => {
+    window.open(selfLink, '_blank');
+};
+
   const searchParams = useSearchParams()
   const result = 40 ;
  
@@ -45,7 +50,8 @@ fetchBooks();
           {books.map((book, index) => (
             <div
               key={index}
-              className="flex flex-col justify-between rounded border-2 border-bggray align-baseline last:hidden sm:last:flex sm:even:hidden md:last:hidden md:even:flex lg:last:flex"
+              onClick={() => handleCardClick(book.volumeInfo.previewLink)}
+              className="flex flex-col justify-between rounded border-2 cursor-pointer border-bggray align-baseline last:hidden sm:last:flex sm:even:hidden md:last:hidden md:even:flex lg:last:flex"
             >
               <div className="p-4 sm:p-8 md:p-4 lg:p-8 bg-bggray">
                 <Image

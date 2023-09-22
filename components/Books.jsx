@@ -4,14 +4,11 @@ import Link from "next/link";
 import Image from "next/image";
 import { FaRegHeart } from "react-icons/fa";
 import { IoIosArrowForward } from "react-icons/io";
-
 const Books = ({ heading, order, title, result }) => {
   const [books, setBooks] = useState([]);
-  const API_KEY = process.env.NEXT_PUBLIC_BOOKSAPI;
 
   const handleCardClick = (selfLink) => {
-    // Use window.open to open the selfLink in a new tab
-    window.open(selfLink, '_blank');
+    window.open(selfLink, "_blank");
   };
 
   const queryParams = {
@@ -22,7 +19,7 @@ const Books = ({ heading, order, title, result }) => {
   useEffect(() => {
     async function fetchBooks() {
       try {
-        const apiUrl = `https://www.googleapis.com/books/v1/volumes?q=${heading}&key=${API_KEY}&orderBy=${order}&maxResults=${result}`;
+        const apiUrl = `https://www.googleapis.com/books/v1/volumes?q=${heading}&orderBy=${order}&maxResults=${result}`;
         const response = await fetch(apiUrl);
         const data = await response.json();
 
@@ -51,7 +48,6 @@ const Books = ({ heading, order, title, result }) => {
               pathname: "/SeeAll",
               query: queryParams,
             }}
-            
           >
             See All
             <IoIosArrowForward className="ml-2" />

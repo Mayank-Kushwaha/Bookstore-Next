@@ -1,5 +1,5 @@
 "use client";
-import React from 'react';
+import React from "react";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { GoChevronDown } from "react-icons/go";
@@ -61,10 +61,6 @@ export default function Navbar() {
           My-BookStore{" "}
         </Link>
         <div className=" hidden md:flex text-lg font-MyFont gap-x-8 ">
-          <nav className="hover:opacity-95 opacity-70 flex flex-row link link-underline link-underline-black cursor-pointer">
-            <span>Category</span>{" "}
-            <GoChevronDown className="mt-2 icon-top ml-2" />
-          </nav>
           <Link
             href="/Search"
             className="hover:opacity-95 opacity-70 flex flex-row link link-underline link-underline-black"
@@ -111,8 +107,14 @@ export default function Navbar() {
           </Link>
         </div>
         <div className="flex mt-2 gap-x-6  mr-2 md:hidden">
-          <Link href="/Search"> <BiSearch className="icon-top" /></Link>
-          <Link href="/Cart"> <AiOutlineShoppingCart className="icon-top" /></Link>
+          <Link href="/Search">
+            {" "}
+            <BiSearch className="icon-top" />
+          </Link>
+          <Link href="/Cart">
+            {" "}
+            <AiOutlineShoppingCart className="icon-top" />
+          </Link>
         </div>
       </div>
       {/*============================================================================= */}
@@ -144,7 +146,7 @@ export default function Navbar() {
                 <li className="flex w-full flex-col">
                   <Link
                     href="/"
-                      onClick={closeModal}
+                    onClick={closeModal}
                     className="flex items-center gap-x-2 py-1 px-2 text-xl"
                   >
                     {" "}
@@ -154,7 +156,7 @@ export default function Navbar() {
                 <li className="flex w-full flex-col">
                   <Link
                     href="/Account"
-                      onClick={closeModal}
+                    onClick={closeModal}
                     className="flex items-center gap-x-2 py-1 px-2 text-xl"
                   >
                     {" "}
@@ -165,7 +167,7 @@ export default function Navbar() {
                 <li className="flex w-full flex-col">
                   <Link
                     href="/Wishlist"
-                      onClick={closeModal}
+                    onClick={closeModal}
                     className="flex items-center gap-x-2 py-1 px-2 text-xl"
                   >
                     {" "}
@@ -176,7 +178,7 @@ export default function Navbar() {
                 <li className="flex w-full flex-col">
                   <Link
                     href="/About"
-                      onClick={closeModal}
+                    onClick={closeModal}
                     className="flex items-center gap-x-2 py-1 px-2 text-xl"
                   >
                     {" "}
@@ -186,7 +188,7 @@ export default function Navbar() {
                 <li className="flex w-full flex-col">
                   <Link
                     href="/Contact"
-                      onClick={closeModal}
+                    onClick={closeModal}
                     className="flex items-center gap-x-2 py-1 px-2 text-xl"
                   >
                     {" "}

@@ -1,6 +1,6 @@
 'use client'
 import { BiSearch } from "react-icons/bi";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import Image from "next/image";
 import { FaRegHeart } from "react-icons/fa";
 

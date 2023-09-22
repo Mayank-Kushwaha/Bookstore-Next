@@ -2,7 +2,6 @@
 import React from "react";
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { GoChevronDown } from "react-icons/go";
 import { BiSearch } from "react-icons/bi";
 import {
   AiOutlineUser,

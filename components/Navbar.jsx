@@ -57,7 +57,7 @@ export default function Navbar() {
       <div className="sticky top-0 z-20 md:justify-between lg:justify-around navbar px-8 py-6 bg-primary nav-main hidden md:flex ">
         <Link className="font-main text-3xl font-semibold md:flex" href="/">
           {" "}
-          Bookish Bodega{" "}
+          Book Odyssey{" "}
         </Link>
         <div className=" hidden md:flex text-lg font-MyFont gap-x-8 ">
           <Link
@@ -102,7 +102,7 @@ export default function Navbar() {
             href="/"
           >
             {" "}
-            BookStore{" "}
+            Book Odyssey{" "}
           </Link>
         </div>
         <div className="flex mt-2 gap-x-6  mr-2 md:hidden">
@@ -134,7 +134,7 @@ export default function Navbar() {
             <AiOutlineClose className="icon-bottom" />
           </button>
           <div className="flex flex-col items-center justify-center gap-2 gap-x-4">
-            <div className="font-main text-2xl font-medium">BookStore</div>
+            <div className="font-main text-2xl font-medium">Book Odyssey</div>
             <p className="text-center px-6 font-MyFont">
               One of the best book stores in the World
             </p>

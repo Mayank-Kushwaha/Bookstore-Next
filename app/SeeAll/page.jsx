@@ -53,13 +53,16 @@ fetchBooks();
               className="flex flex-col justify-between rounded border-2 border-bggray align-baseline last:hidden sm:last:flex sm:even:hidden md:last:hidden md:even:flex lg:last:flex"
             >
               <div onClick={() => handleCardClick(book.volumeInfo.previewLink)} className="p-4 sm:p-8 md:p-4 lg:p-8 cursor-pointer bg-bggray">
-                <Image
-                  src={book.volumeInfo.imageLinks?.thumbnail}
+              <Image
+                   src={book.volumeInfo.imageLinks?.thumbnail || '/default.jpg'}
                   priority="high"
                   className="inline-block align-baseline"
                   width={500}
                   height={500}
                   alt="Picture of the author"
+                  onError={(e) => {
+                    e.target.src = '/default.jpg';
+                  }}
                 />
               </div>
               <div className="content px-4 py-4 flex flex-col justify-between   ">

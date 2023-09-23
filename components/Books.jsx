@@ -65,12 +65,15 @@ const Books = ({ heading, order, title, result }) => {
                 className="p-4 sm:p-8 md:p-4 lg:p-8 cursor-pointer bg-bggray"
               >
                 <Image
-                  src={book.volumeInfo.imageLinks?.thumbnail}
+                   src={book.volumeInfo.imageLinks?.thumbnail || '/default.jpg'}
                   priority="high"
                   className="inline-block align-baseline"
                   width={500}
                   height={500}
                   alt="Picture of the author"
+                  onError={(e) => {
+                    e.target.src = '/default.jpg';
+                  }}
                 />
               </div>
               <div className="content px-4 py-4 flex flex-col justify-between   ">

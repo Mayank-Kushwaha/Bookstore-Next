@@ -15,11 +15,11 @@ export default function Main() {
     <div className="flex flex-col justify-between mx-auto max-w-6xl gap-y-4 px-4 py-6 md:flex-row-reverse md:gap-x-4 md:px-8 lg:py-10">
       <div>
         <Image
-          src="/asset 0.png"
-          className="drop-shadow"
+          src="/myimage.webp"
+          className="drop-shadow " 
           priority="high"
-          width={500}
-          height={500}
+          width={540}
+          height={540}
           alt="Picture of the author"
         />
       </div>
@@ -33,11 +33,11 @@ export default function Main() {
           selection of books for all ages and interests, with something for
           everyone. Shop now and find your next favorite read!
         </p>
-        <p className="w-[125px] ring-1 ring-textgray ring-opacity-80 flex flex-row rounded py-3 px-4 text-lg font-main opacity-80 font-semibold">
+        <p className="w-[125px] ring-1 ring-textgray ring-opacity-80 flex flex-row rounded py-3 px-4 text-lg opacity-75 font-MyFont font-semibold  ">
           Browse
           <FiArrowDownCircle 
           onClick={() => router.push('#books', { scroll: true })}
-           className="icon-bottom ml-3 mt-2 scale-150 bounce" />
+           className="icon-bottom ml-3 mt-2 scale-110  bounce" />
         </p>
         <div className="flex flex-row gap-x-8 mt-6 opacity-80 !stroke-current stroke-2 ">
           {" "}

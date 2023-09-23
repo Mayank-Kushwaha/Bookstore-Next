@@ -49,7 +49,7 @@ export default function About() {
           </section>
           <div className="mt-6  md:col-start-2 md:row-span-3 md:row-start-1 lg:col-span-2 lg:col-start-4">
             <Image
-              src="/books-collection.jpg"
+              src="/about2.jpg"
               className="object-cover border-8 w-full border-textgray md:max-h-96 md:max-w-[24rem]"
               width={500}
               height={300}

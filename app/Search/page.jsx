@@ -8,7 +8,7 @@ import { FaRegHeart } from "react-icons/fa";
 export default function Search() {
   const [searchQuery, setSearchQuery] = useState("");
   const result = 40;
-  const order = "newest";
+  const order = "relevance";
   const [books, setBooks] = useState([]);
 
   const handleCardClick = (selfLink) => {

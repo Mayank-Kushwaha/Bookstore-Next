@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { FaRegHeart } from "react-icons/fa";
+import {  FcLikePlaceholder } from 'react-icons/fc';
 import { IoIosArrowForward } from "react-icons/io";
 const Books = ({ heading, order, title, result }) => {
   const [books, setBooks] = useState([]);
@@ -92,7 +92,8 @@ const Books = ({ heading, order, title, result }) => {
                       : Math.floor(Math.random() * (300 - 100 + 1)) + 100}
                   </span>
                 </div>
-                <div className="flex cursor-pointer gap-x-2">
+                <div className="flex w-max justify-between ">
+                  <div className="cursor-pointer pt-4 px-1"> 
                   <Link
                      href={{
                       pathname: "/Cart", // The path to your cart.js page
@@ -110,16 +111,29 @@ const Books = ({ heading, order, title, result }) => {
                   >
                     Add To Cart
                   </Link>
+                  </div>
+               
+                  <div className="flex cursor-pointer w-max px-1 pt-2">
                   <Link
-                    href={{
-                      pathname: "/Wishlist",
-                      query: queryParams,
-                    }}
+                   href={{
+                    pathname: "/Wishlist", // The path to your cart.js page
+                    query: {
+                      // Pass the book details as query parameters
+                      bookId: book.id,
+                      bookImage: book.volumeInfo.imageLinks?.thumbnail,
+                      bookTitle: book.volumeInfo.title,
+                      bookAuthor: book.volumeInfo.authors, // Assuming authors is an array
+                      bookPrice: book.saleInfo?.listPrice?.amount || Math.floor(Math.random() * (300 - 100 + 1)) + 100, // Price or a default value
+                      // Add more book details as needed
+                    },
+                  }}
                     className="outline-btn-color cursor-pointer basis-1/4 rounded p-1"
                     title="Add To Wishlist"
+                  
                   >
-                    <FaRegHeart className="!stroke-skin-dark inline-block h-6 w-6 stroke-black" />
+                  <FcLikePlaceholder fontSize="1.75rem" />
                   </Link>
+                </div>
                 </div>
               </div>
             </div>

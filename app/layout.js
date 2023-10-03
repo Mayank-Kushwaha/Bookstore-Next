@@ -1,5 +1,6 @@
 import React from 'react';
 import { CartProvider } from "@/context/CartContext";
+import { WishlistProvider } from "@/context/WIshlistContext";
 import "./globals.css";
 import Topheader from "@/components/Topheader";
 import Navbar from "@/components/Navbar";
@@ -26,10 +27,12 @@ export default function RootLayout({ children }) {
     <html lang="en" className={`${quicksand.variable} ${fraunces.variable}`}>
       <body suppressHydrationWarning={true} className="flex flex-col min-h-screen w-full bg-primary">
       <CartProvider>
+      <WishlistProvider>
       <Topheader />
        <Navbar />
         {children}
         <Footer/>
+        </WishlistProvider>
         </CartProvider>
       </body>
     </html>

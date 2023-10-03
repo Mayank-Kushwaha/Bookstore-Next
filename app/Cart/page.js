@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect} from "react";
+import React, { useEffect } from "react";
 import { useCart } from "@/context/CartContext"; // Update the path to your CartContext file
 import Image from "next/image";
 import Link from "next/link";
@@ -56,13 +56,10 @@ export default function Cart() {
               <table className="w-full table-fixed">
                 <thead className="hidden place-items-center  divide-x divide-y font-MyFont bg-bggray font-bold rounded w-full md:table-header-group">
                   <tr>
-                    <th
-                      colSpan="2"
-                      className="w-[42.5%] py-1 "
-                    >
-                      Book Title
+                    <th colSpan="2" className="w-[42.5%] py-1 ">
+                      Book Details
                     </th>
-                    <th className="w-[17.5%] py-1">Price</th>
+                    <th className="w-[17.5%] py-1 text-left pl-5">Price</th>
                     <th className="w-[17.5%] py-1">Quantity</th>
                     <th className="w-[22.5%] py-1 col-span-2">Action</th>
                   </tr>
@@ -72,28 +69,25 @@ export default function Cart() {
                     <tr key={index}>
                       <tr key={index} className=" hidden md:flex">
                         <td className="w-max py-4">
-                        <div className="w-max flex justify-between">
-                          <Image
-                            src={item.image || "/default.jpg"}
-                            priority="high"
-                            className="inline-block align-baseline"
-                            width={120}
-                            height={100}
-                            alt="Picture of the author"
-                            onError={(e) => {
-                              e.target.src = "/default.jpg";
-                            }}
-                          />
-                          <div className="w-[210px] flex flex-col justify-center items-center px-4 py-4 font-MyFont">
-                            <div>{item.title}</div>
-                            <div>{item.author}</div>
+                          <div className="w-max flex justify-between">
+                            <Image
+                              src={item.image || "/default.jpg"}
+                              priority="high"
+                              width={120}
+                              height={100}
+                              alt="Picture of the author"
+                              onError={(e) => {
+                                e.target.src = "/default.jpg";
+                              }}
+                            />
+                            <div className="w-[185px] flex flex-col justify-center items-start  px-4 py-4 font-MyFont">
+                              <div>Title: {item.title}</div>
+                              <div>Author: {item.author}</div>
+                            </div>
                           </div>
-                        </div>
-                          
-                       </td>
-                        <td className="flex items-center justify-center py-4 px-4 ">
-                         <div className="w-full">{item.price}&#x20B9;</div>
-                          
+                        </td>
+                        <td className="w-[84px] flex items-center justify-center py-4 px-6 ">
+                          <div>{item.price}&#x20B9;</div>
                         </td>
                         <td className="w-max py-1 px-4 flex items-center justify-center">
                           <div className="flex flex-row h-10 w-full rounded-lg  bg-transparent mt-1">
@@ -134,16 +128,15 @@ export default function Cart() {
                             </button>
                           </div>
                         </td>
-                       
                       </tr>
 
                       <tr key={index} className="grid md:hidden">
                         <tr>
-                          <td className="col-span-4 md:col-span-1">
+                          <td className="w-max col-span-4 md:col-span-1">
                             <Image
                               src={item.image || "/default.jpg"}
                               priority="high"
-                              width={160}
+                              width={300}
                               height={110}
                               alt="Picture of the author"
                               onError={(e) => {
@@ -153,11 +146,7 @@ export default function Cart() {
                           </td>
 
                           <td>
-                            <div className="px-2 text-left">
-                              <div className="hidden md:flex">{item.title}</div>
-                              <div className="hidden md:flex">
-                                {item.author}
-                              </div>
+                            <div className="px-4 text-left">
                               <div className="flex md:hidden">
                                 Author :{item.title}
                               </div>
@@ -171,13 +160,7 @@ export default function Cart() {
                           </td>
                         </tr>
                         <tr>
-                          <td className="w-max py-1 hidden md:flex text-center col-span-4 md:col-span-1">
-                            {" "}
-                            {item.price} &#x20B9;
-                          </td>
-                        </tr>
-                        <tr>
-                          <td className="w-min py-1 px-2">
+                          <td className="w-max py-6 px-2">
                             <div className="flex flex-row h-10 w-full rounded-lg relative bg-transparent mt-1">
                               <button
                                 data-action="decrement"
@@ -206,7 +189,7 @@ export default function Cart() {
                               </button>
                             </div>
                           </td>
-                          <td className="w-max py-1 text-center ">
+                          <td className="w-max py-1 p4-8 text-center ">
                             <div>
                               <button
                                 className="px-4 py-2 inline-block text-red-600 bg-white shadow-sm border border-gray-200 rounded-md hover:bg-gray-100 cursor-pointer"

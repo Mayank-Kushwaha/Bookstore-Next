@@ -3,7 +3,7 @@ import Link from "next/link";
 import { BiSearch } from "react-icons/bi";
 import React, { useState } from "react";
 import Image from "next/image";
-import { FaRegHeart } from "react-icons/fa";
+import {  FcLikePlaceholder } from 'react-icons/fc';
 
 export default function Search() {
   const [searchQuery, setSearchQuery] = useState("");
@@ -92,20 +92,48 @@ export default function Search() {
                       : Math.floor(Math.random() * (300 - 100 + 1)) + 100}
                   </span>
                 </div>
-                <div className="flex cursor-pointer gap-x-2">
-                  <Link href="/Cart"
-                    
+                <div className="flex w-max justify-between ">
+                  <div className="cursor-pointer pt-4 px-1"> 
+                  <Link
+                     href={{
+                      pathname: "/Cart", // The path to your cart.js page
+                      query: {
+                        // Pass the book details as query parameters
+                        bookId: book.id,
+                        bookImage: book.volumeInfo.imageLinks?.thumbnail,
+                        bookTitle: book.volumeInfo.title,
+                        bookAuthor: book.volumeInfo.authors, // Assuming authors is an array
+                        bookPrice: book.saleInfo?.listPrice?.amount || Math.floor(Math.random() * (300 - 100 + 1)) + 100, // Price or a default value
+                        // Add more book details as needed
+                      },
+                    }}
                     className="bg-textgray justify-center px-2 py-2 font-MyFont text-primary flex-1 rounded md:px-4 text-sm font-semibold"
                   >
                     Add To Cart
                   </Link>
-                  <Link href="/Wishlist"
-                    
+                  </div>
+               
+                  <div className="flex cursor-pointer w-max px-1 pt-2">
+                  <Link
+                   href={{
+                    pathname: "/Wishlist", // The path to your cart.js page
+                    query: {
+                      // Pass the book details as query parameters
+                      bookId: book.id,
+                      bookImage: book.volumeInfo.imageLinks?.thumbnail,
+                      bookTitle: book.volumeInfo.title,
+                      bookAuthor: book.volumeInfo.authors, // Assuming authors is an array
+                      bookPrice: book.saleInfo?.listPrice?.amount || Math.floor(Math.random() * (300 - 100 + 1)) + 100, // Price or a default value
+                      // Add more book details as needed
+                    },
+                  }}
                     className="outline-btn-color cursor-pointer basis-1/4 rounded p-1"
                     title="Add To Wishlist"
+                  
                   >
-                    <FaRegHeart className="!stroke-skin-dark inline-block h-6 w-6 stroke-black" />
+                   <FcLikePlaceholder fontSize="1.75rem" />
                   </Link>
+                </div>
                 </div>
               </div>
             </div>

@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { useEffect} from "react";
 import { useCart } from "@/context/CartContext"; // Update the path to your CartContext file
 import Image from "next/image";
 import Link from "next/link";
@@ -69,7 +69,7 @@ export default function Cart() {
                 </thead>
                 <tbody className=" font-MyFont place-items-center font-semibold table-fixed">
                   {cartItems.map((item, index) => (
-                    <tr>
+                    <tr key={index}>
                       <tr key={index} className=" hidden md:flex">
                         <td className="w-max py-4">
                         <div className="w-max flex justify-between">

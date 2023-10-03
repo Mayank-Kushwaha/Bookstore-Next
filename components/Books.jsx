@@ -86,17 +86,25 @@ const Books = ({ heading, order, title, result }) => {
                   <span>Price: </span>
                   <span>
                     {book.saleInfo && book.saleInfo.listPrice
-                      ? book.saleInfo.listPrice.amount <= 99
-                        ? (book.saleInfo.listPrice.amount * 10).toFixed(3)
+                      ? book.saleInfo.listPrice.amount <= 9
+                        ? (book.saleInfo.listPrice.amount * 10).toFixed(2)
                         : book.saleInfo.listPrice.amount
                       : Math.floor(Math.random() * (300 - 100 + 1)) + 100}
                   </span>
                 </div>
                 <div className="flex cursor-pointer gap-x-2">
                   <Link
-                    href={{
-                      pathname: "/Cart",
-                      query: queryParams,
+                     href={{
+                      pathname: "/Cart", // The path to your cart.js page
+                      query: {
+                        // Pass the book details as query parameters
+                        bookId: book.id,
+                        bookImage: book.volumeInfo.imageLinks?.thumbnail,
+                        bookTitle: book.volumeInfo.title,
+                        bookAuthor: book.volumeInfo.authors, // Assuming authors is an array
+                        bookPrice: book.saleInfo?.listPrice?.amount || Math.floor(Math.random() * (300 - 100 + 1)) + 100, // Price or a default value
+                        // Add more book details as needed
+                      },
                     }}
                     className="bg-textgray justify-center px-2 py-2 font-MyFont text-primary flex-1 rounded md:px-4 text-sm font-semibold"
                   >

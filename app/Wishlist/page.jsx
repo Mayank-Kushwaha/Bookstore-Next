@@ -2,6 +2,7 @@
 import React, { useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
+import toast from "react-hot-toast";
 import { useWishlist } from "@/context/WIshlistContext";
 import { BsBoxSeam } from "react-icons/bs";
 import { useSearchParams } from "next/navigation";
@@ -78,13 +79,16 @@ export default function Wishlist() {
                     <div>
                     <button
                       className="px-4 py-2 inline-block text-red-600 bg-white shadow-sm border border-gray-200 rounded-md hover:bg-gray-100 cursor-pointer"
-                      onClick={() => removeFromWishlist(index)}
+                      onClick={() => { removeFromWishlist(index)
+                                toast.success("Book Removed Successfully");}
+                              }
                     >
                       Remove
                     </button>
                     </div>
                     <div className="py-2 pr-4">
                      <Link
+                      onClick={() => {  toast.success("Book Added To Cart successfully");}}
                      href={{
                       pathname: "/Cart", // The path to your cart.js page
                       query: {
@@ -112,7 +116,7 @@ export default function Wishlist() {
                       <Image
                         src={item.image || "/default.jpg"}
                         priority="high"
-                        width={300}
+                        width={250}
                         height={110}
                         alt="Picture of the author"
                         onError={(e) => {
@@ -120,7 +124,7 @@ export default function Wishlist() {
                         }}
                       />
                     </div>
-                    <div className="px-4  text-left flex flex-col justify-between">
+                    <div className="px-4 pt-2 text-left flex flex-col justify-between">
                       <div>
                       <div className="flex md:hidden">Author :{item.title}</div>
                       <div className="flex md:hidden">Title: {item.author}</div>
@@ -132,7 +136,9 @@ export default function Wishlist() {
                         <div className="pb-3">
                       <button
                       className="px-4 py-2 inline-block text-red-600 bg-white shadow-sm border border-gray-200 rounded-md hover:bg-gray-100 cursor-pointer"
-                      onClick={() => removeFromWishlist(index)}
+                      onClick={() => {removeFromWishlist(index)
+                        toast.success("Book Removed Successfully");}
+                      }
                     >
                       Remove
                     </button>

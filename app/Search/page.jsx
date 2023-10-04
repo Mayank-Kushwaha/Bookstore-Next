@@ -3,6 +3,7 @@ import Link from "next/link";
 import { BiSearch } from "react-icons/bi";
 import React, { useState } from "react";
 import Image from "next/image";
+import toast from "react-hot-toast";
 import {  FcLikePlaceholder } from 'react-icons/fc';
 
 export default function Search() {
@@ -39,6 +40,7 @@ export default function Search() {
 
   return (
     <div className="max-w-6xl w-full mx-auto px-4 py-6 justify-start md:px-8 ">
+    
       <div className="font-MyFont flex justify-between">
         <input
           type="text"
@@ -95,6 +97,7 @@ export default function Search() {
                 <div className="flex w-max justify-between ">
                   <div className="cursor-pointer pt-4 px-1"> 
                   <Link
+                   onClick={() => {  toast.success("Book Added To Cart successfully");}}
                      href={{
                       pathname: "/Cart", // The path to your cart.js page
                       query: {
@@ -115,6 +118,7 @@ export default function Search() {
                
                   <div className="flex cursor-pointer w-max px-1 pt-2">
                   <Link
+                   onClick={() => {  toast.success("Book Added To Wishlist successfully");}}
                    href={{
                     pathname: "/Wishlist", // The path to your cart.js page
                     query: {

@@ -2,6 +2,7 @@
 import React from "react";
 import Link from "next/link";
 import Image from "next/image";
+import toast from "react-hot-toast";
 import { useEffect, useState } from "react";
 import { useSearchParams} from 'next/navigation';
 import {  FcLikePlaceholder } from 'react-icons/fc';
@@ -40,6 +41,7 @@ fetchBooks();
 
   return (
     <div className="max-w-6xl w-full mx-auto px-4 py-6 justify-start md:px-8">
+      
       <h1 className="font-main text-xl my-4 flex justify-center font-semibold mr-auto md:text-2xl ">
         {" "}
         {title}
@@ -83,6 +85,7 @@ fetchBooks();
                 <div className="flex w-max justify-between ">
                   <div className="cursor-pointer pt-4 px-1"> 
                   <Link
+                   onClick={() => {  toast.success("Book Added To Cart successfully");}}
                      href={{
                       pathname: "/Cart", // The path to your cart.js page
                       query: {
@@ -103,6 +106,7 @@ fetchBooks();
                
                   <div className="flex cursor-pointer w-max px-1 pt-2">
                   <Link
+                   onClick={() => {  toast.success("Book Added To Wishlist successfully");}}
                    href={{
                     pathname: "/Wishlist", // The path to your cart.js page
                     query: {

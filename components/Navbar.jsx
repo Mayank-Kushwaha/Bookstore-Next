@@ -134,7 +134,7 @@ export default function Navbar() {
             <AiOutlineClose className="icon-bottom" />
           </button>
           <div className="flex flex-col items-center justify-center gap-2 gap-x-4">
-            <div className="font-main text-2xl font-medium">Book Odyssey</div>
+            <Link href="/" className="font-main text-2xl font-medium">Book Odyssey</Link>
             <p className="text-center px-6 font-MyFont">
               One of the best book stores in the World
             </p>

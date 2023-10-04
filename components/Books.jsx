@@ -2,6 +2,7 @@
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
+import toast from "react-hot-toast";
 import {  FcLikePlaceholder } from 'react-icons/fc';
 import { IoIosArrowForward } from "react-icons/io";
 const Books = ({ heading, order, title, result }) => {
@@ -37,6 +38,7 @@ const Books = ({ heading, order, title, result }) => {
 
   return (
     <div id="books" className="pt-14">
+
       <section className="mx-auto max-w-6xl px-4 py-6 md:px-8">
         <div className="flex items-baseline justify-between">
           <h2 className="font-main text-2xl font-medium md:text-2xl">
@@ -95,6 +97,7 @@ const Books = ({ heading, order, title, result }) => {
                 <div className="flex w-max justify-between ">
                   <div className="cursor-pointer pt-4 px-1"> 
                   <Link
+                  onClick={() => {  toast.success("Book Added To Cart successfully");}}
                      href={{
                       pathname: "/Cart", // The path to your cart.js page
                       query: {
@@ -115,6 +118,7 @@ const Books = ({ heading, order, title, result }) => {
                
                   <div className="flex cursor-pointer w-max px-1 pt-2">
                   <Link
+                  onClick={() => {  toast.success("Book Added To Wishlist successfully");}}
                    href={{
                     pathname: "/Wishlist", // The path to your cart.js page
                     query: {

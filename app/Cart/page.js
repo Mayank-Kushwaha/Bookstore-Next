@@ -3,6 +3,7 @@ import React, { useEffect } from "react";
 import { useCart } from "@/context/CartContext"; // Update the path to your CartContext file
 import Image from "next/image";
 import Link from "next/link";
+import toast from "react-hot-toast";
 import { BsCartDash, BsBoxSeam } from "react-icons/bs";
 import { MdArrowBackIos } from "react-icons/md";
 import { useSearchParams } from "next/navigation";
@@ -122,7 +123,11 @@ export default function Cart() {
                           <div>
                             <button
                               className="px-4 py-2 inline-block text-red-600 bg-white shadow-sm border border-gray-200 rounded-md hover:bg-gray-100 cursor-pointer"
-                              onClick={() => removeFromCart(index)}
+                              onClick={() =>{ removeFromCart(index)
+                                toast.success("Book Removed Successfully");}
+                              }
+                             
+                              
                             >
                               Remove
                             </button>
@@ -193,7 +198,9 @@ export default function Cart() {
                             <div>
                               <button
                                 className="px-4 py-2 inline-block text-red-600 bg-white shadow-sm border border-gray-200 rounded-md hover:bg-gray-100 cursor-pointer"
-                                onClick={() => removeFromCart(index)}
+                                onClick={() => { removeFromCart(index)
+                                  toast.success("Book Removed Successfully");}
+                                }
                               >
                                 Remove
                               </button>

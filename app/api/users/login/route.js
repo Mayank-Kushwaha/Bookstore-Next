@@ -3,6 +3,7 @@ import User from "@/models/userModel";
 import { NextResponse } from "next/server";
 import bcryptjs from "bcryptjs";
 import jwt from "jsonwebtoken";
+import process from "process";
 
 // const  { NEXT_PUBLIC_TOKEN_SECRET } = process.env;
 

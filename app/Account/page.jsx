@@ -15,11 +15,12 @@ export default function Account() {
   const [user, setUser] = React.useState({
     fullname: "",
     email: "",
-    address: "",
     phone: "",
+    username: "",
     password: "",
     confpassword: "",
     address: "",
+    
   });
   const [buttonDisabled, setButtonDisabled] = React.useState(false);
   const [loggedIn, setloggedIn] = React.useState(false);
@@ -70,9 +71,6 @@ export default function Account() {
     } catch (error) {
       console.log("Login failed", error.message);
       toast.error(error.message);
-      {
-        errorNotify;
-      }
       setloggedIn(false);
     } finally {
       setLoading(false);
@@ -181,7 +179,7 @@ export default function Account() {
           </div>
         ) : (
           <div className="flex-1 pb-8 md:pb-0 md:pr-10 xl:pr-20 font-MyFont">
-            <h1 className="text-2xl font-bold font-main">Profile</h1>
+            <h1 className="text-2xl font-bold font-main">{loading ? "Processing" : "Profile"}</h1>
             <div className="py-4 gap-y-2 flex flex-col text-xl font-MyFont rounded ">
               Welcome: {username}
               <hr />

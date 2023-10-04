@@ -12,7 +12,7 @@ const nextConfig = {
       },
     env: {
       BASE_URL: process.env.BASE_URL,
-      process: global.process,
+      
     }};
 
 module.exports = nextConfig

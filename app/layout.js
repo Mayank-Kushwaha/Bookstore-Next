@@ -2,6 +2,7 @@ import React from 'react';
 import { CartProvider } from "@/context/CartContext";
 import { WishlistProvider } from "@/context/WIshlistContext";
 import "./globals.css";
+import { Analytics } from '@vercel/analytics/react';
 import Topheader from "@/components/Topheader";
 import { Toaster } from "react-hot-toast";
 import Navbar from "@/components/Navbar";
@@ -34,6 +35,7 @@ export default function RootLayout({ children }) {
       <CartProvider>
       <WishlistProvider>
         {children}
+        <Analytics />
         </WishlistProvider>
         </CartProvider>
         <Footer/>

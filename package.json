@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@netlify/plugin-nextjs": "^4.40.1",
+    "@vercel/analytics": "^1.0.2",
     "autoprefixer": "10.4.15",
     "axios": "^1.5.1",
     "bcryptjs": "^2.4.3",

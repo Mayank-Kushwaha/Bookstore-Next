@@ -3,8 +3,8 @@ import User from "@/models/userModel";
 import { NextResponse } from "next/server";
 import bcryptjs from "bcryptjs";
 import jwt from "jsonwebtoken";
-require("dotenv").config();
-const  { NEXT_PUBLIC_TOKEN_SECRET } = process.env;
+
+// const  { NEXT_PUBLIC_TOKEN_SECRET } = process.env;
 
 connect()
 
@@ -39,7 +39,7 @@ export async function POST(request){
             email: user.email
         }
         //create token
-        const token = await jwt.sign(tokenData, NEXT_PUBLIC_TOKEN_SECRET, {expiresIn: "1d"})
+        const token = await jwt.sign(tokenData, process.env.NEXT_PUBLIC_TOKEN_SECRET, {expiresIn: "1d"})
 
         const response = NextResponse.json({
             message: "Login successful",

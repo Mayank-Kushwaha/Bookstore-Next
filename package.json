@@ -23,6 +23,7 @@
     "react-dom": "18.2.0",
     "react-hot-toast": "^2.4.1",
     "react-icons": "^4.11.0",
+    "require": "^2.4.20",
     "tailwindcss": "3.3.3",
     "webpack": "^5.88.2"
   },

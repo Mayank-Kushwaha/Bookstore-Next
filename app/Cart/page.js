@@ -123,11 +123,10 @@ export default function Cart() {
                           <div>
                             <button
                               className="px-4 py-2 inline-block text-red-600 bg-white shadow-sm border border-gray-200 rounded-md hover:bg-gray-100 cursor-pointer"
-                              onClick={() =>{ removeFromCart(index)
-                                toast.success("Book Removed Successfully");}
-                              }
-                             
-                              
+                              onClick={() => {
+                                removeFromCart(index);
+                                toast.success("Book Removed Successfully");
+                              }}
                             >
                               Remove
                             </button>
@@ -198,9 +197,10 @@ export default function Cart() {
                             <div>
                               <button
                                 className="px-4 py-2 inline-block text-red-600 bg-white shadow-sm border border-gray-200 rounded-md hover:bg-gray-100 cursor-pointer"
-                                onClick={() => { removeFromCart(index)
-                                  toast.success("Book Removed Successfully");}
-                                }
+                                onClick={() => {
+                                  removeFromCart(index);
+                                  toast.success("Book Removed Successfully");
+                                }}
                               >
                                 Remove
                               </button>

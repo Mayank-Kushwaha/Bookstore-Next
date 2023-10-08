@@ -10,6 +10,7 @@ const nextConfig = {
   },
   env: {
     Base_URL: process.env.Base_URL,
+    
     // Other environment variables
   },
   

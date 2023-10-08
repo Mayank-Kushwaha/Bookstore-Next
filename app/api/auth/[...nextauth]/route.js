@@ -5,7 +5,6 @@ import CredentialsProvider from "next-auth/providers/credentials";
 import bcrypt from "bcryptjs";
 import dotenv from "dotenv";
 dotenv.config();
-
 export const authOptions = {
   providers: [
     CredentialsProvider({

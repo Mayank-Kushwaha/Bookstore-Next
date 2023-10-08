@@ -19,9 +19,9 @@ export const authOptions = {
         const { email, password } = credentials;
 
         try {
-          const { NEXTAUTH_SECRET } = process.env;
+          const { NEXT_PUBLIC_NEXTAUTH_SECRET } = process.env;
 
-          if (!NEXTAUTH_SECRET) {
+          if (!NEXT_PUBLIC_NEXTAUTH_SECRET) {
             throw new Error("Secret not found in environment variables.");
           }
           await connectMongoDB();
@@ -47,7 +47,7 @@ export const authOptions = {
   session: {
     strategy: "jwt",
   },
-  secret: NEXTAUTH_SECRET,
+  secret: NEXT_PUBLIC_NEXTAUTH_SECRET,
   pages: {
     signIn: "/",
   },

@@ -8,6 +8,10 @@ const nextConfig = {
     domains: ['lh3.googleusercontent.com'],
     domains: ['books.google.com']
   },
+  env: {
+    NODE_ENV: process.env.NODE_ENV,
+    // Other environment variables
+  },
   
   webpack(config) {
     config.experiments = {

@@ -3,7 +3,7 @@ import User from "@/models/user";
 import NextAuth from "next-auth/next";
 import CredentialsProvider from "next-auth/providers/credentials";
 import bcrypt from "bcryptjs";
-require("dotenv").config();
+
 import { process } from 'process';
 
 const { NEXTAUTH_SECRET } = process.env;

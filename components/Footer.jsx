@@ -70,7 +70,7 @@ export default function Footer() {
               href="mailto:mayankkush0842@gmail.com"
               className="text-link mt-1 block font-MyFont underline decoration-dashed underline-offset-2 hover:decoration-solid "
             >
-              mayankkush0842@gmail <br></br>.com
+              mayankkush0842@gmail <br className='flex md:hidden'></br>.com
             </Link>
           </p>
           <p className="mb-3 text-sm font-MyFont">

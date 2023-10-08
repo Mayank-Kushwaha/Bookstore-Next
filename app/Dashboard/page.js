@@ -1,12 +1,13 @@
+import UserInfo from "@/components/UserInfo";
+
 import { getServerSession } from "next-auth";
 import { authOptions } from "../api/auth/[...nextauth]/route";
 import { redirect } from "next/navigation";
-import Cart from "@/components/Cart";
 
-export default async function Cartpage() {
+export default async function Dashboard() {
   const session = await getServerSession(authOptions);
 
   if (!session) redirect("/Login");
 
-  return <Cart />;
+  return <UserInfo />;
 }

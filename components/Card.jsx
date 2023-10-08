@@ -1,14 +1,18 @@
 "use client";
 import React from "react";
-import Link from "next/link";
+
 import Image from "next/image";
 import toast from "react-hot-toast";
+import { useCart } from "@/context/CartContext";
+import { useWishlist } from "@/context/WIshlistContext";
 import { FcLikePlaceholder } from "react-icons/fc";
 
 function Card({ books }) {
   const handleCardClick = (selfLink) => {
     window.open(selfLink, "_blank");
   };
+  const { addToCart } = useCart();
+  const { addToWishlist } = useWishlist();
 
   return (
     <div className="grid grid-cols-2 gap-4 py-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5">
@@ -41,62 +45,56 @@ function Card({ books }) {
               <span>Price: </span>
               <span>
                 {book.saleInfo && book.saleInfo.listPrice
-                  ? book.saleInfo.listPrice.amount <= 9
-                    ? (book.saleInfo.listPrice.amount * 10).toFixed(2)
-                    : book.saleInfo.listPrice.amount
-                  : Math.floor(Math.random() * (300 - 100 + 1)) + 100}
+                  ?  book.saleInfo.listPrice.amount
+                  :  299}
               </span>
             </div>
             <div className="flex w-max justify-between ">
               <div className="cursor-pointer pt-4 px-1">
-                <Link
+                <button
                   onClick={() => {
-                    toast.success("Book Added To Cart successfully");
-                  }}
-                  href={{
-                    pathname: "/Cart", // The path to your cart.js page
-                    query: {
-                      // Pass the book details as query parameters
-                      bookId: book.id,
-                      bookImage: book.volumeInfo.imageLinks?.thumbnail,
-                      bookTitle: book.volumeInfo.title,
-                      bookAuthor: book.volumeInfo.authors, // Assuming authors is an array
-                      bookPrice:
-                        book.saleInfo?.listPrice?.amount ||
-                        Math.floor(Math.random() * (300 - 100 + 1)) + 100, // Price or a default value
+                    const bookDetails = {
+                      id: book.id,
+                      title: book.volumeInfo.title,
+                      author: book.volumeInfo.authors, // Assuming authors is an array
+                      price:
+                      book.saleInfo?.listPrice?.amount || 299, 
+                      image: book.volumeInfo.imageLinks?.thumbnail,
+                      quantity: 1,// Price or a default value
                       // Add more book details as needed
-                    },
+                    };
+                    addToCart(bookDetails); // Pass the book details to addToCart
+                    console.log("booksdetail",bookDetails);
+                    toast.success("Book Added To Cart successfully");
                   }}
                   className="bg-textgray justify-center px-2 py-2 font-MyFont text-primary flex-1 rounded md:px-4 text-sm font-semibold"
                 >
                   Add To Cart
-                </Link>
+                </button>
               </div>
 
               <div className="flex cursor-pointer w-max px-1 pt-2">
-                <Link
+                <button
                   onClick={() => {
-                    toast.success("Book Added To Wishlist successfully");
-                  }}
-                  href={{
-                    pathname: "/Wishlist", // The path to your cart.js page
-                    query: {
-                      // Pass the book details as query parameters
-                      bookId: book.id,
-                      bookImage: book.volumeInfo.imageLinks?.thumbnail,
-                      bookTitle: book.volumeInfo.title,
-                      bookAuthor: book.volumeInfo.authors, // Assuming authors is an array
-                      bookPrice:
-                        book.saleInfo?.listPrice?.amount ||
-                        Math.floor(Math.random() * (300 - 100 + 1)) + 100, // Price or a default value
+                    const bookDetails = {
+                      id: book.id,
+                      title: book.volumeInfo.title,
+                      author: book.volumeInfo.authors, // Assuming authors is an array
+                      price:
+                      book.saleInfo?.listPrice?.amount || 299, 
+                      image: book.volumeInfo.imageLinks?.thumbnail,
+                      quantity: 1,// Price or a default value
                       // Add more book details as needed
-                    },
+                    };
+                    addToWishlist(bookDetails); // Pass the book details to addToCart
+                    console.log("booksdetail",bookDetails);
+                    toast.success("Book Added To Wishlist successfully");
                   }}
                   className="outline-btn-color cursor-pointer basis-1/4 rounded p-1"
                   title="Add To Wishlist"
                 >
                   <FcLikePlaceholder fontSize="1.75rem" />
-                </Link>
+                </button>
               </div>
             </div>
           </div>

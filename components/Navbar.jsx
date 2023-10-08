@@ -14,9 +14,13 @@ import { IoMailUnreadOutline } from "react-icons/io5";
 import { PiTelegramLogo } from "react-icons/pi";
 import { SlSocialInstagram } from "react-icons/sl";
 import { FiFacebook } from "react-icons/fi";
+import { CgLogIn } from "react-icons/cg";
+
+
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
+
 
   const openModal = () => {
     setIsOpen(true);
@@ -68,13 +72,6 @@ export default function Navbar() {
             Search
           </Link>
           <Link
-            href="/Account"
-            className="hover:opacity-95 opacity-70 flex flex-row link link-underline link-underline-black"
-          >
-            <AiOutlineUser className="mt-1 icon-top mr-3" />
-            Account
-          </Link>
-          <Link
             href="/Wishlist"
             className="hover:opacity-95 opacity-70 flex flex-row link link-underline link-underline-black"
           >
@@ -87,6 +84,20 @@ export default function Navbar() {
           >
             <AiOutlineShoppingCart className="mt-1 icon-top mr-3" />
             Cart
+          </Link>
+          <Link
+            href="/Dashboard"
+            className="hover:opacity-95 opacity-70 flex flex-row link link-underline link-underline-black"
+          >
+            <AiOutlineUser className="mt-1 icon-top mr-3" />
+            Dashboard
+          </Link>
+          <Link
+            href="/Login"
+            className="hover:opacity-95 opacity-70 flex flex-row link link-underline link-underline-black"
+          >
+            <CgLogIn className="mt-1 icon-top mr-3" />
+            Login
           </Link>
         </div>
       </div>
@@ -154,13 +165,24 @@ export default function Navbar() {
                 </li>
                 <li className="flex w-full flex-col">
                   <Link
-                    href="/Account"
+                    href="/Dashboard"
                     onClick={closeModal}
                     className="flex items-center gap-x-2 py-1 px-2 text-xl"
                   >
                     {" "}
-                    <span>Account</span>
+                    <span>Dashboard</span>
                     <AiOutlineUser className="opacity-90" />
+                  </Link>
+                </li>
+                <li className="flex w-full flex-col">
+                  <Link
+                    href="/Login"
+                    onClick={closeModal}
+                    className="flex items-center gap-x-2 py-1 px-2 text-xl"
+                  >
+                    {" "}
+                    <span>Login</span>
+                    <CgLogIn className="opacity-90" />
                   </Link>
                 </li>
                 <li className="flex w-full flex-col">

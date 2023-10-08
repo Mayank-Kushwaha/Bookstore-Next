@@ -1,12 +1,13 @@
 import React from 'react';
+import "./globals.css";
 import { CartProvider } from "@/context/CartContext";
 import { WishlistProvider } from "@/context/WIshlistContext";
-import "./globals.css";
 import { Analytics } from '@vercel/analytics/react';
 import Topheader from "@/components/Topheader";
 import { Toaster } from "react-hot-toast";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import {AuthProvider} from "@/components/Provider";
 import { Quicksand, Fraunces } from "next/font/google";
 
 
@@ -29,6 +30,7 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en" className={`${quicksand.variable} ${fraunces.variable}`}>
       <body suppressHydrationWarning={true} className="flex flex-col min-h-screen w-full bg-primary">
+      <AuthProvider>
       <Toaster/>
       <Topheader />
        <Navbar />
@@ -39,6 +41,7 @@ export default function RootLayout({ children }) {
         </WishlistProvider>
         </CartProvider>
         <Footer/>
+        </AuthProvider>
       </body>
     </html>
   );

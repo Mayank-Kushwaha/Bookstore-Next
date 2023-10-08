@@ -1,18 +1,22 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {    
-    reactStrictMode: true,
-    images: {
-        remotePatterns: [
-          {
-            protocol: 'http',
-            hostname: 'books.google.com',
+  experimental: {
+    appDir: true,
+    serverComponentsExternalPackages: ["mongoose"],
+  },
+  images: {
+    domains: ['lh3.googleusercontent.com'],
+    domains: ['books.google.com']
+  },
+  
+  webpack(config) {
+    config.experiments = {
+      ...config.experiments,
+      topLevelAwait: true,
+    }
+    return config
+  }
+}
 
-          },
-        ],
-      },
-    env: {
-      BASE_URL: process.env.BASE_URL,
-      
-    }};
 
 module.exports = nextConfig

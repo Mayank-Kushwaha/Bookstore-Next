@@ -1,12 +1,16 @@
+import LoginForm from "@/components/LoginForm";
 import { getServerSession } from "next-auth";
 import { authOptions } from "../api/auth/[...nextauth]/route";
 import { redirect } from "next/navigation";
-import Cart from "@/components/Cart";
 
-export default async function Cartpage() {
+export default async function Login() {
   const session = await getServerSession(authOptions);
 
-  if (!session) redirect("/Login");
+  if (session) redirect("/Dashboard");
 
-  return <Cart />;
+  return (
+    <main>
+      <LoginForm />
+    </main>
+  );
 }

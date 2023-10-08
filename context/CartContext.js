@@ -24,6 +24,7 @@ export function CartProvider({ children }) {
       (cartItem) => cartItem.id === item.id
     );
 
+    
     if (existingItemIndex !== -1) {
       // Item with the same ID already exists in the cart, update its quantity
       const updatedCart = [...cartItems];

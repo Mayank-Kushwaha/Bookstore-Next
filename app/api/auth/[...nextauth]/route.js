@@ -6,7 +6,7 @@ import bcrypt from "bcryptjs";
 
 import { process } from 'process';
 
-const { NEXTAUTH_SECRET } = process.env;
+
 // const { NEXT_PUBLIC_DOMAIN } = process.env;
 
 export const authOptions = {

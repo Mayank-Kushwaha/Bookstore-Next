@@ -3,8 +3,6 @@ import User from "@/models/user";
 import NextAuth from "next-auth/next";
 import CredentialsProvider from "next-auth/providers/credentials";
 import bcrypt from "bcryptjs";
-import { process } from 'process';
-
 
 export const authOptions = {
   providers: [
@@ -17,7 +15,7 @@ export const authOptions = {
 
         try {
       
-          console.log(NEXTAUTH_SECRET)
+          console.log(process.env.NEXTAUTH_SECRET)
 
           await connectMongoDB();
           const user = await User.findOne({ email });

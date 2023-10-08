@@ -3,6 +3,8 @@ import User from "@/models/user";
 import NextAuth from "next-auth/next";
 import CredentialsProvider from "next-auth/providers/credentials";
 import bcrypt from "bcryptjs";
+import dotenv from "dotenv";
+dotenv.config();
 
 export const authOptions = {
   providers: [
@@ -39,8 +41,7 @@ export const authOptions = {
   ],
   session: {
     strategy: "jwt",
-  },
-  secret: process.env.NEXTAUTH_SECRET,
+  },secret: dotEnv.get("NEXTAUTH_SECRET"),
   pages: {
     signIn: "/",
   },

@@ -9,7 +9,7 @@ const nextConfig = {
     domains: ['books.google.com']
   },
   env: {
-    NODE_ENV: process.env.NODE_ENV,
+    Base_URL: process.env.Base_URL,
     // Other environment variables
   },
   

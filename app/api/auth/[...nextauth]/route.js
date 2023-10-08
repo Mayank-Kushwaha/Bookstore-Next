@@ -17,6 +17,11 @@ export const authOptions = {
         const { email, password } = credentials;
 
         try {
+          const { NEXTAUTH_SECRET } = process.env;
+
+          if (!NEXTAUTH_SECRET) {
+            throw new Error("Secret not found in environment variables.");
+          }
           await connectMongoDB();
           const user = await User.findOne({ email });
 

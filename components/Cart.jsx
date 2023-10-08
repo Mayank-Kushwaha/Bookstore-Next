@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect } from "react";
+import React from "react";
 import { useCart } from "@/context/CartContext"; // Update the path to your CartContext file
 import Image from "next/image";
 import Link from "next/link";

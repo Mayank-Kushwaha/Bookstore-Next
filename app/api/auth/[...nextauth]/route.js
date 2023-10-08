@@ -6,9 +6,6 @@ import bcrypt from "bcryptjs";
 
 import { process } from 'process';
 
-
-const { NEXT_PUBLIC_NEXTAUTH_SECRET } = process.env;
-
 export const authOptions = {
   providers: [
     CredentialsProvider({
@@ -19,7 +16,12 @@ export const authOptions = {
         const { email, password } = credentials;
 
         try {
-      
+          const { NEXTAUTH_SECRET } = process.env;
+          console.log(NEXTAUTH_SECRET)
+
+          if (!NEXT_PUBLIC_NEXTAUTH_SECRET) {
+            throw new Error("Secret not found in environment variables.");
+          }
           await connectMongoDB();
           const user = await User.findOne({ email });
 
@@ -43,7 +45,7 @@ export const authOptions = {
   session: {
     strategy: "jwt",
   },
-  secret: NEXT_PUBLIC_NEXTAUTH_SECRET,
+  secret: NEXTAUTH_SECRET,
   pages: {
     signIn: "/",
   },

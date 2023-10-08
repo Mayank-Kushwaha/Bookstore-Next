@@ -40,7 +40,8 @@ export const authOptions = {
   ],
   session: {
     strategy: "jwt",
-  },secret: dotEnv.get("NEXTAUTH_SECRET"),
+  },
+  secret: process.env.NEXTAUTH_SECRET,
   pages: {
     signIn: "/",
   },

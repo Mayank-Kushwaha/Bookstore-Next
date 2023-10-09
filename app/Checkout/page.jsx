@@ -206,7 +206,7 @@ export default function Checkout() {
             </div>
             
               <button
-                type="submit"
+                type="button"
                 onClick={saveCartToDatabase}
                 className="bg-textgray text-white w-full flex justify-center py-2 px-2 mt-2 font-MyFont text-lg font-medium md:rounded md:py-1"
               >

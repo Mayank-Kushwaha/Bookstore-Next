@@ -1,9 +1,14 @@
 {
     "env": {
+        "process": true,
         "browser": true,
         "es2021": true
     },
+    "globals": {
+        "process": true
+      },
     "extends": [
+        "next",
         "eslint:recommended",
         "plugin:react/recommended"
     ],

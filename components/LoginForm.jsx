@@ -5,7 +5,7 @@ import { useState } from "react";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-
+import toast from "react-hot-toast";
 export default function LoginForm() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -26,9 +26,11 @@ export default function LoginForm() {
       if (res.error) {
         setError("Invalid Credentials");
         console.log(error);
+        toast.error("Login error",error );
         return;
       }
 
+      toast.success("Login successfully");
       router.replace("Dashboard");
     } catch (error) {
       console.log(error);

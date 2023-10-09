@@ -4,6 +4,7 @@ import Link from "next/link";
 import { RiSendPlaneLine } from "react-icons/ri";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import toast from "react-hot-toast";
 
 export default function RegisterForm() {
   const [name, setName] = useState("");
@@ -52,12 +53,14 @@ export default function RegisterForm() {
       if (res.ok) {
         const form = e.target;
         form.reset();
+        toast.success("Registered successfully");
         router.push("/Login");
       } else {
         console.log("User registration failed.");
       }
     } catch (error) {
       console.log("Error during registration: ", error);
+      toast.error("Registration error", error);
     }
   };
 

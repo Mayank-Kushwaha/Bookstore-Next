@@ -3,7 +3,7 @@ import React from 'react';
 import { signOut } from "next-auth/react";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
-
+import toast from "react-hot-toast";
 export default function UserInfo() {
   const { data: session } = useSession();
   const router = useRouter();
@@ -28,6 +28,7 @@ export default function UserInfo() {
         </div>
         <button
           onClick={() => {
+            toast.success("Logout successfully");
             signOut();
             router.push("/");
           }}

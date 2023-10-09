@@ -1,9 +1,9 @@
 "use client";
 import React from "react";
 import { useCart } from "@/context/CartContext"; // Update the path to your CartContext file
+import toast from "react-hot-toast";
 import Image from "next/image";
 import Link from "next/link";
-import toast from "react-hot-toast";
 import { BsCartDash, BsBoxSeam } from "react-icons/bs";
 import { MdArrowBackIos } from "react-icons/md";
 
@@ -15,6 +15,7 @@ export default function Cart() {
     decrementQuantity,
     calculateTotalPrice,
   } = useCart();
+
 
   return (
     <div className="max-w-6xl w-full mx-auto px-4 py-6 justify-start md:px-8">
@@ -43,8 +44,8 @@ export default function Cart() {
                 </thead>
                 <tbody className=" font-MyFont place-items-center font-semibold table-fixed">
                   {cartItems.map((item, index) => (
-                    <tr key={index}>
-                      <tr key={index} className=" hidden md:flex">
+                    <div key={index}>
+                      <tr  className=" hidden md:flex">
                         <td className="w-max py-4">
                           <div className="w-max flex justify-between">
                             <Image
@@ -110,7 +111,7 @@ export default function Cart() {
                         </td>
                       </tr>
 
-                      <tr key={index} className="grid md:hidden">
+                      <div  className="grid md:hidden">
                         <tr>
                           <td className="w-max col-span-4 md:col-span-1">
                             <Image
@@ -183,8 +184,8 @@ export default function Cart() {
                             </div>
                           </td>
                         </tr>
-                      </tr>
-                    </tr>
+                      </div>
+                    </div>
                   ))}
                 </tbody>
               </table>
@@ -198,7 +199,7 @@ export default function Cart() {
             </Link>
           </div>
 
-          <div className="others flex flex-col lg:my-0 font-MyFont divide-y">
+          <div className="others flex flex-col justify-between lg:my-0 font-MyFont divide-y">
             <div className="pb-4">
               <label
                 htmlFor="order-notes"
@@ -213,7 +214,7 @@ export default function Cart() {
                 className="block w-full rounded border-2 my-1 md:pr-10 border-gray-300 bg-primary font-normal outline-skin-accent py-1 px-2 outline-skin-accent"
               ></textarea>
             </div>
-            <div className="coupon-code-wrapper py-4 ">
+            {/* <div className="coupon-code-wrapper py-4 ">
               <label
                 htmlFor="coupon-code"
                 className="mb-1 font-sans font-semibold"
@@ -228,7 +229,8 @@ export default function Cart() {
               <span className="font-MyFont text-sm italic opacity-70">
                 Coupon code will be applied on the checkout
               </span>
-            </div>
+            </div> */}
+            <div>
             <Link
               className="text-link inline-flex items-center underline decoration-dashed underline-offset-8 hover:decoration-solid lg:hidden font-MyFont opacity-60"
               href="/"
@@ -248,12 +250,14 @@ export default function Cart() {
                 {" "}
                 <button
                   type="button"
+              
                   className="bg-textgray text-white w-full flex justify-center py-2 px-2 mt-2 font-MyFont text-lg font-medium md:rounded md:py-1"
                 >
                   <BsCartDash className="mt-1 mr-3" />
                   <span>Checkout</span>
                 </button>
               </Link>
+              </div>
             </div>
           </div>
         </div>

@@ -14,9 +14,6 @@ export const authOptions = {
         const { email, password } = credentials;
 
         try {
-      
-          console.log(process.env.NEXTAUTH_SECRET)
-
           await connectMongoDB();
           const user = await User.findOne({ email });
 

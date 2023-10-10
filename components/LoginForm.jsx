@@ -44,10 +44,10 @@ export default function LoginForm() {
       Login 
       </h1>
       <div className="md:divide-x flex flex-col md:flex-row ">
-        <div className="flex pb-8 md:pb-0 md:pr-10 xl:pr-20 font-main text-xl md:text-3xl ">
+        <div className="flex pb-3 md:pb-0 md:pr-10 xl:pr-20 font-main text-xl md:text-3xl ">
           
          Welcome to <br className="hidden lg:flex pt-2"></br> The Website, <br className="hidden lg:flex pt-2"></br>
-         For accessing Cart<br className="hidden lg:flex pt-2"></br> and Wishlist <br className="hidden lg:flex pt-2"></br>login now !
+         For accessing Cart<br className="hidden lg:flex pt-2"></br> and Wishlist <br className="hidden lg:flex pt-2"></br>login now!
         
         </div>
         <div className="flex-1 pt-8 md:pt-0 md:pl-10 xl:pl-20">

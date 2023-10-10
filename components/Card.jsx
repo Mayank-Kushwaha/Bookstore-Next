@@ -1,18 +1,19 @@
 "use client";
-import React from "react";
+import React, { useState } from "react";
 
 import Image from "next/image";
 import toast from "react-hot-toast";
 import { useCart } from "@/context/CartContext";
 import { useWishlist } from "@/context/WIshlistContext";
-import { FcLikePlaceholder } from "react-icons/fc";
+import { FcLikePlaceholder, FcLike } from "react-icons/fc";
 
 function Card({ books }) {
+  const { addToCart } = useCart();
+  const { addToWishlist, WishlistItem } = useWishlist();
+  const [liked, setliked] = useState([WishlistItem]);
   const handleCardClick = (selfLink) => {
     window.open(selfLink, "_blank");
   };
-  const { addToCart } = useCart();
-  const { addToWishlist } = useWishlist();
 
   return (
     <div className="grid grid-cols-2 gap-4 py-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5">
@@ -45,8 +46,8 @@ function Card({ books }) {
               <span>Price: </span>
               <span>
                 {book.saleInfo && book.saleInfo.listPrice
-                  ?  book.saleInfo.listPrice.amount
-                  :  299}
+                  ? book.saleInfo.listPrice.amount
+                  : 299}
               </span>
             </div>
             <div className="flex w-max justify-between ">
@@ -57,14 +58,13 @@ function Card({ books }) {
                       id: book.id,
                       title: book.volumeInfo.title,
                       author: book.volumeInfo.authors, // Assuming authors is an array
-                      price:
-                      book.saleInfo?.listPrice?.amount || 299, 
+                      price: book.saleInfo?.listPrice?.amount || 299,
                       image: book.volumeInfo.imageLinks?.thumbnail,
-                      quantity: 1,// Price or a default value
+                      quantity: 1, // Price or a default value
                       // Add more book details as needed
                     };
                     addToCart(bookDetails); // Pass the book details to addToCart
-                    console.log("booksdetail",bookDetails);
+                    console.log("booksdetail", bookDetails);
                     toast.success("Book Added To Cart successfully");
                   }}
                   className="bg-textgray justify-center px-2 py-2 font-MyFont text-primary flex-1 rounded md:px-4 text-sm font-semibold"
@@ -76,24 +76,36 @@ function Card({ books }) {
               <div className="flex cursor-pointer w-max px-1 pt-2">
                 <button
                   onClick={() => {
+                    if (liked.includes(book.id)) {
+                      setliked((prev) => prev.filter((id) => id !== book.id));
+
+                      toast.error("Book Removed from Wishlist successfully");
+                    } else {
+                      setliked((prev) => [...prev, book.id]);
+
+                      toast.success("Book Added To Wishlist successfully");
+                    }
                     const bookDetails = {
                       id: book.id,
                       title: book.volumeInfo.title,
                       author: book.volumeInfo.authors, // Assuming authors is an array
-                      price:
-                      book.saleInfo?.listPrice?.amount || 299, 
+                      price: book.saleInfo?.listPrice?.amount || 299,
                       image: book.volumeInfo.imageLinks?.thumbnail,
-                      quantity: 1,// Price or a default value
+                      quantity: 1, // Price or a default value
                       // Add more book details as needed
                     };
                     addToWishlist(bookDetails); // Pass the book details to addToCart
-                    console.log("booksdetail",bookDetails);
-                    toast.success("Book Added To Wishlist successfully");
+                    // console.log("booksdetail", bookDetails);
+                    // toast.success("Book Added To Wishlist successfully");
                   }}
                   className="outline-btn-color cursor-pointer basis-1/4 rounded p-1"
                   title="Add To Wishlist"
                 >
-                  <FcLikePlaceholder fontSize="1.75rem" />
+                  {liked.includes(book.id) ? (
+                    <FcLike fontSize="1.75rem" />
+                  ) : (
+                    <FcLikePlaceholder fontSize="1.75rem" />
+                  )}
                 </button>
               </div>
             </div>

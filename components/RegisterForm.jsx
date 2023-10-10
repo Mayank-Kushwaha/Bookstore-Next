@@ -71,7 +71,7 @@ export default function RegisterForm() {
     Register 
     </h1>
     <div className="md:divide-x flex flex-col md:flex-row ">
-      <div className="flex pb-8 md:pb-0 md:pr-10 xl:pr-20 font-main text-xl md:text-3xl ">
+      <div className="flex pb-3 md:pb-0 md:pr-10 xl:pr-20 font-main text-xl md:text-3xl ">
         
        Welcome to <br className="hidden lg:flex pt-2"></br> The Website
       
@@ -81,7 +81,7 @@ export default function RegisterForm() {
         <form onSubmit={handleSubmit}>
         <div className="mb-4">
           <label className="font-MyFont font-medium">
-           FullName
+           Full Name
             <input
               placeholder="Enter Your Full Name"
               className="my-1 block w-full md:pr-10 rounded border-2 border-gray-300 bg-primary py-1 px-2 font-normal outline-skin-accent"

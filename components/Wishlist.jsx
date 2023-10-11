@@ -6,12 +6,18 @@ import toast from "react-hot-toast";
 import { useWishlist } from "@/context/WIshlistContext";
 import { BsBoxSeam } from "react-icons/bs";
 import { MdArrowBackIos } from "react-icons/md";
+import { useCart } from "@/context/CartContext";
 
 export default function Wishlist() {
   const { WishlistItems, removeFromWishlist } = useWishlist();
+  const { addToCart } = useCart();
+  const handleCardClick = (selfLink) => {
+    window.open(selfLink, "_blank");
+  };
 
 
   return (
+    
     <div className="max-w-6xl w-full mx-auto px-4 py-6 justify-start md:px-8  ">
       <h1 className="font-main text-xl my-4 font-semibold mr-auto md:text-2xl ">
         {" "}
@@ -33,10 +39,11 @@ export default function Wishlist() {
             {WishlistItems.map((item, index) => (
               <div key={index}>
                 <div
-                  key={index}
                   className=" hidden md:flex justify-center items-center py-4"
                 >
-                  <div className="w-1/2 flex ">
+                  <div 
+                  onClick={() => handleCardClick(item.preview)}
+                  className="w-1/2 flex ">
                     <Image
                       src={item.image || "/default.jpg"}
                       priority="high"
@@ -67,30 +74,35 @@ export default function Wishlist() {
                     </button>
                     </div>
                     <div className="py-2 pr-4">
-                     <Link
-                      onClick={() => {  toast.success("Book Added To Cart successfully");}}
-                     href={{
-                      pathname: "/Cart", // The path to your cart.js page
-                      query: {
-                        // Pass the book details as query parameters
-                        bookId: item.id,
-                        bookImage: item.image,
-                        bookTitle: item.title,
-                        bookAuthor: item.author, // Assuming authors is an array
-                        bookPrice: item.price, // Price or a default value
-                        // Add more book details as needed
-                      },
-                    }}
-                    className="bg-textgray justify-center px-2 py-2 font-MyFont text-primary flex-1 rounded md:px-4 text-sm font-semibold"
-                  >
-                    Add To Cart
-                  </Link>
+                    <button
+                  onClick={() => {
+                    const bookDetails = {
+                      id: item.id,
+                      image: item.image,
+                      title: item.title,
+                      author: item.author, // Assuming authors is an array
+                      price: item.price,
+                      preview: item.preview,
+                      quantity: 1, // Price or a default value
+                      // Add more book details as needed
+                    };
+                    addToCart(bookDetails); // Pass the book details to addToCart
+                    // console.log("booksdetail", bookDetails);
+                    // console.log("preview", item.title);
+                    // console.log("preview", item.preview);
+
+                    toast.success("Book Added To Cart successfully");
+                  }}
+                  className="bg-textgray justify-center px-2 py-2 font-MyFont text-primary flex-1 rounded md:px-4 text-sm font-semibold"
+                >
+                  Add To Cart
+                </button>
                   </div>
                     
                   </div>
                 </div>
 
-                <div key={index} className="flex md:hidden justify-center items-center py-4">
+                <div className="flex md:hidden justify-center items-center py-4">
                   <div className="flex justify-between">
                     <div className="">
                       <Image
@@ -124,23 +136,28 @@ export default function Wishlist() {
                     </button>
                     </div>
                     <div className="py-2 pr-4">
-                     <Link
-                     href={{
-                      pathname: "/Cart", // The path to your cart.js page
-                      query: {
-                        // Pass the book details as query parameters
-                        bookId: item.id,
-                        bookImage: item.image,
-                        bookTitle: item.title,
-                        bookAuthor: item.author, // Assuming authors is an array
-                        bookPrice: item.price, // Price or a default value
-                        // Add more book details as needed
-                      },
-                    }}
-                    className="bg-textgray justify-center px-2 py-2 font-MyFont text-primary flex-1 rounded md:px-4 text-sm font-semibold"
-                  >
-                    Add To Cart
-                  </Link>
+                    <button
+                  onClick={() => {
+                    const bookDetails = {
+                      id: item.id,
+                      image: item.image,
+                      title: item.title,
+                      author: item.author, // Assuming authors is an array
+                      price: item.price,
+                      preview: item.preview,
+                      quantity: 1, // Price or a default value
+                      // Add more book details as needed
+                    };
+                    addToCart(bookDetails); // Pass the book details to addToCart
+                    console.log("booksdetail", bookDetails);
+                    console.log("preview", item.preview);
+
+                    toast.success("Book Added To Cart successfully");
+                  }}
+                  className="bg-textgray justify-center px-2 py-2 font-MyFont text-primary flex-1 rounded md:px-4 text-sm font-semibold"
+                >
+                  Add To Cart
+                </button>
                   </div>
                     </div>
                     </div>

@@ -9,8 +9,8 @@ import { FcLikePlaceholder, FcLike } from "react-icons/fc";
 
 function Card({ books }) {
   const { addToCart } = useCart();
-  const { addToWishlist, WishlistItem } = useWishlist();
-  const [liked, setliked] = useState([WishlistItem]);
+  const { addToWishlist, removeFromWishlist } = useWishlist();
+  const [liked, setliked] = useState([]);
   const handleCardClick = (selfLink) => {
     window.open(selfLink, "_blank");
   };
@@ -60,11 +60,14 @@ function Card({ books }) {
                       author: book.volumeInfo.authors, // Assuming authors is an array
                       price: book.saleInfo?.listPrice?.amount || 299,
                       image: book.volumeInfo.imageLinks?.thumbnail,
+                      preview: book.volumeInfo.previewLink,
                       quantity: 1, // Price or a default value
                       // Add more book details as needed
                     };
                     addToCart(bookDetails); // Pass the book details to addToCart
                     console.log("booksdetail", bookDetails);
+                    console.log("preview", book.preview);
+
                     toast.success("Book Added To Cart successfully");
                   }}
                   className="bg-textgray justify-center px-2 py-2 font-MyFont text-primary flex-1 rounded md:px-4 text-sm font-semibold"
@@ -76,26 +79,30 @@ function Card({ books }) {
               <div className="flex cursor-pointer w-max px-1 pt-2">
                 <button
                   onClick={() => {
-                    if (liked.includes(book.id)) {
-                      setliked((prev) => prev.filter((id) => id !== book.id));
-
-                      toast.error("Book Removed from Wishlist successfully");
-                    } else {
-                      setliked((prev) => [...prev, book.id]);
-
-                      toast.success("Book Added To Wishlist successfully");
-                    }
                     const bookDetails = {
                       id: book.id,
                       title: book.volumeInfo.title,
                       author: book.volumeInfo.authors, // Assuming authors is an array
                       price: book.saleInfo?.listPrice?.amount || 299,
                       image: book.volumeInfo.imageLinks?.thumbnail,
+                      preview: book.volumeInfo.previewLink,
                       quantity: 1, // Price or a default value
                       // Add more book details as needed
                     };
-                    addToWishlist(bookDetails); // Pass the book details to addToCart
+                    if (liked.includes(book.id)) {
+                      setliked((prev) => prev.filter((id) => id !== book.id));
+                      removeFromWishlist(index);
+                      toast.error("Book Removed from Wishlist successfully");
+                    } else {
+                      setliked((prev) => [...prev, book.id]);
+                      addToWishlist(bookDetails); 
+                      toast.success("Book Added To Wishlist successfully");
+                    }
+                   
+                
                     // console.log("booksdetail", bookDetails);
+                    // console.log("preview", book.volumeInfo.previewLink);
+                    // console.log("preview", book.volumeInfo.authors);
                     // toast.success("Book Added To Wishlist successfully");
                   }}
                   className="outline-btn-color cursor-pointer basis-1/4 rounded p-1"

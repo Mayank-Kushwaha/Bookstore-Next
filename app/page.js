@@ -9,7 +9,7 @@ export default function Home() {
       <Main />
       <Books heading="anime" title="Manga" order="newest" result="5" />
       <Books heading="mystery" title="Mystery" order="newest" result="5" />
-      <Books heading="business" title="Business" order="newest" result="5" />
+      {/* <Books heading="business" title="Business" order="newest" result="5" />
       <Books heading="History" title="History" order="newest" result="5" />
       <Books heading="thriller" title="Thriller" order="newest" result="5" />
       <Books
@@ -25,7 +25,7 @@ export default function Home() {
         title="Science and Fiction"
         order="newest"
         result="5"
-      />
+      /> */}
       <Hashtag />
     </div>
   );

@@ -15,6 +15,9 @@ export default function Cart() {
     decrementQuantity,
     calculateTotalPrice,
   } = useCart();
+ const handleCardClick = (selfLink) => {
+  window.open(selfLink, "_blank");
+};
 
 
   return (
@@ -47,7 +50,9 @@ export default function Cart() {
                     <div key={index}>
                       <tr  className=" hidden md:flex">
                         <td className="w-max py-4">
-                          <div className="w-max flex justify-between">
+                          <div 
+                           onClick={() => handleCardClick(item.preview)}
+                          className="w-max flex justify-between">
                             <Image
                               src={item.image || "/default.jpg"}
                               priority="high"
@@ -113,7 +118,9 @@ export default function Cart() {
 
                       <div  className="grid md:hidden">
                         <tr>
-                          <td className="w-max col-span-4 md:col-span-1">
+                          <td 
+                           onClick={() => handleCardClick(item.preview)}
+                          className="w-max col-span-4 md:col-span-1">
                             <Image
                               src={item.image || "/default.jpg"}
                               priority="high"

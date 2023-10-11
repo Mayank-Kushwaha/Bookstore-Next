@@ -46,45 +46,14 @@ export function WishlistProvider({ children }) {
     localStorage.setItem("WishlistItems", JSON.stringify(updatedWishlist)); // Update local storage
   };
 
-  // Function to increment the quantity of an item in the Wishlist
-  const incrementQuantity = (index) => {
-    const updatedWishlist = [...WishlistItems];
-    updatedWishlist[index].quantity += 1;
-    setWishlistItems(updatedWishlist);
-
-    // Update local storage with the updated Wishlist
-    localStorage.setItem("WishlistItems", JSON.stringify(updatedWishlist));
-  };
-
-  // Function to decrement the quantity of an item in the Wishlist
-  const decrementQuantity = (index) => {
-    const updatedWishlist = [...WishlistItems];
-    if (updatedWishlist[index].quantity > 1) {
-      updatedWishlist[index].quantity -= 1;
-      setWishlistItems(updatedWishlist);
-    }
-
-    // Update local storage with the updated Wishlist
-    localStorage.setItem("WishlistItems", JSON.stringify(updatedWishlist));
-  };
-
-  // Calculate the total price of items in the Wishlist
-  const calculateTotalPrice = () => {
-    return WishlistItems.reduce(
-      (total, item) => total + item.price * item.quantity,
-      0
-    );
-  };
-
   return (
     <WishlistContext.Provider
       value={{
         WishlistItems,
+        setWishlistItems,
         addToWishlist,
         removeFromWishlist,
-        incrementQuantity,
-        decrementQuantity,
-        calculateTotalPrice,
+        
       }}
     >
       {children}

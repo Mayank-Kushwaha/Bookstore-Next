@@ -3,6 +3,7 @@ import React from "react";
 import Card from "@/components/Card";
 import { useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
+import { MutatingDots } from "react-loader-spinner";
 
 const SeeAll = () => {
   const searchParams = useSearchParams();
@@ -10,12 +11,13 @@ const SeeAll = () => {
   const heading = searchParams.get("heading");
   const order = searchParams.get("order");
   const title = searchParams.get("title");
-
+  const [loading, setloading] = useState(false);
   const [books, setBooks] = useState([]);
 
   useEffect(() => {
     async function fetchBooks() {
       try {
+        setloading(true);
         // Replace this with your API call to fetch books based on heading, order, and result
         const apiUrl = `https://www.googleapis.com/books/v1/volumes?q=${heading}&orderBy=${order}&maxResults=${result}`;
         const response = await fetch(apiUrl);
@@ -24,6 +26,7 @@ const SeeAll = () => {
         console.log(data);
 
         setBooks(data.items || []);
+        setloading(false);
       } catch (error) {
         console.error("An error occurred:", error);
         setBooks([]);
@@ -38,7 +41,23 @@ const SeeAll = () => {
         {" "}
         {title}
       </h1>
-      <Card books={books} />
+      <div className="flex justify-center" >
+      {loading ? (
+        <MutatingDots
+          height="100"
+          width="100"
+          color="#4fa94d"
+          secondaryColor="#4fa94d"
+          radius="12.5"
+          ariaLabel="mutating-dots-loading"
+          wrapperStyle={{}}
+          wrapperClass=""
+          visible={true}
+        />
+      ) : (
+        <Card books={books} />
+      )}
+      </div>
     </div>
   );
 };

@@ -76,6 +76,7 @@ export default function Wishlist() {
                     <div className="py-2 pr-4">
                     <button
                   onClick={() => {
+                    removeFromWishlist(index); 
                     const bookDetails = {
                       id: item.id,
                       image: item.image,
@@ -104,7 +105,9 @@ export default function Wishlist() {
 
                 <div className="flex md:hidden justify-center items-center py-4">
                   <div className="flex justify-between">
-                    <div className="">
+                    <div 
+                     onClick={() => handleCardClick(item.preview)}
+                    className="">
                       <Image
                         src={item.image || "/default.jpg"}
                         priority="high"

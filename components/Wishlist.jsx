@@ -138,6 +138,7 @@ export default function Wishlist() {
                     <div className="py-2 pr-4">
                     <button
                   onClick={() => {
+                    removeFromWishlist(index); 
                     const bookDetails = {
                       id: item.id,
                       image: item.image,
@@ -148,11 +149,14 @@ export default function Wishlist() {
                       quantity: 1, // Price or a default value
                       // Add more book details as needed
                     };
-                    addToCart(bookDetails); // Pass the book details to addToCart
+                    addToCart(bookDetails);
+                    
+                   // Pass the book details to addToCart
                     console.log("booksdetail", bookDetails);
                     console.log("preview", item.preview);
 
                     toast.success("Book Added To Cart successfully");
+                    
                   }}
                   className="bg-textgray justify-center px-2 py-2 font-MyFont text-primary flex-1 rounded md:px-4 text-sm font-semibold"
                 >

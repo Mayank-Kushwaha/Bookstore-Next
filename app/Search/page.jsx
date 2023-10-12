@@ -2,15 +2,18 @@
 import { BiSearch } from "react-icons/bi";
 import React, { useState } from "react";
 import Card from "@/components/Card";
+import { MutatingDots } from "react-loader-spinner";
 
 export default function Search() {
   const [searchQuery, setSearchQuery] = useState("");
+  const [loading, setloading] = useState(false);
   const result = 40;
   const order = "relevance";
   const [books, setBooks] = useState([]);
 
   const fetchBooks = async () => {
     try {
+      setloading(true);
       const apiUrl = `https://www.googleapis.com/books/v1/volumes?q=${searchQuery}&orderBy=${order}&maxResults=${result}`;
       const response = await fetch(apiUrl);
       const data = await response.json();
@@ -18,6 +21,8 @@ export default function Search() {
       console.log(data);
 
       setBooks(data.items || []);
+      setloading(false);
+    
     } catch (error) {
       console.error("An error occurred:", error);
       setBooks([]);
@@ -27,7 +32,9 @@ export default function Search() {
   const handleSearchKeyDown = (event) => {
     event.preventdefault;
     if (event.key === "Enter") {
+
       fetchBooks();
+
     }
   };
 
@@ -39,8 +46,8 @@ export default function Search() {
           placeholder="Search Here"
           value={searchQuery}
           className="items-center w-full border-2 py-2 px-4"
-          onChange={(e) => setSearchQuery(e.target.value)}
           onKeyDown={handleSearchKeyDown}
+          onChange={(e) => setSearchQuery(e.target.value)}
         />
         <BiSearch
           className="icon-s mx-2 md:mx-8 mt-3  "
@@ -49,7 +56,24 @@ export default function Search() {
           }}
         />
       </div>
-      <Card books={books} />
+      <div className="flex justify-center" >
+      {loading ? (
+        <MutatingDots
+          height="100"
+          width="100"
+          color="#4fa94d"
+          secondaryColor="#4fa94d"
+          radius="12.5"
+          ariaLabel="mutating-dots-loading"
+          wrapperStyle={{}}
+          wrapperClass=""
+          visible={true}
+        />
+      ) : (
+        <Card books={books} />
+      )}
+      </div>
+      
     </div>
   );
 }

@@ -5,6 +5,7 @@ const nextConfig = {
     serverComponentsExternalPackages: ["mongoose"],
   },
   images: {
+    unoptimized: true,
     domains: ['lh3.googleusercontent.com'],
     domains: ['books.google.com']
   },

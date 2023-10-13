@@ -29,6 +29,7 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en" className={`${quicksand.variable} ${fraunces.variable}`}>
+      <link rel="icon" href="/favicon.ico" sizes="any" />
       <body suppressHydrationWarning={true} className="flex flex-col min-h-screen w-full bg-primary">
       <AuthProvider>
       <Toaster/>

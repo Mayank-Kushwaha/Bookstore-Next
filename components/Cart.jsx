@@ -121,21 +121,34 @@ export default function Cart() {
                         <tr>
                           <td 
                            onClick={() => handleCardClick(item.preview)}
-                          className="w-max col-span-4 md:col-span-1">
+                          className="flex">
+                            <div>
                             <Image
                               src={item.image || "/default.jpg"}
                               priority="high"
                               unoptimized = {true}
-                              width={300}
-                              height={110}
+                              width={200}
+                              height={100}
                               alt="Picture of the author"
                               onError={(e) => {
                                 e.target.src = "/default.jpg";
                               }}
                             />
+                            </div>
+                            <div className="flex flex-col justify-center  px-4 text-left">
+                              <div className="flex md:hidden">
+                                Author :{item.title}
+                              </div>
+                              <div className="flex md:hidden ">
+                                Title: {item.author}
+                              </div>
+                              <div className="flex md:hidden ">
+                                Price: {item.price} &#x20B9;
+                              </div>
+                            </div>
                           </td>
 
-                          <td>
+                          {/* <td>
                             <div className="px-4 text-left">
                               <div className="flex md:hidden">
                                 Author :{item.title}
@@ -147,11 +160,11 @@ export default function Cart() {
                                 Price: {item.price} &#x20B9;
                               </div>
                             </div>
-                          </td>
+                          </td> */}
                         </tr>
                         <tr>
-                          <td className="w-max py-6 px-2">
-                            <div className="flex flex-row h-10 w-full rounded-lg relative bg-transparent mt-1">
+                          <td className="flex py-6 px-2">
+                            <div className="flex flex-row w-[200px] rounded-lg relative bg-transparent mt-1">
                               <button
                                 data-action="decrement"
                                 className=" bg-gray-300 text-gray-600 hover:text-gray-700 hover:bg-gray-400 h-full w-20 rounded-l cursor-pointer outline-none"
@@ -177,9 +190,21 @@ export default function Cart() {
                                   +
                                 </span>
                               </button>
+                              </div>
+                              <div className="px-4 flex">
+                              <button
+                                className="px-4 py-2 inline-block text-red-600 bg-white shadow-sm border border-gray-200 rounded-md hover:bg-gray-100 cursor-pointer"
+                                onClick={() => {
+                                  removeFromCart(index);
+                                  toast.success("Book Removed Successfully");
+                                }}
+                              >
+                                Remove
+                              </button>
                             </div>
+                         
                           </td>
-                          <td className="w-max py-1 p4-8 text-center ">
+                          {/* <td className="w-max py-1 p4-8 text-center ">
                             <div>
                               <button
                                 className="px-4 py-2 inline-block text-red-600 bg-white shadow-sm border border-gray-200 rounded-md hover:bg-gray-100 cursor-pointer"
@@ -191,7 +216,7 @@ export default function Cart() {
                                 Remove
                               </button>
                             </div>
-                          </td>
+                          </td> */}
                         </tr>
                       </div>
                     </div>

@@ -108,7 +108,7 @@ export default function Wishlist() {
                   <div className="flex justify-between">
                     <div 
                      onClick={() => handleCardClick(item.preview)}
-                    className="">
+                   >
                       <Image
                         src={item.image || "/default.jpg"}
                         priority="high"
@@ -129,7 +129,7 @@ export default function Wishlist() {
                         Price: {item.price} &#x20B9;
                       </div>
                       </div>
-                      <div className="flex flex-col py-2 justify-around">
+                      <div className="flex flex-col py-2 justify-between">
                         <div className="pb-3">
                       <button
                       className="px-4 py-2 inline-block text-red-600 bg-white shadow-sm border border-gray-200 rounded-md hover:bg-gray-100 cursor-pointer"

@@ -61,8 +61,8 @@ export default function Search() {
         <MutatingDots
           height="100"
           width="100"
-          color="#4fa94d"
-          secondaryColor="#4fa94d"
+          color="#ff0000"
+          secondaryColor="#ff0000"
           radius="12.5"
           ariaLabel="mutating-dots-loading"
           wrapperStyle={{}}

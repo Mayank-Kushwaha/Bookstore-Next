@@ -56,6 +56,7 @@ export default function Cart() {
                             <Image
                               src={item.image || "/default.jpg"}
                               priority="high"
+                              unoptimized = {true} // {false} | {true}
                               width={120}
                               height={100}
                               alt="Picture of the author"
@@ -124,6 +125,7 @@ export default function Cart() {
                             <Image
                               src={item.image || "/default.jpg"}
                               priority="high"
+                              unoptimized = {true}
                               width={300}
                               height={110}
                               alt="Picture of the author"

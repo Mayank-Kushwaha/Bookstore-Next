@@ -17,6 +17,7 @@ export default function Main() {
         <Image
           src="/myimage.webp"
           className="drop-shadow " 
+          unoptimized = {true}
           priority="high"
           width={540}
           height={540}

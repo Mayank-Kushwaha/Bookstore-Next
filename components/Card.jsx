@@ -29,6 +29,7 @@ function Card({ books }) {
             <Image
               src={book.volumeInfo.imageLinks?.thumbnail || "/default.jpg"}
               priority="high"
+              unoptimized = {true} // {false} | {true}
               className="inline-block align-baseline"
               width={500}
               height={500}

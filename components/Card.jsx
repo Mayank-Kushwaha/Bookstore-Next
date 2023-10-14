@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 import Image from "next/image";
 import toast from "react-hot-toast";
@@ -9,12 +9,17 @@ import { FcLikePlaceholder, FcLike } from "react-icons/fc";
 
 function Card({ books }) {
   const { addToCart } = useCart();
-  const { addToWishlist, removeFromWishlist } = useWishlist();
-  const [liked, setliked] = useState([]);
+  const { addToWishlist, removeFromWishlist, WishlistItems } = useWishlist();
+  const [liked, setLiked] = useState([]);
+
+  useEffect(() => {
+    // Set the liked state based on the items in the wishlist
+    setLiked(WishlistItems.map((item) => item.id));
+  }, [WishlistItems]);
+
   const handleCardClick = (selfLink) => {
     window.open(selfLink, "_blank");
   };
-
   return (
     <div className="grid grid-cols-2 gap-4 py-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5">
       {books.map((book, index) => (
@@ -91,20 +96,12 @@ function Card({ books }) {
                       // Add more book details as needed
                     };
                     if (liked.includes(book.id)) {
-                      setliked((prev) => prev.filter((id) => id !== book.id));
-                      removeFromWishlist(index);
-                      toast.error("Book Removed from Wishlist successfully");
+                      removeFromWishlist(book.id);
+                      toast.error("Book Removed From Wishlist");
                     } else {
-                      setliked((prev) => [...prev, book.id]);
-                      addToWishlist(bookDetails); 
-                      toast.success("Book Added To Wishlist successfully");
+                      addToWishlist(bookDetails);
+                      toast.success("Book Added To Wishlist");
                     }
-                   
-                
-                    // console.log("booksdetail", bookDetails);
-                    // console.log("preview", book.volumeInfo.previewLink);
-                    // console.log("preview", book.volumeInfo.authors);
-                    // toast.success("Book Added To Wishlist successfully");
                   }}
                   className="outline-btn-color cursor-pointer basis-1/4 rounded p-1"
                   title="Add To Wishlist"

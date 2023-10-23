@@ -159,8 +159,6 @@ export default function Wishlist() {
                    // Pass the book details to addToCart
                     console.log("booksdetail", bookDetails);
                     console.log("preview", item.preview);
-
-                    toast.success("Book Added To Cart successfully");
                     
                   }}
                   className="bg-textgray justify-center px-2 py-2 font-MyFont text-primary flex-1 rounded md:px-4 text-sm font-semibold"

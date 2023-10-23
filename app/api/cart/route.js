@@ -210,3 +210,62 @@ export async function PUT(req) {
     );
   }
 }
+
+
+// export async function DELETE(req) {
+//   try {
+//     await connectMongoDB();
+//     const { productId} = await req.json();
+//     const authorizationHeader = req.headers.get('Authorization');
+//    if (!authorizationHeader || !authorizationHeader.startsWith('Bearer ')) {
+//      return NextResponse.json(
+//        { message: 'Authorization header is missing or invalid' },
+//        { status: 401 }
+//      );
+//    }
+//    const token = authorizationHeader.split('Bearer ')[1];
+
+//    // Now, you can access the userId from the token
+//    const decodedToken = jwt.verify(token, process.env.JWT_SECRET);
+//    const userId = decodedToken.userId;
+
+//    // Continue with the rest of your code, using userId as needed
+//   //  const cart = await Cart.findOne({ user: userId });
+//     const cart = await Cart.findOneAndUpdate(
+//       { user: userId },
+//       { $pull: { 'items.id': productId } }, // Use 'items.id' to match the product ID
+//       { new: true }
+//     ).populate("items");
+    
+//     return NextResponse.json({
+//       message: "Item removed from the cart successfully.",
+//       items: cart.items, // Include updated items in the response
+//     }, { status: 200 });
+//   } catch (error) {
+//     return NextResponse.json(
+//       {
+//         message: "An error occurred while removing the item from the cart.",
+//         error: error.message,
+//       },
+//       { status: 500 }
+//     );
+//   }
+// }
+
+
+// export async function PUT(req) {
+//   try {
+//     const { items, total } = await req.json();
+//     await connectMongoDB();
+//     await Cart.updateOne({}, { items, total });
+//     return NextResponse.json(
+//       { message: "Cart data updated succesfully." },
+//       { status: 200 }
+//     );
+//   } catch (error) {
+//     return NextResponse.json(
+//       { message: "An error occurred while updating the cart data" },
+//       { status: 500 }
+//     );
+//   }
+// }

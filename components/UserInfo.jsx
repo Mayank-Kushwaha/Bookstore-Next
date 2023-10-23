@@ -4,7 +4,7 @@ import { signOut } from "next-auth/react";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
-import cookie2 from 'js-cookie';
+// import cookie2 from 'js-cookie';
 export default function UserInfo() {
   const { data: session } = useSession();
   const router = useRouter();
@@ -31,8 +31,8 @@ export default function UserInfo() {
           onClick={() => {
             toast.success("Logout successfully");
             signOut();
-            cookie2.remove("user")
-            cookie2.remove("token")
+            // cookie2.remove("user")
+            // cookie2.remove("token")
             router.push("/");
           }}
           className="bg-red-500 text-white w-[150px] font-bold px-6 py-2 mt-3"

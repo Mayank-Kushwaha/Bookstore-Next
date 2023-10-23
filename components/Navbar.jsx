@@ -75,13 +75,6 @@ export default function Navbar() {
             href="/Wishlist"
             className="hover:opacity-95 opacity-70 relative flex flex-row link link-underline link-underline-black"
           >
-            <span
-              className={`${
-                WishlistItems.length > 0 ? "block" : "hidden"
-              } absolute -top-1 -right-4 bg-red-600 text-white text-xs font-bold w-4 h-4 rounded-full flex items-center justify-center`}
-            >
-              {WishlistItems.length}
-            </span>
             <FaRegHeart className="mt-1 icon-top mr-3" />
             Wishlist
           </Link>

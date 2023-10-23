@@ -102,8 +102,8 @@ function Card({ books }) {
                     };
                     if (liked.includes(book.id)) {
                       removeFromWishlist(book.id);
-                      toast.error("Book Removed From Wishlist successfully");
                       setLiked(liked.filter((id) => id !== book.id)); // Remove book.id from liked
+                      toast.error("Book Removed From Wishlist successfully");
                     } else {
                       addToWishlist(bookDetails);
                     

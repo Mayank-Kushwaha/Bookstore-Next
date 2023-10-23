@@ -32,7 +32,7 @@ export function WishlistProvider({ children }) {
           }
         } catch (error) {
           console.error(
-            "An unexpected error occurred while fetching the cart: " +
+            "An unexpected error occurred while fetching the wishlist: " +
               error.message
           );
         }
@@ -74,7 +74,7 @@ export function WishlistProvider({ children }) {
       if (res.ok) {
         toast.success("Book Added To Wishlist successfully");
         setWishlistItems(WishlistItems);
-        localStorage.setItem("wishlistItems", JSON.stringify(WishlistItems)); // Update local storage
+        // Update local storage
       } else {
         console.error("Error while adding item to Wishlist.");
       }

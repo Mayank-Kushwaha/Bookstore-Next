@@ -59,7 +59,7 @@ export default function RegisterForm() {
         console.log("User registration failed.");
       }
     } catch (error) {
-      console.log("Error during registration: ", error);
+      console.log("Error during registration: ", error.method, " " + error.message);
       toast.error("Registration error", error);
     }
   };

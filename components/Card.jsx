@@ -1,6 +1,5 @@
 "use client";
 import React, { useState, useEffect } from "react";
-
 import Image from "next/image";
 import toast from "react-hot-toast";
 import { useCart } from "@/context/CartContext";
@@ -8,14 +7,21 @@ import { useWishlist } from "@/context/WIshlistContext";
 import { FcLikePlaceholder, FcLike } from "react-icons/fc";
 
 function Card({ books }) {
+
   const { addToCart } = useCart();
   const { addToWishlist, removeFromWishlist, WishlistItems } = useWishlist();
   const [liked, setLiked] = useState([]);
 
   useEffect(() => {
-    // Set the liked state based on the items in the wishlist
-    setLiked(WishlistItems.map((item) => item.id));
-  }, [WishlistItems]);
+    if (WishlistItems && WishlistItems.length > 0) {
+      // Set the liked state based on the items in the wishlist
+      setLiked(WishlistItems.map((item) => item.id));
+    } else {
+      // Handle the case when WishlistItems is empty
+      // You can set liked to an empty array or take any other appropriate action
+      setLiked([]);
+    }
+  }, []);
 
   const handleCardClick = (selfLink) => {
     window.open(selfLink, "_blank");
@@ -34,7 +40,7 @@ function Card({ books }) {
             <Image
               src={book.volumeInfo.imageLinks?.thumbnail || "/default.jpg"}
               priority="high"
-              unoptimized = {true} // {false} | {true}
+              unoptimized={true} // {false} | {true}
               className="inline-block align-baseline"
               width={500}
               height={500}
@@ -70,11 +76,10 @@ function Card({ books }) {
                       quantity: 1, // Price or a default value
                       // Add more book details as needed
                     };
-                    addToCart(bookDetails); // Pass the book details to addToCart
+                  // Pass the book details to addToCart
+                    addToCart(bookDetails,book.id); // Pass the book details to addToCart
                     console.log("booksdetail", bookDetails);
                     console.log("preview", book.preview);
-
-                    toast.success("Book Added To Cart successfully");
                   }}
                   className="bg-textgray justify-center px-2 py-2 font-MyFont text-primary flex-1 rounded md:px-4 text-sm font-semibold"
                 >
@@ -97,10 +102,12 @@ function Card({ books }) {
                     };
                     if (liked.includes(book.id)) {
                       removeFromWishlist(book.id);
-                      toast.error("Book Removed From Wishlist");
+                      toast.error("Book Removed From Wishlist successfully");
+                      // setLiked(liked.filter((id) => id !== book.id)); // Remove book.id from liked
                     } else {
                       addToWishlist(bookDetails);
-                      toast.success("Book Added To Wishlist");
+                    
+                      setLiked([...liked, book.id]); // Add book.id to liked
                     }
                   }}
                   className="outline-btn-color cursor-pointer basis-1/4 rounded p-1"

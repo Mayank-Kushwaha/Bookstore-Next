@@ -67,7 +67,7 @@ export default function Wishlist() {
                     <div>
                     <button
                       className="px-4 py-2 inline-block text-red-600 bg-white shadow-sm border border-gray-200 rounded-md hover:bg-gray-100 cursor-pointer"
-                      onClick={() => { removeFromWishlist(index)
+                      onClick={() => { removeFromWishlist(item.id)
                                 toast.success("Book Removed Successfully");}
                               }
                     >
@@ -77,7 +77,7 @@ export default function Wishlist() {
                     <div className="py-2 pr-4">
                     <button
                   onClick={() => {
-                    removeFromWishlist(index); 
+                    removeFromWishlist(item.id); 
                     const bookDetails = {
                       id: item.id,
                       image: item.image,
@@ -93,7 +93,7 @@ export default function Wishlist() {
                     // console.log("preview", item.title);
                     // console.log("preview", item.preview);
 
-                    toast.success("Book Added To Cart successfully");
+             
                   }}
                   className="bg-textgray justify-center px-2 py-2 font-MyFont text-primary flex-1 rounded md:px-4 text-sm font-semibold"
                 >
@@ -133,7 +133,7 @@ export default function Wishlist() {
                         <div className="pb-3">
                       <button
                       className="px-4 py-2 inline-block text-red-600 bg-white shadow-sm border border-gray-200 rounded-md hover:bg-gray-100 cursor-pointer"
-                      onClick={() => {removeFromWishlist(index)
+                      onClick={() => {removeFromWishlist(item.id)
                         toast.success("Book Removed Successfully");}
                       }
                     >
@@ -143,7 +143,7 @@ export default function Wishlist() {
                     <div className="py-2 pr-4">
                     <button
                   onClick={() => {
-                    removeFromWishlist(index); 
+                    removeFromWishlist(item.id); 
                     const bookDetails = {
                       id: item.id,
                       image: item.image,

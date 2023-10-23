@@ -3,6 +3,7 @@ import React from 'react';
 import { RiSendPlaneLine } from "react-icons/ri";
 import { useState } from "react";
 import { signIn } from "next-auth/react";
+import cookie from 'js-cookie'
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import toast from "react-hot-toast";
@@ -17,23 +18,40 @@ export default function LoginForm() {
     e.preventDefault();
 
     try {
-      const res = await signIn("credentials", {
+      const res3 = await signIn("credentials", {
         email,
         password,
         redirect: false,
       });
-
-      if (res.error) {
+      const res =  await fetch(`/api/login`,{
+        method:"POST",
+        headers:{
+          "Content-Type":"application/json"
+        },
+        body:JSON.stringify({
+          email,
+          password,
+        }),
+      })
+      const res2 = await res.json()
+      if (res2.error || res3.error) {
         setError("Invalid Credentials");
         console.log(error);
-        toast.error("Login error",error );
+        toast.error("Login error",res2.error.message,res3.error.message );
         return;
-      }
+      }else{
+        console.log(res2)
+        console.log(res2.user)
+        cookie.set('token',res2.token)
+        cookie.set('user',res2.user)
+        toast.success("Login successfully");
+        router.push('/Dashboard')
+     }
 
-      toast.success("Login successfully");
-      router.replace("Dashboard");
+    
+      // router.replace("Dashboard");
     } catch (error) {
-      console.log(error);
+      console.log(error.message);
     }
   };
 

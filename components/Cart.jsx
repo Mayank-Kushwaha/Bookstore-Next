@@ -4,6 +4,7 @@ import { useCart } from "@/context/CartContext"; // Update the path to your Cart
 import toast from "react-hot-toast";
 import Image from "next/image";
 import Link from "next/link";
+
 import { BsCartDash, BsBoxSeam } from "react-icons/bs";
 import { MdArrowBackIos } from "react-icons/md";
 
@@ -15,10 +16,11 @@ export default function Cart() {
     decrementQuantity,
     calculateTotalPrice,
   } = useCart();
- const handleCardClick = (selfLink) => {
-  window.open(selfLink, "_blank");
-};
 
+  const handleCardClick = (selfLink) => {
+    window.open(selfLink, "_blank");
+  };
+  console.log(cartItems);
 
   return (
     <div className="max-w-6xl w-full mx-auto px-4 py-6 justify-start md:px-8">
@@ -48,15 +50,16 @@ export default function Cart() {
                 <tbody className=" font-MyFont place-items-center font-semibold table-fixed">
                   {cartItems.map((item, index) => (
                     <div key={index}>
-                      <tr  className=" hidden md:flex">
+                      <tr className=" hidden md:flex">
                         <td className="w-max py-4">
-                          <div 
-                           onClick={() => handleCardClick(item.preview)}
-                          className="w-max flex justify-between">
+                          <div
+                            onClick={() => handleCardClick(item.preview)}
+                            className="w-max flex justify-between"
+                          >
                             <Image
                               src={item.image || "/default.jpg"}
                               priority="high"
-                              unoptimized = {true} // {false} | {true}
+                              unoptimized={true} // {false} | {true}
                               width={120}
                               height={100}
                               alt="Picture of the author"
@@ -78,7 +81,7 @@ export default function Cart() {
                             <button
                               data-action="decrement"
                               className=" bg-gray-300 text-gray-600 hover:text-gray-700 hover:bg-gray-400 h-full w-20 rounded-l cursor-pointer outline-none"
-                              onClick={() => decrementQuantity(index)}
+                              onClick={() => decrementQuantity(item.id)}
                             >
                               <span className="m-auto text-2xl font-thin">
                                 −
@@ -94,7 +97,7 @@ export default function Cart() {
                             <button
                               data-action="increment"
                               className="bg-gray-300 text-gray-600 hover:text-gray-700 hover:bg-gray-400 h-full w-20 rounded-r cursor-pointer"
-                              onClick={() => incrementQuantity(index)}
+                              onClick={() => incrementQuantity(item.id)}
                             >
                               <span className="m-auto text-2xl font-thin">
                                 +
@@ -107,7 +110,7 @@ export default function Cart() {
                             <button
                               className="px-4 py-2 inline-block text-red-600 bg-white shadow-sm border border-gray-200 rounded-md hover:bg-gray-100 cursor-pointer"
                               onClick={() => {
-                                removeFromCart(index);
+                                removeFromCart(item.id);
                                 toast.success("Book Removed Successfully");
                               }}
                             >
@@ -117,23 +120,24 @@ export default function Cart() {
                         </td>
                       </tr>
 
-                      <div  className="grid md:hidden">
+                      <div className="grid md:hidden">
                         <tr>
-                          <td 
-                           onClick={() => handleCardClick(item.preview)}
-                          className="flex">
+                          <td
+                            onClick={() => handleCardClick(item.preview)}
+                            className="flex"
+                          >
                             <div>
-                            <Image
-                              src={item.image || "/default.jpg"}
-                              priority="high"
-                              unoptimized = {true}
-                              width={200}
-                              height={100}
-                              alt="Picture of the author"
-                              onError={(e) => {
-                                e.target.src = "/default.jpg";
-                              }}
-                            />
+                              <Image
+                                src={item.image || "/default.jpg"}
+                                priority="high"
+                                unoptimized={true}
+                                width={200}
+                                height={100}
+                                alt="Picture of the author"
+                                onError={(e) => {
+                                  e.target.src = "/default.jpg";
+                                }}
+                              />
                             </div>
                             <div className="flex flex-col justify-center  px-4 text-left">
                               <div className="flex md:hidden">
@@ -168,7 +172,7 @@ export default function Cart() {
                               <button
                                 data-action="decrement"
                                 className=" bg-gray-300 text-gray-600 hover:text-gray-700 hover:bg-gray-400 h-full w-20 rounded-l cursor-pointer outline-none"
-                                onClick={() => decrementQuantity(index)}
+                                onClick={() => decrementQuantity(item.id)}
                               >
                                 <span className="m-auto text-2xl font-thin">
                                   −
@@ -184,25 +188,24 @@ export default function Cart() {
                               <button
                                 data-action="increment"
                                 className="bg-gray-300 text-gray-600 hover:text-gray-700 hover:bg-gray-400 h-full w-20 rounded-r cursor-pointer"
-                                onClick={() => incrementQuantity(index)}
+                                onClick={() => incrementQuantity(item.id)}
                               >
                                 <span className="m-auto text-2xl font-thin">
                                   +
                                 </span>
                               </button>
-                              </div>
-                              <div className="px-4 flex">
+                            </div>
+                            <div className="px-4 flex">
                               <button
                                 className="px-4 py-2 inline-block text-red-600 bg-white shadow-sm border border-gray-200 rounded-md hover:bg-gray-100 cursor-pointer"
                                 onClick={() => {
-                                  removeFromCart(index);
+                                  removeFromCart(item.id);
                                   toast.success("Book Removed Successfully");
                                 }}
                               >
                                 Remove
                               </button>
                             </div>
-                         
                           </td>
                           {/* <td className="w-max py-1 p4-8 text-center ">
                             <div>
@@ -265,32 +268,31 @@ export default function Cart() {
               </span>
             </div> */}
             <div>
-            <Link
-              className="text-link inline-flex items-center underline decoration-dashed underline-offset-8 hover:decoration-solid lg:hidden font-MyFont opacity-60"
-              href="/"
-            >
-              <MdArrowBackIos />
-              Continue Shopping
-            </Link>
-            <div className="font-sans text-lg lg:block mt-4">
-              <div className="mb-4 flex items-baseline justify-between py-4">
-                <span className="text-base">Total Price :</span>
-                <span className="font-semibold">
-                  {calculateTotalPrice()} &#x20B9;
-                </span>
-              </div>
-
-              <Link href="/Checkout">
-                {" "}
-                <button
-                  type="button"
-              
-                  className="bg-textgray text-white w-full flex justify-center py-2 px-2 mt-2 font-MyFont text-lg font-medium md:rounded md:py-1"
-                >
-                  <BsCartDash className="mt-1 mr-3" />
-                  <span>Checkout</span>
-                </button>
+              <Link
+                className="text-link inline-flex items-center underline decoration-dashed underline-offset-8 hover:decoration-solid lg:hidden font-MyFont opacity-60"
+                href="/"
+              >
+                <MdArrowBackIos />
+                Continue Shopping
               </Link>
+              <div className="font-sans text-lg lg:block mt-4">
+                <div className="mb-4 flex items-baseline justify-between py-4">
+                  <span className="text-base">Total Price :</span>
+                  <span className="font-semibold">
+                    {calculateTotalPrice()} &#x20B9;
+                  </span>
+                </div>
+
+                <Link href="/Checkout">
+                  {" "}
+                  <button
+                    type="button"
+                    className="bg-textgray text-white w-full flex justify-center py-2 px-2 mt-2 font-MyFont text-lg font-medium md:rounded md:py-1"
+                  >
+                    <BsCartDash className="mt-1 mr-3" />
+                    <span>Checkout</span>
+                  </button>
+                </Link>
               </div>
             </div>
           </div>

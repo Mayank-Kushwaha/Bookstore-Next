@@ -5,12 +5,14 @@ import { useCart } from "@/context/CartContext"; // Update the path to your Cart
 import toast from "react-hot-toast";
 import { MdArrowBackIos } from "react-icons/md";
 import { useRouter } from "next/navigation";
+import { parseCookies } from "nookies";
+
 export default function Checkout() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
   const [address, setAddress] = useState("");
-  const [payment, setpayment] = useState("Cash");
+  const [payment, setpayment] = useState("Bank");
 
   const router = useRouter();
   const { cartItems, calculateTotalPrice } = useCart();
@@ -18,6 +20,7 @@ export default function Checkout() {
 
   const saveCartToDatabase = async (e) => {
     e.preventDefault();
+
     try {
       setcartitems(cartItems);
       const total = calculateTotalPrice();
@@ -38,11 +41,11 @@ export default function Checkout() {
       });
       // console.log("cartitems",cartItemss);
       // console.log("items", cartitems);
-
       if (res.ok) {
-        setName("")
-        
+        setName("");
+
         toast.success("data saved successfully");
+        console.log(totalpricevalue);
         router.push("/");
       } else {
         console.log("data saving failed.");
@@ -50,6 +53,77 @@ export default function Checkout() {
     } catch (error) {
       console.log("Error during saving data into cart: ", error);
     }
+  };
+  const makePayment = async () => {
+    const { token } = parseCookies();
+    setcartitems(cartItems);
+    const total = calculateTotalPrice();
+  
+    // Make API call to the serverless API to create a Razorpay order
+    const data = await fetch("api/razorpay", {
+      method: "POST",
+      body: JSON.stringify({
+        total,
+      }),
+    }).then((t) => t.json());
+  
+    var options = {
+      key: process.env.RAZORPAY_API_KEY,
+      name: name,
+      currency: data.currency,
+      amount: data.amount,
+      order_id: data.id,
+      description: "Thank you for your purchase",
+      handler: async function (response) {
+        const paymentData = {
+          name,
+          email,
+          phone,
+          address,
+          payment,
+          items: cartitems,
+          total,
+          razorpay_payment_id: response.razorpay_payment_id,
+          razorpay_order_id: response.razorpay_order_id,
+          razorpay_signature: response.razorpay_signature,
+        };
+  
+        // Make API call to verify the payment on the server
+        const verifyResponse = await fetch("api/paymentverify", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify(paymentData),
+        });
+  
+        const verifyResult = await verifyResponse.json();
+  
+        if (verifyResult.ok) {
+          setName("");
+          toast.success("Data saved successfully");
+        } else {
+          console.log("Data saving failed.");
+        }
+  
+        if (verifyResult.message === "success") {
+          router.push("/paymentsuccess?paymentid=" + response.razorpay_payment_id);
+        }
+      },
+      prefill: {
+        name: name,
+        email: email,
+        contact: phone,
+      },
+    };
+  
+    const paymentObject = new window.Razorpay(options);
+    paymentObject.open();
+
+    paymentObject.on("payment.failed", function (response) {
+      alert("Payment failed. Please try again. Contact support for help");
+    });
   };
 
   return (
@@ -62,7 +136,10 @@ export default function Checkout() {
         Provide your payment and delivery address information to finalize your
         order.
       </p>
-      <form   className="my-4 md:grid md:grid-cols-2 md:gap-x-6 lg:grid-cols-5 lg:gap-x-10 font-MyFont divide-x">
+      <form
+        onSubmit={saveCartToDatabase}
+        className="my-4 md:grid md:grid-cols-2 md:gap-x-6 lg:grid-cols-5 lg:gap-x-10 font-MyFont divide-x"
+      >
         <div className="md:col-span-1 lg:col-span-3">
           <h2 className="text-xl font-bold">Billing Details</h2>
           <div className="mb-4">
@@ -204,15 +281,16 @@ export default function Checkout() {
                 </h1>
               </label>
             </div>
-            
-              <button
-                type="button"
-                onClick={saveCartToDatabase}
-                className="bg-textgray text-white w-full flex justify-center py-2 px-2 mt-2 font-MyFont text-lg font-medium md:rounded md:py-1"
-              >
-                <span>Place order</span>
-              </button>
-         
+
+            <button
+              type="button"
+              onClick={() => {
+                makePayment();
+              }}
+              className="bg-textgray text-white w-full flex justify-center py-2 px-2 mt-2 font-MyFont text-lg font-medium md:rounded md:py-1"
+            >
+              <span>Place order</span>
+            </button>
           </div>
         </div>
       </form>

@@ -9,7 +9,7 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import {AuthProvider} from "@/components/Provider";
 import { Quicksand, Fraunces } from "next/font/google";
-
+import Script from 'next/script'
 
 const quicksand = Quicksand({
   subsets: ["latin"],
@@ -28,15 +28,18 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
+    <>
     <html lang="en" className={`${quicksand.variable} ${fraunces.variable}`}>
-      <link rel="icon" href="/favicon.ico" sizes="any" />
+      {/* <head>
+        <link rel="icon" href="/favicon.ico" sizes="any" />
+      </head> */}
       <body suppressHydrationWarning={true} className="flex flex-col min-h-screen w-full bg-primary">
       <AuthProvider>
       <Toaster/>
       <Topheader />
-       <Navbar />
       <CartProvider>
       <WishlistProvider>
+       <Navbar />
         {children}
         <Analytics />
         </WishlistProvider>
@@ -45,5 +48,8 @@ export default function RootLayout({ children }) {
         </AuthProvider>
       </body>
     </html>
+    <Script src="https://checkout.razorpay.com/v1/checkout.js"
+          />
+    </>
   );
 }

@@ -15,13 +15,13 @@ import { PiTelegramLogo } from "react-icons/pi";
 import { SlSocialInstagram } from "react-icons/sl";
 import { FiFacebook } from "react-icons/fi";
 import { CgLogIn } from "react-icons/cg";
-
-
+import { useCart } from "@/context/CartContext";
+import { useWishlist } from "@/context/WIshlistContext";
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
-
-
+  const { cartItems } = useCart();
+  const { WishlistItems } = useWishlist();
   const openModal = () => {
     setIsOpen(true);
   };
@@ -73,16 +73,30 @@ export default function Navbar() {
           </Link>
           <Link
             href="/Wishlist"
-            className="hover:opacity-95 opacity-70 flex flex-row link link-underline link-underline-black"
+            className="hover:opacity-95 opacity-70 relative flex flex-row link link-underline link-underline-black"
           >
+            <span
+              className={`${
+                WishlistItems.length > 0 ? "block" : "hidden"
+              } absolute -top-1 -right-4 bg-red-600 text-white text-xs font-bold w-4 h-4 rounded-full flex items-center justify-center`}
+            >
+              {WishlistItems.length}
+            </span>
             <FaRegHeart className="mt-1 icon-top mr-3" />
             Wishlist
           </Link>
           <Link
             href="/Cart"
-            className="hover:opacity-95 opacity-70 flex flex-row link link-underline link-underline-black"
+            className="hover:opacity-95 opacity-70  relative flex flex-row  link link-underline link-underline-black"
           >
-            <AiOutlineShoppingCart className="mt-1 icon-top mr-3" />
+            <span
+              className={`${
+                cartItems.length > 0 ? "block" : "hidden"
+              } absolute -top-1 -right-3 bg-red-600 text-white text-xs font-bold w-4 h-4 rounded-full flex items-center justify-center`}
+            >
+              {cartItems.length}
+            </span>
+            <AiOutlineShoppingCart className="mt-1  icon-top mr-3" />
             Cart
           </Link>
           <Link
@@ -121,9 +135,21 @@ export default function Navbar() {
             {" "}
             <BiSearch className="icon-top" />
           </Link>
-          <Link href="/Cart">
-            {" "}
+          <Link href="/Cart" className="relative"
+           onClick={closeModal}>
+            <span
+              className={`${
+                cartItems.length > 0 ? "block" : "hidden"
+              } absolute -top-3 -right-3 bg-red-600 text-white text-xs font-bold w-4 h-4 rounded-full flex items-center justify-center`}
+            >
+              {cartItems.length}
+            </span>{" "}
             <AiOutlineShoppingCart className="icon-top" />
+          </Link>
+          <Link href="/Login"
+           onClick={closeModal}>
+            {" "}
+            <CgLogIn className="icon-top" />
           </Link>
         </div>
       </div>
@@ -145,7 +171,13 @@ export default function Navbar() {
             <AiOutlineClose className="icon-bottom" />
           </button>
           <div className="flex flex-col items-center justify-center gap-2 gap-x-4">
-            <Link href="/" className="font-main text-2xl font-medium">Book Odyssey</Link>
+            <Link
+              href="/"
+              className="font-main text-2xl font-medium"
+              onClick={closeModal}
+            >
+              Book Odyssey
+            </Link>
             <p className="text-center px-6 font-MyFont">
               One of the best book stores in the World
             </p>
@@ -189,11 +221,20 @@ export default function Navbar() {
                   <Link
                     href="/Wishlist"
                     onClick={closeModal}
-                    className="flex items-center gap-x-2 py-1 px-2 text-xl"
+                    className="flex items-center  gap-x-2 py-1 px-2 text-xl"
                   >
-                    {" "}
                     <span>Whishlist</span>
-                    <FaRegHeart className="opacity-80 " />
+                    {" "}<div className="relative">
+                    <span
+                      className={`${
+                        WishlistItems.length > 0 ? "block" : "hidden"
+                      } absolute -top-1 -right-4 bg-red-600 text-white text-xs font-bold w-4 h-4 rounded-full flex items-center justify-center`}
+                    >
+                       {WishlistItems.length}
+                    </span>
+                    <FaRegHeart className=" opacity-80 " />
+                    </div>
+                   
                   </Link>
                 </li>
                 <li className="flex w-full flex-col">

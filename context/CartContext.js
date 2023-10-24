@@ -1,7 +1,8 @@
 "use client";
 import React, { createContext, useContext, useEffect, useState } from "react";
-import { parseCookies } from "nookies";
+// import { parseCookies } from "nookies";
 import toast from "react-hot-toast";
+import Cookies from 'js-cookie';
 // Create a context for the cart
 const CartContext = createContext();
 
@@ -10,9 +11,10 @@ export const useCart = () => useContext(CartContext);
 
 // Cart provider component
 export function CartProvider({ children }) {
+  const token = Cookies.get('token');
   const [cartItems, setCartItems] = useState([]);
   const [total, settotal] = useState(0);
-  const { token } = parseCookies();
+  // const { token } = parseCookies();
 
   // Load cart items from local storage when the component mounts
   useEffect(() => {

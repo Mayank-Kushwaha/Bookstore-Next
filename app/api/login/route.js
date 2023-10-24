@@ -3,12 +3,11 @@ import User from "@/models/user";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import { NextResponse } from "next/server";
-import { cookies } from "next/headers";
 
 connectMongoDB();
 
 export async function POST(req) {
-  const cookie = cookies();
+
   const { email, password } = await req.json();
   if (!email || !password) {
     return NextResponse.json(
@@ -29,14 +28,9 @@ export async function POST(req) {
     const doMatch = await bcrypt.compare(password, user.password);
     if (doMatch) {
       const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, {
-        expiresIn: "7d",
+        expiresIn: "30d",
       });
-     
-      cookie.set("token", token, {
-       
-        secure: true,
-        maxAge:  7 * 24 * 60 * 60, // 7 days
-      });
+
       const { name, email } = user;
 
       return NextResponse.json(

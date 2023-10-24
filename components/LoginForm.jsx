@@ -42,7 +42,7 @@ export default function LoginForm() {
       }else{
         console.log(res2)
         console.log(res2.user)
-        cookie.set('token',res2.token)
+        cookie.set('token',res2.token, { expires: 30 * 24 * 60 * 60,})
         cookie.set('user',res2.user)
         toast.success("Login successfully");
         router.push('/Dashboard')

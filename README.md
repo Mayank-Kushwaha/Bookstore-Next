@@ -11,7 +11,6 @@ Follow the guide below to understand the project structure and navigate through 
 1. Configuration
 1. Running the Application
 1. Contributing
-1. License
    
 ### Project Overview
   This e-commerce bookstore is a web application developed using Next.js for the frontend and MongoDB for the backend. It provides users with the ability to browse, search, add books to their cart, and create wishlists.
@@ -63,11 +62,7 @@ You can start editing the page by modifying `app/page.js`. The page auto-updates
 This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
 
 ### Contributing
-Feel free to contribute to the project by opening issues or submitting pull requests. Follow the guidelines in the CONTRIBUTING.md file.
-
-### License
-This project is licensed under the MIT License - see the LICENSE.md file for details.
-
+Feel free to contribute to the project by opening issues or submitting pull requests.
 ## Deploy on Vercel
 
 The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.

@@ -58,7 +58,7 @@ export default function Checkout() {
     const { token } = parseCookies();
     setcartitems(cartItems);
     const total = calculateTotalPrice();
-  
+
     // Make API call to the serverless API to create a Razorpay order
     const data = await fetch("api/razorpay", {
       method: "POST",
@@ -66,7 +66,7 @@ export default function Checkout() {
         total,
       }),
     }).then((t) => t.json());
-  
+    console.log("Razorpay data", data);
     var options = {
       key: process.env.RAZORPAY_API_KEY,
       name: name,
@@ -75,6 +75,7 @@ export default function Checkout() {
       order_id: data.id,
       description: "Thank you for your purchase",
       handler: async function (response) {
+        console.log(response);
         const paymentData = {
           name,
           email,
@@ -87,7 +88,7 @@ export default function Checkout() {
           razorpay_order_id: response.razorpay_order_id,
           razorpay_signature: response.razorpay_signature,
         };
-  
+
         // Make API call to verify the payment on the server
         const verifyResponse = await fetch("api/paymentverify", {
           method: "POST",
@@ -97,18 +98,20 @@ export default function Checkout() {
           },
           body: JSON.stringify(paymentData),
         });
-  
+
         const verifyResult = await verifyResponse.json();
-  
+        console.log("response verify==", verifyResult);
         if (verifyResult.ok) {
           setName("");
           toast.success("Data saved successfully");
         } else {
           console.log("Data saving failed.");
         }
-  
-        if (verifyResult.message === "success") {
-          router.push("/paymentsuccess?paymentid=" + response.razorpay_payment_id);
+
+        if (verifyResult?.message == "success") {
+          router.push(
+            "/paymentsuccess?paymentid=" + response.razorpay_payment_id
+          );
         }
       },
       prefill: {
@@ -117,12 +120,15 @@ export default function Checkout() {
         contact: phone,
       },
     };
-  
+
     const paymentObject = new window.Razorpay(options);
     paymentObject.open();
 
     paymentObject.on("payment.failed", function (response) {
       alert("Payment failed. Please try again. Contact support for help");
+      console.log(response.razorpay_payment_id);
+      console.log(response.razorpay_order_id);
+      console.log(response.razorpay_signature);
     });
   };
 

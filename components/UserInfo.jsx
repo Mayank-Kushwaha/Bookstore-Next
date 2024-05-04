@@ -1,14 +1,99 @@
 "use client";
-import React from 'react';
+import React, { useEffect, useState } from "react";
 import { signOut } from "next-auth/react";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
-import cookie2 from 'js-cookie';
+import cookie2 from "js-cookie";
+import Cookies from "js-cookie";
+import Link from "next/link";
+import { IoIosArrowForward } from "react-icons/io";
+import jsPDF from "jspdf";
+
 export default function UserInfo() {
   const { data: session } = useSession();
   const router = useRouter();
+  const [payments, setPayments] = useState([]);
 
+  const token = Cookies.get("token");
+
+  useEffect(() => {
+    fetch("/api/paymentverify", {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+      .then((response) => response.json())
+      .then((data) => setPayments(data));
+  }, [session]);
+  console.log(payments);
+  let queryParams = {};
+
+  if (payments.length > 0) {
+    const date = new Date(payments[0].createdAt);
+    const formattedDate = `${date.getFullYear()}-${String(
+      date.getMonth() + 1
+    ).padStart(2, "0")}-${String(date.getDate()).padStart(2, "0")}`;
+
+    queryParams = {
+      paymentid: payments[0].razorpay_order_id,
+      date: formattedDate,
+    };
+  }
+
+  const downloadPdf = () => {
+    const pdf = new jsPDF();
+
+    // Add header
+    pdf.setFontSize(30);
+    pdf.text("Book Odysseys", 15, 15);
+
+    // Define the columns for your table
+    const columns = ["Field", "Value"];
+
+    // Define the rows for your table
+    const rows = [
+      ["Name", name],
+      ["Email", email],
+      ["Phone", phone],
+      ["Address", address],
+      ["Payment Mode", payment],
+      // Add a row for each cart item
+      ...cartitems.map((item) => [
+        "Ordered Items",
+        `Id: ${item.id}, Name: ${item.title}, Price: ${item.price}`,
+      ]),
+      ["Total Amount", total],
+      ["Payment ID", paymentid],
+      ["Payment Order", paymentorder],
+      ["Razorpay Signature", razorpay_signature],
+      ["", ,],
+    ];
+
+    // Add the table to the PDF
+    pdf.autoTable(columns, rows, {
+      startY: 40, // Start the table 30 units down
+      didDrawPage: (data) => {
+        // Add table header
+        pdf.setFontSize(20);
+        pdf.text("Invoice", data.settings.margin.left, 35);
+      },
+    });
+
+    // Add footer
+    pdf.setFontSize(12);
+    pdf.text(
+      "Thank you for shopping with us",
+      15,
+      pdf.internal.pageSize.getHeight() - 10
+    );
+
+    pdf.save("order_details.pdf");
+  };
+
+  console.log("token inside dashboard " + token);
+  console.log("data inside dashboard " + payments);
   return (
     <div className="max-w-6xl w-full mx-auto px-4 py-6 justify-start md:px-8">
       <div className="flex pb-8 md:pb-0 md:pr-10 xl:pr-20 font-main text-xl md:text-3xl ">
@@ -31,8 +116,8 @@ export default function UserInfo() {
           onClick={() => {
             toast.success("Logout successfully");
             signOut();
-            cookie2.remove("user")
-            cookie2.remove("token")
+            cookie2.remove("user");
+            cookie2.remove("token");
             router.push("/");
           }}
           className="bg-red-500 text-white w-[150px] font-bold px-6 py-2 mt-3"
@@ -40,6 +125,65 @@ export default function UserInfo() {
           Log Out
         </button>
       </div>
+      <div className="flex pb-8 md:pb-0 md:pr-10 xl:pr-20 font-main text-xl md:text-3xl mt-8 ">
+        Recent Order Details
+      </div>
+      {payments.map((payment, index) => (
+        <div key={index} className="bg-white shadow-md rounded-lg p-6 mb-4">
+          <h2 className="text-xl font-bold mb-2">Order {index + 1}</h2>
+          <p>
+            <strong>Name:</strong> {payment.name}
+          </p>
+          <p>
+            <strong>Email:</strong> {payment.email}
+          </p>
+          <p>
+            <strong>Phone:</strong> {payment.phone}
+          </p>
+          <p>
+            <strong>Address:</strong> {payment.address}
+          </p>
+          <p>
+            <strong>Payment:</strong> {payment.payment}
+          </p>
+          <p>
+            <strong>Ordered Items:</strong>{" "}
+            {payment.items
+              .map((item) => `${item.id}, ${item.title}, ${item.price}`)
+              .join(", ")}
+          </p>
+          <p>
+            <strong>Total Amount:</strong> {payment.total}
+          </p>
+          <p>
+            <strong>Razorpay Order ID:</strong> {payment.razorpay_order_id}
+          </p>
+          <p>
+            <strong>Razorpay Payment ID:</strong> {payment.razorpay_payment_id}
+          </p>
+          <p className="break-words">
+            <strong>Razorpay Signature:</strong> {payment.razorpay_signature}
+          </p>
+          <div className="flex justify-between flex-col md:flex-row gap-4">
+            <button
+              className="mt-4 text-xl w-max bg-blue-500 text-white py-2 px-4 rounded"
+              onClick={downloadPdf}
+            >
+              Download Order Details as PDF
+            </button>
+            <Link
+              className="flex items-center font-MyFont font-medium w-max  bg-blue-500 text-white py-2 px-4 rounded"
+              href={{
+                pathname: "/Track",
+                query: queryParams,
+              }}
+            >
+              Track your order
+              <IoIosArrowForward className="ml-2" />
+            </Link>
+          </div>
+        </div>
+      ))}
     </div>
   );
 }

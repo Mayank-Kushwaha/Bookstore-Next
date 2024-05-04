@@ -9,5 +9,5 @@ export default async function Register() {
 
   if (session) redirect("/Dashboard");
 
-  return <RegisterForm />;
+  return <RegisterForm  />;
 }

@@ -3,7 +3,7 @@ import "./globals.css";
 import { CartProvider } from "@/context/CartContext";
 import { WishlistProvider } from "@/context/WIshlistContext";
 import { Analytics } from '@vercel/analytics/react';
-import Topheader from "@/components/Topheader";
+import Topheader from '@/components/Topheader';
 import { Toaster } from "react-hot-toast";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
@@ -36,7 +36,7 @@ export default function RootLayout({ children }) {
       <body suppressHydrationWarning={true} className="flex flex-col min-h-screen w-full bg-primary">
       <AuthProvider>
       <Toaster/>
-      <Topheader />
+      <Topheader/>
       <CartProvider>
       <WishlistProvider>
        <Navbar />

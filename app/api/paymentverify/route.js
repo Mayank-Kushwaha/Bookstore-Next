@@ -43,6 +43,7 @@ export async function POST(req) {
 
     // Get the user ID from the authorization token
     const authorizationHeader = req.headers.get('Authorization');
+    console.log('Authorization Header:', authorizationHeader);
     if (!authorizationHeader || !authorizationHeader.startsWith('Bearer ')) {
       return NextResponse.json(
         { message: 'Authorization header is missing or invalid' },
@@ -51,6 +52,7 @@ export async function POST(req) {
     }
 
     const token = authorizationHeader.split('Bearer ')[1];
+    console.log('Token:', token);
     const decodedToken = jwt.verify(token, process.env.JWT_SECRET);
     const userId = decodedToken.userId;
 
@@ -73,6 +75,19 @@ export async function POST(req) {
       });
     } else {
       // Update the existing Payment record if needed
+      paymentRecord = await Payment.create({
+        user: userId,
+        name,
+        email,
+        phone,
+        address,
+        payment,
+        items,
+        total,
+        razorpay_order_id,
+        razorpay_payment_id,
+        razorpay_signature,
+      });
     }
 
     return NextResponse.json(
@@ -83,6 +98,38 @@ export async function POST(req) {
     return NextResponse.json(
       {
         message: "An error occurred while payment verification.",
+        error: error.message,
+      },
+      { status: 500 }
+    );
+  }
+}
+
+export async function GET(req) {
+  try {
+    await connectMongoDB();
+
+    // Get the user ID from the authorization token
+    const authorizationHeader = req.headers.get('Authorization');
+    if (!authorizationHeader || !authorizationHeader.startsWith('Bearer ')) {
+      return NextResponse.json(
+        { message: 'Authorization header is missing or invalid' },
+        { status: 401 }
+      );
+    }
+
+    const token = authorizationHeader.split('Bearer ')[1];
+    const decodedToken = jwt.verify(token, process.env.JWT_SECRET);
+    const userId = decodedToken.userId;
+
+    // Find the Payment records for this user
+    const payments = await Payment.find({ user: userId });
+
+    return NextResponse.json(payments);
+  } catch (error) {
+    return NextResponse.json(
+      {
+        message: "An error occurred while fetching payment records.",
         error: error.message,
       },
       { status: 500 }

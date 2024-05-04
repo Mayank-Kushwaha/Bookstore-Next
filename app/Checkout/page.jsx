@@ -5,7 +5,8 @@ import { useCart } from "@/context/CartContext"; // Update the path to your Cart
 import toast from "react-hot-toast";
 import { MdArrowBackIos } from "react-icons/md";
 import { useRouter } from "next/navigation";
-import { parseCookies } from "nookies";
+// import { parseCookies } from "nookies";
+import Cookies from "js-cookie";
 
 export default function Checkout() {
   const [name, setName] = useState("");
@@ -16,13 +17,13 @@ export default function Checkout() {
 
   const router = useRouter();
   const { cartItems, calculateTotalPrice } = useCart();
-  const [cartitems, setcartitems] = useState("");
+  const [items, setItems] = useState("");
 
   const saveCartToDatabase = async (e) => {
     e.preventDefault();
 
     try {
-      setcartitems(cartItems);
+      setItems(cartItems);
       const total = calculateTotalPrice();
       const res = await fetch("api/cart", {
         method: "POST",
@@ -35,7 +36,7 @@ export default function Checkout() {
           phone,
           address,
           payment,
-          items: cartitems,
+          items,
           total: total,
         }),
       });
@@ -44,7 +45,7 @@ export default function Checkout() {
       if (res.ok) {
         setName("");
 
-        toast.success("data saved successfully");
+        toast.success("Payment Done successfully");
         console.log(totalpricevalue);
         router.push("/");
       } else {
@@ -55,8 +56,11 @@ export default function Checkout() {
     }
   };
   const makePayment = async () => {
-    const { token } = parseCookies();
-    setcartitems(cartItems);
+    const token = Cookies.get("token"); // Get the token from cookies
+    console.log("Token inside chectoutjs " + token);
+    // const { token } = parseCookies();
+    // console.log("Token inside chectoutjs " + token);
+    setItems(cartItems);
     const total = calculateTotalPrice();
 
     // Make API call to the serverless API to create a Razorpay order
@@ -82,7 +86,7 @@ export default function Checkout() {
           phone,
           address,
           payment,
-          items: cartitems,
+          items,
           total,
           razorpay_payment_id: response.razorpay_payment_id,
           razorpay_order_id: response.razorpay_order_id,
@@ -101,17 +105,23 @@ export default function Checkout() {
 
         const verifyResult = await verifyResponse.json();
         console.log("response verify==", verifyResult);
-        if (verifyResult.ok) {
+        if (verifyResult?.message == "success") {
           setName("");
-          toast.success("Data saved successfully");
+          toast.success("Payment Done successfully");
         } else {
           console.log("Data saving failed.");
         }
 
+        const queryString = `name=${name}&email=${email}&phone=${phone}&address=${address}&payment=${payment}&cartitems=${encodeURIComponent(
+          JSON.stringify(items)
+        )}&total=${total}&razorpay_payment_id=${
+          response.razorpay_payment_id
+        }&razorpay_order_id=${response.razorpay_order_id}&razorpay_signature=${
+          response.razorpay_signature
+        }`;
+        console.log(items);
         if (verifyResult?.message == "success") {
-          router.push(
-            "/paymentsuccess?paymentid=" + response.razorpay_payment_id
-          );
+          router.push(`/paymentsuccess?${queryString}`);
         }
       },
       prefill: {

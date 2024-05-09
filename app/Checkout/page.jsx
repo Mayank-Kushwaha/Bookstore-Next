@@ -16,14 +16,15 @@ export default function Checkout() {
   const [payment, setpayment] = useState("Bank");
 
   const router = useRouter();
-  const { cartItems, calculateTotalPrice } = useCart();
-  const [items, setItems] = useState("");
+  const { cartItems, removeFromCart, calculateTotalPrice } = useCart();
+  const [items, setItems] = useState({});
 
   const saveCartToDatabase = async (e) => {
     e.preventDefault();
 
     try {
       setItems(cartItems);
+      console.log("items "+items)
       const total = calculateTotalPrice();
       const res = await fetch("api/cart", {
         method: "POST",
@@ -56,6 +57,7 @@ export default function Checkout() {
     }
   };
   const makePayment = async () => {
+   
     const token = Cookies.get("token"); // Get the token from cookies
     console.log("Token inside chectoutjs " + token);
     // const { token } = parseCookies();
@@ -107,6 +109,8 @@ export default function Checkout() {
         console.log("response verify==", verifyResult);
         if (verifyResult?.message == "success") {
           setName("");
+          console.log("Onclick clicked");
+          cartItems.map((item) =>  removeFromCart(item.id));
           toast.success("Payment Done successfully");
         } else {
           console.log("Data saving failed.");
@@ -140,6 +144,8 @@ export default function Checkout() {
       console.log(response.razorpay_order_id);
       console.log(response.razorpay_signature);
     });
+
+    
   };
 
   return (

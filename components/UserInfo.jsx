@@ -8,7 +8,8 @@ import cookie2 from "js-cookie";
 import Cookies from "js-cookie";
 import Link from "next/link";
 import { IoIosArrowForward } from "react-icons/io";
-import jsPDF from "jspdf";
+import {jsPDF} from "jspdf";
+import "jspdf-autotable";
 
 export default function UserInfo() {
   const { data: session } = useSession();
@@ -17,16 +18,27 @@ export default function UserInfo() {
 
   const token = Cookies.get("token");
 
-  useEffect(() => {
-    fetch("/api/paymentverify", {
-      method: "GET",
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    })
-      .then((response) => response.json())
-      .then((data) => setPayments(data));
-  }, [session]);
+useEffect(() => {
+  const fetchPayments = async () => {
+      try {
+        const response = await fetch("/api/paymentverify", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        const data = await response.json();
+        if(data.length > 0){
+        setPayments(data);
+        }
+        console.log("response" + data);
+      } catch (error) {
+        console.error("Error:", error);
+      }
+    
+  };
+
+  fetchPayments();
+}, [session]);
   console.log(payments);
   let queryParams = {};
 
@@ -43,53 +55,57 @@ export default function UserInfo() {
   }
 
   const downloadPdf = () => {
-    const pdf = new jsPDF();
+    if (payments.length > 0) {
+      const pdf = new jsPDF();
 
-    // Add header
-    pdf.setFontSize(30);
-    pdf.text("Book Odysseys", 15, 15);
+      // Add header
+      pdf.setFontSize(30);
+      pdf.text("Book Odysseys", 15, 15);
+  
+      // Define the columns for your table
+      const columns = ["Field", "Value"];
+  
+      // Define the rows for your table
+      const rows = [
+        ["Name", payments[0].name],
+        ["Email", payments[0].email],
+        ["Phone", payments[0].phone],
+        ["Address", payments[0].address],
+        ["Payment Mode", payments[0].payment],
+        // Add a row for each cart item
+        ...payments[0].items.map((item) => [
+          "Ordered Items",
+          `Id: ${item.id}, Name: ${item.title}, Price: ${item.price}`,
+        ]),
+        ["Total Amount", payments[0].total],
+        ["Payment ID", payments[0].paymentid],
+        ["Payment Order", payments[0].paymentorder],
+        ["Razorpay Signature", payments[0].razorpay_signature],
+        ["", ,],
+      ];
+  
+      // Add the table to the PDF
+      pdf.autoTable(columns, rows, {
+        startY: 40, // Start the table 30 units down
+        didDrawPage: (data) => {
+          // Add table header
+          pdf.setFontSize(20);
+          pdf.text("Invoice", data.settings.margin.left, 35);
+        },
+      });
+  
+      // Add footer
+      pdf.setFontSize(12);
+      pdf.text(
+        "Thank you for shopping with us",
+        15,
+        pdf.internal.pageSize.getHeight() - 10
+      );
+  
+      pdf.save("order_details.pdf");
+    }
 
-    // Define the columns for your table
-    const columns = ["Field", "Value"];
-
-    // Define the rows for your table
-    const rows = [
-      ["Name", name],
-      ["Email", email],
-      ["Phone", phone],
-      ["Address", address],
-      ["Payment Mode", payment],
-      // Add a row for each cart item
-      ...cartitems.map((item) => [
-        "Ordered Items",
-        `Id: ${item.id}, Name: ${item.title}, Price: ${item.price}`,
-      ]),
-      ["Total Amount", total],
-      ["Payment ID", paymentid],
-      ["Payment Order", paymentorder],
-      ["Razorpay Signature", razorpay_signature],
-      ["", ,],
-    ];
-
-    // Add the table to the PDF
-    pdf.autoTable(columns, rows, {
-      startY: 40, // Start the table 30 units down
-      didDrawPage: (data) => {
-        // Add table header
-        pdf.setFontSize(20);
-        pdf.text("Invoice", data.settings.margin.left, 35);
-      },
-    });
-
-    // Add footer
-    pdf.setFontSize(12);
-    pdf.text(
-      "Thank you for shopping with us",
-      15,
-      pdf.internal.pageSize.getHeight() - 10
-    );
-
-    pdf.save("order_details.pdf");
+    
   };
 
   console.log("token inside dashboard " + token);

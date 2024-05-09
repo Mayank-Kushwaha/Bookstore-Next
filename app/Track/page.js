@@ -32,7 +32,7 @@ const Track = () => {
               <span className="text-medium">Status:</span> Checking Quality
             </div>
             <div className="w-full sm:w-1/3 text-center py-1 px-2">
-              <span className="text-medium">Expected Date:</span> {date}
+              <span className="text-medium">Ordered Date:</span> {date}
             </div>
           </div>
           <div className="p-4">
@@ -50,7 +50,7 @@ const Track = () => {
                 <h4 className="text-gray-700 mt-2 z-10">Processing Order</h4>
               </div>
               <div className="w-full sm:w-1/5 text-center flex justify-center items-center flex-col">
-                <div className="flex justify-center items-center bg-blue-300 rounded-full w-16 h-16 text-center  ">
+                <div className="flex justify-center items-center bg-gray-300 rounded-full w-16 h-16 text-center  ">
                   <FaMedal className="text-3xl  z-10" />
                 </div>
                 <h4 className="text-gray-700 mt-2 z-10">Quality Check</h4>
@@ -66,7 +66,7 @@ const Track = () => {
                 <FaHouseChimney className="text-3xl" />                </div>
                 <h4 className="text-gray-700 mt-2 z-10">Product Delivered</h4>
               </div>
-              <div className="absolute top-7 left-[50%] md:left-20  z-0 h-48 w-2 md:h-2 md:w-5/12  bg-blue-300"></div>
+              <div className="absolute top-7 left-[50%] md:left-20  z-0 h-30 w-2 md:h-2 md:w-3/12  bg-blue-300"></div>
             </div>
           </div>
         </div>

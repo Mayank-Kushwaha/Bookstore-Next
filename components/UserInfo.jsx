@@ -8,7 +8,7 @@ import cookie2 from "js-cookie";
 import Cookies from "js-cookie";
 import Link from "next/link";
 import { IoIosArrowForward } from "react-icons/io";
-import {jsPDF} from "jspdf";
+import { jsPDF } from "jspdf";
 import "jspdf-autotable";
 
 export default function UserInfo() {
@@ -18,8 +18,8 @@ export default function UserInfo() {
 
   const token = Cookies.get("token");
 
-useEffect(() => {
-  const fetchPayments = async () => {
+  useEffect(() => {
+    const fetchPayments = async () => {
       try {
         const response = await fetch("/api/paymentverify", {
           headers: {
@@ -27,82 +27,83 @@ useEffect(() => {
           },
         });
         const data = await response.json();
-        if(data.length > 0){
-        setPayments(data);
+        if (data.length > 0) {
+          setPayments(data);
         }
         console.log("response" + data);
       } catch (error) {
         console.error("Error:", error);
       }
-    
-  };
-
-  fetchPayments();
-}, [session]);
-  console.log(payments);
-  let queryParams = {};
-
-  if (payments.length > 0) {
-    const date = new Date(payments[0].createdAt);
-    const formattedDate = `${date.getFullYear()}-${String(
-      date.getMonth() + 1
-    ).padStart(2, "0")}-${String(date.getDate()).padStart(2, "0")}`;
-
-    queryParams = {
-      paymentid: payments[0].razorpay_order_id,
-      date: formattedDate,
     };
-  }
 
+    fetchPayments();
+  }, [session]);
+  console.log(payments);
+
+  // let queryParams = {};
+  //  const handleTrack = (payment) => {
+
+  //   if (payments.length > 0) {
+  //     const date = new Date(payment.createdAt);
+  //     const formattedDate = `${date.getFullYear()}-${String(
+  //       date.getMonth() + 1
+  //     ).padStart(2, "0")}-${String(date.getDate()).padStart(2, "0")}`;
+
+  //     queryParams = {
+  //       paymentid: payment.razorpay_order_id,
+  //       date: formattedDate,
+  //     };
+  //   }
+  //  }
   const downloadPdf = (payment) => {
-  const pdf = new jsPDF();
+    const pdf = new jsPDF();
 
-  // Add header
-  pdf.setFontSize(30);
-  pdf.text("Book Odysseys", 15, 15);
+    // Add header
+    pdf.setFontSize(30);
+    pdf.text("Book Odysseys", 15, 15);
 
-  // Define the columns for your table
-  const columns = ["Field", "Value"];
+    // Define the columns for your table
+    const columns = ["Field", "Value"];
 
-  // Define the rows for your table
-  const rows = [
-    ["Name", payment.name],
-    ["Email", payment.email],
-    ["Phone", payment.phone],
-    ["Address", payment.address],
-    ["Payment Mode", payment.payment],
-    // Add a row for each cart item
-    ...payment.items.map((item) => [
-      "Ordered Items",
-      `Id: ${item.id}, Name: ${item.title}, Price: ${item.price}`,
-    ]),
-    ["Total Amount", payment.total],
-    ["Payment ID", payment.razorpay_payment_id],
-    ["Payment Order", payment.razorpay_order_id],
-    ["Razorpay Signature", payment.razorpay_signature],
-    ["", ,],
-  ];
+    // Define the rows for your table
+    const rows = [
+      ["Name", payment.name],
+      ["Email", payment.email],
+      ["Phone", payment.phone],
+      ["Address", payment.address],
+      ["Payment Mode", payment.payment],
+      // Add a row for each cart item
+      ...payment.items.map((item) => [
+        "Ordered Items",
+        `Id: ${item.id}, Name: ${item.title}, Price: ${item.price}`,
+      ]),
+      ["Total Amount", payment.total],
+      ["Payment ID", payment.razorpay_payment_id],
+      ["Payment Order", payment.razorpay_order_id],
+      ["Razorpay Signature", payment.razorpay_signature],
+      ["", ,],
+    ];
 
-  // Add the table to the PDF
-  pdf.autoTable(columns, rows, {
-    startY: 40, // Start the table 30 units down
-    didDrawPage: (data) => {
-      // Add table header
-      pdf.setFontSize(20);
-      pdf.text("Invoice", data.settings.margin.left, 35);
-    },
-  });
+    // Add the table to the PDF
+    pdf.autoTable(columns, rows, {
+      startY: 40, // Start the table 30 units down
+      didDrawPage: (data) => {
+        // Add table header
+        pdf.setFontSize(20);
+        pdf.text("Invoice", data.settings.margin.left, 35);
+      },
+    });
 
-  // Add footer
-  pdf.setFontSize(12);
-  pdf.text(
-    "Thank you for shopping with us",
-    15,
-    pdf.internal.pageSize.getHeight() - 10
-  );
+    // Add footer
+    pdf.setFontSize(12);
+    pdf.text(
+      "Thank you for shopping with us",
+      15,
+      pdf.internal.pageSize.getHeight() - 10
+    );
 
-  pdf.save(`order_details_${payment.razorpay_order_id}.pdf`);
-};
+    pdf.save(`order_details_${payment.razorpay_order_id}.pdf`);
+  };
 
   console.log("token inside dashboard " + token);
   console.log("data inside dashboard " + payments);
@@ -185,9 +186,13 @@ useEffect(() => {
             </button>
             <Link
               className="flex items-center font-MyFont font-medium w-max  bg-blue-500 text-white py-2 px-4 rounded"
+              // onClick={() => handleTrack(payment)}
               href={{
                 pathname: "/Track",
-                query: queryParams,
+                query: {
+                  paymentid: payment.razorpay_order_id,
+                  date: new Date(payment.createdAt).toISOString().split("T")[0],
+                },
               }}
             >
               Track your order

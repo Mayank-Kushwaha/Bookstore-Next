@@ -54,59 +54,55 @@ useEffect(() => {
     };
   }
 
-  const downloadPdf = () => {
-    if (payments.length > 0) {
-      const pdf = new jsPDF();
+  const downloadPdf = (payment) => {
+  const pdf = new jsPDF();
 
-      // Add header
-      pdf.setFontSize(30);
-      pdf.text("Book Odysseys", 15, 15);
-  
-      // Define the columns for your table
-      const columns = ["Field", "Value"];
-  
-      // Define the rows for your table
-      const rows = [
-        ["Name", payments[0].name],
-        ["Email", payments[0].email],
-        ["Phone", payments[0].phone],
-        ["Address", payments[0].address],
-        ["Payment Mode", payments[0].payment],
-        // Add a row for each cart item
-        ...payments[0].items.map((item) => [
-          "Ordered Items",
-          `Id: ${item.id}, Name: ${item.title}, Price: ${item.price}`,
-        ]),
-        ["Total Amount", payments[0].total],
-        ["Payment ID", payments[0].paymentid],
-        ["Payment Order", payments[0].paymentorder],
-        ["Razorpay Signature", payments[0].razorpay_signature],
-        ["", ,],
-      ];
-  
-      // Add the table to the PDF
-      pdf.autoTable(columns, rows, {
-        startY: 40, // Start the table 30 units down
-        didDrawPage: (data) => {
-          // Add table header
-          pdf.setFontSize(20);
-          pdf.text("Invoice", data.settings.margin.left, 35);
-        },
-      });
-  
-      // Add footer
-      pdf.setFontSize(12);
-      pdf.text(
-        "Thank you for shopping with us",
-        15,
-        pdf.internal.pageSize.getHeight() - 10
-      );
-  
-      pdf.save("order_details.pdf");
-    }
+  // Add header
+  pdf.setFontSize(30);
+  pdf.text("Book Odysseys", 15, 15);
 
-    
-  };
+  // Define the columns for your table
+  const columns = ["Field", "Value"];
+
+  // Define the rows for your table
+  const rows = [
+    ["Name", payment.name],
+    ["Email", payment.email],
+    ["Phone", payment.phone],
+    ["Address", payment.address],
+    ["Payment Mode", payment.payment],
+    // Add a row for each cart item
+    ...payment.items.map((item) => [
+      "Ordered Items",
+      `Id: ${item.id}, Name: ${item.title}, Price: ${item.price}`,
+    ]),
+    ["Total Amount", payment.total],
+    ["Payment ID", payment.razorpay_payment_id],
+    ["Payment Order", payment.razorpay_order_id],
+    ["Razorpay Signature", payment.razorpay_signature],
+    ["", ,],
+  ];
+
+  // Add the table to the PDF
+  pdf.autoTable(columns, rows, {
+    startY: 40, // Start the table 30 units down
+    didDrawPage: (data) => {
+      // Add table header
+      pdf.setFontSize(20);
+      pdf.text("Invoice", data.settings.margin.left, 35);
+    },
+  });
+
+  // Add footer
+  pdf.setFontSize(12);
+  pdf.text(
+    "Thank you for shopping with us",
+    15,
+    pdf.internal.pageSize.getHeight() - 10
+  );
+
+  pdf.save(`order_details_${payment.razorpay_order_id}.pdf`);
+};
 
   console.log("token inside dashboard " + token);
   console.log("data inside dashboard " + payments);
@@ -183,7 +179,7 @@ useEffect(() => {
           <div className="flex justify-between flex-col md:flex-row gap-4">
             <button
               className="mt-4 text-xl w-max bg-blue-500 text-white py-2 px-4 rounded"
-              onClick={downloadPdf}
+              onClick={() => downloadPdf(payment)}
             >
               Download Order Details as PDF
             </button>

@@ -24,7 +24,7 @@ export default function Checkout() {
 
     try {
       setItems(cartItems);
-      console.log("items "+items)
+      console.log("items " + items);
       const total = calculateTotalPrice();
       const res = await fetch("api/cart", {
         method: "POST",
@@ -57,7 +57,6 @@ export default function Checkout() {
     }
   };
   const makePayment = async () => {
-   
     const token = Cookies.get("token"); // Get the token from cookies
     console.log("Token inside chectoutjs " + token);
     // const { token } = parseCookies();
@@ -105,9 +104,10 @@ export default function Checkout() {
           body: JSON.stringify(paymentData),
         });
 
-        const queryString = `name=${name}&email=${email}&phone=${phone}&address=${address}&payment=${payment}&cartitems=${encodeURIComponent(
+        const queryString = `name=${name}&email=${email}&phone=${phone}&address=${address}&payment=${payment}
+        &cartitems=${
           JSON.stringify(items)
-        )}&total=${total}&razorpay_payment_id=${
+        }&total=${total}&razorpay_payment_id=${
           response.razorpay_payment_id
         }&razorpay_order_id=${response.razorpay_order_id}&razorpay_signature=${
           response.razorpay_signature
@@ -118,8 +118,9 @@ export default function Checkout() {
         if (verifyResult?.message == "success") {
           setName("");
           router.push(`/paymentsuccess?${queryString}`);
+          console.log(queryString);
           console.log("Onclick clicked");
-          cartItems.map((item) =>  removeFromCart(item.id));
+          cartItems.map((item) => removeFromCart(item.id));
           toast.success("Payment Done successfully");
         } else {
           console.log("Data saving failed.");
@@ -142,8 +143,6 @@ export default function Checkout() {
       console.log(response.razorpay_order_id);
       console.log(response.razorpay_signature);
     });
-
-    
   };
 
   return (

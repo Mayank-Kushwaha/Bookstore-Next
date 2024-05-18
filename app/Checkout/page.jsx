@@ -105,17 +105,6 @@ export default function Checkout() {
           body: JSON.stringify(paymentData),
         });
 
-        const verifyResult = await verifyResponse.json();
-        console.log("response verify==", verifyResult);
-        if (verifyResult?.message == "success") {
-          setName("");
-          console.log("Onclick clicked");
-          cartItems.map((item) =>  removeFromCart(item.id));
-          toast.success("Payment Done successfully");
-        } else {
-          console.log("Data saving failed.");
-        }
-
         const queryString = `name=${name}&email=${email}&phone=${phone}&address=${address}&payment=${payment}&cartitems=${encodeURIComponent(
           JSON.stringify(items)
         )}&total=${total}&razorpay_payment_id=${
@@ -123,10 +112,19 @@ export default function Checkout() {
         }&razorpay_order_id=${response.razorpay_order_id}&razorpay_signature=${
           response.razorpay_signature
         }`;
-        console.log(items);
+
+        const verifyResult = await verifyResponse.json();
+        console.log("response verify==", verifyResult);
         if (verifyResult?.message == "success") {
+          setName("");
           router.push(`/paymentsuccess?${queryString}`);
+          console.log("Onclick clicked");
+          cartItems.map((item) =>  removeFromCart(item.id));
+          toast.success("Payment Done successfully");
+        } else {
+          console.log("Data saving failed.");
         }
+        console.log(items);
       },
       prefill: {
         name: name,

@@ -117,11 +117,11 @@ export default function Checkout() {
         console.log("response verify==", verifyResult);
         if (verifyResult?.message == "success") {
           setName("");
-          router.push(`/paymentsuccess?${queryString}`);
           console.log(queryString);
-          console.log("Onclick clicked");
-          cartItems.map((item) => removeFromCart(item.id));
           toast.success("Payment Done successfully");
+          console.log("Onclick clicked");
+        await router.push(`/paymentsuccess?${queryString}`);
+          cartItems.map((item) => removeFromCart(item.id));
         } else {
           console.log("Data saving failed.");
         }

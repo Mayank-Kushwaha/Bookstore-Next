@@ -11,7 +11,6 @@ export default function Policy() {
   const phone = searchParams.get("phone");
   const address = searchParams.get("address");
   const payment = searchParams.get("payment");
-  const cartitems = JSON.parse(searchParams.get("cartitems"));
   const total = searchParams.get("total");
   const paymentid = searchParams.get("razorpay_payment_id");
   const paymentorder = searchParams.get("razorpay_order_id");
@@ -38,8 +37,6 @@ const downloadPdf = () => {
     ["Phone", phone],
     ["Address", address],
     ["Payment Mode", payment],
-    // Add a row for each cart item
-    ...cartitems.map(item => ["Ordered Items", `Id: ${item.id}, Name: ${item.title}, Price: ${item.price}`]),
     ["Total Amount", total],
     ["Payment ID", paymentid],
     ["Payment Order", paymentorder],
@@ -74,19 +71,6 @@ const downloadPdf = () => {
             <tr><td><strong>Phone:</strong></td><td>{phone}</td></tr>
             <tr><td><strong>Address:</strong></td><td>{address}</td></tr>
             <tr><td><strong>Payment Mode:</strong></td><td>{payment}</td></tr>
-            <tr>
-              <td><strong>Ordered Items:</strong></td>
-              <td>
-                {cartitems.map((item, index) => (
-                  <div key={index}>
-                    <div>Book Id: {item.id}</div>
-                    <div>Book Name: {item.title}</div>
-                    <div>Book Price: {item.price}</div>
-                    {/* Add more fields if your items have more data */}
-                  </div>
-                ))}
-              </td>
-            </tr>
             <tr><td><strong>Total Amount:</strong></td><td>{total}</td></tr>
             <tr><td><strong>Payment ID:</strong></td><td>{paymentid}</td></tr>
             <tr><td><strong>Payment Order:</strong></td><td>{paymentorder}</td></tr>

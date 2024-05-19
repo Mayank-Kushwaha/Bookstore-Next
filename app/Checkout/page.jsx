@@ -105,9 +105,7 @@ export default function Checkout() {
         });
 
         const queryString = `name=${name}&email=${email}&phone=${phone}&address=${address}&payment=${payment}
-        &cartitems=${
-          JSON.stringify(items)
-        }&total=${total}&razorpay_payment_id=${
+      \&total=${total}&razorpay_payment_id=${
           response.razorpay_payment_id
         }&razorpay_order_id=${response.razorpay_order_id}&razorpay_signature=${
           response.razorpay_signature
@@ -120,7 +118,7 @@ export default function Checkout() {
           console.log(queryString);
           toast.success("Payment Done successfully");
           console.log("Onclick clicked");
-        await router.push(`/paymentsuccess?${queryString}`);
+         router.push(`/paymentsuccess?${queryString}`);
           cartItems.map((item) => removeFromCart(item.id));
         } else {
           console.log("Data saving failed.");

@@ -79,7 +79,7 @@ export default function Footer() {
               href="tel:+919023373685"
               className="text-link mt-1 block font-MyFont underline decoration-dashed underline-offset-2 hover:decoration-solid "
             >
-              +919023373685
+              +919023373686
             </Link>
           </p>
           <p className="mb-3 text-sm font-MyFont">

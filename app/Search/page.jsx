@@ -59,7 +59,7 @@ export default function Search() {
         />
         </div>
       </div>
-      <div className="flex float-right underline mt-2 mr-8">
+      <div className="flex justify-end underline mt-2 mr-8 w-full">
         <Link
           className="flex items-center font-MyFont font-medium"
           href={{

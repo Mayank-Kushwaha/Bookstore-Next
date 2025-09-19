@@ -122,7 +122,7 @@ export default function Footer() {
             Crafted by
             <Link
               className="underline decoration-dashed underline-offset-2 hover:decoration-solid"
-              href="https://lordmashh.github.io/Portfolio_mayank/"
+              href="https://mayank-kushwaha-aiportfolio.vercel.app/"
             >
               {" "}
               Mayank kushwaha

@@ -17,70 +17,46 @@ export default function Checkout() {
 
   const router = useRouter();
   const { cartItems, removeFromCart, calculateTotalPrice } = useCart();
-  const [items, setItems] = useState({});
 
-  const saveCartToDatabase = async (e) => {
-    e.preventDefault();
-
-    try {
-      setItems(cartItems);
-      console.log("items " + items);
-      const total = calculateTotalPrice();
-      const res = await fetch("api/cart", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          name,
-          email,
-          phone,
-          address,
-          payment,
-          items,
-          total: total,
-        }),
-      });
-      // console.log("cartitems",cartItemss);
-      // console.log("items", cartitems);
-      if (res.ok) {
-        setName("");
-
-        toast.success("Payment Done successfully");
-        console.log(totalpricevalue);
-        router.push("/");
-      } else {
-        console.log("data saving failed.");
-      }
-    } catch (error) {
-      console.log("Error during saving data into cart: ", error);
-    }
-  };
   const makePayment = async () => {
-    const token = Cookies.get("token"); // Get the token from cookies
-    console.log("Token inside chectoutjs " + token);
-    // const { token } = parseCookies();
-    // console.log("Token inside chectoutjs " + token);
-    setItems(cartItems);
+    if (!name || !email || !phone || !address) {
+      toast.error("Please fill in all billing details");
+      return;
+    }
+    if (!cartItems || cartItems.length === 0) {
+      toast.error("Your cart is empty");
+      return;
+    }
+
+    const token = Cookies.get("token");
+    if (!token) {
+      toast.error("Please log in to place an order");
+      router.push("/Login");
+      return;
+    }
+
+    const items = cartItems;
     const total = calculateTotalPrice();
 
-    // Make API call to the serverless API to create a Razorpay order
-    const data = await fetch("api/razorpay", {
+    const orderRes = await fetch("/api/razorpay", {
       method: "POST",
-      body: JSON.stringify({
-        total,
-      }),
-    }).then((t) => t.json());
-    console.log("Razorpay data", data);
-    var options = {
-      key: process.env.RAZORPAY_API_KEY,
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ total }),
+    });
+    const data = await orderRes.json();
+    if (!orderRes.ok || !data?.id) {
+      toast.error("Could not start payment. Please try again.");
+      return;
+    }
+
+    const options = {
+      key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID,
       name: name,
       currency: data.currency,
       amount: data.amount,
       order_id: data.id,
       description: "Thank you for your purchase",
       handler: async function (response) {
-        console.log(response);
         const paymentData = {
           name,
           email,
@@ -94,8 +70,7 @@ export default function Checkout() {
           razorpay_signature: response.razorpay_signature,
         };
 
-        // Make API call to verify the payment on the server
-        const verifyResponse = await fetch("api/paymentverify", {
+        const verifyResponse = await fetch("/api/paymentverify", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -104,26 +79,27 @@ export default function Checkout() {
           body: JSON.stringify(paymentData),
         });
 
-        const queryString = `name=${name}&email=${email}&phone=${phone}&address=${address}&payment=${payment}
-      \&total=${total}&razorpay_payment_id=${
-          response.razorpay_payment_id
-        }&razorpay_order_id=${response.razorpay_order_id}&razorpay_signature=${
-          response.razorpay_signature
-        }`;
-
         const verifyResult = await verifyResponse.json();
-        console.log("response verify==", verifyResult);
-        if (verifyResult?.message == "success") {
-          setName("");
-          console.log(queryString);
+        if (verifyResponse.ok && verifyResult?.message === "success") {
+          const queryString = new URLSearchParams({
+            name,
+            email,
+            phone,
+            address,
+            payment,
+            total: String(total),
+            razorpay_payment_id: response.razorpay_payment_id,
+            razorpay_order_id: response.razorpay_order_id,
+            razorpay_signature: response.razorpay_signature,
+          }).toString();
+
           toast.success("Payment Done successfully");
-          console.log("Onclick clicked");
-         router.push(`/paymentsuccess?${queryString}`);
-          cartItems.map((item) => removeFromCart(item.id));
+          cartItems.forEach((item) => removeFromCart(item.id));
+          setName("");
+          router.push(`/paymentsuccess?${queryString}`);
         } else {
-          console.log("Data saving failed.");
+          toast.error("Payment verification failed. Please contact support.");
         }
-        console.log(items);
       },
       prefill: {
         name: name,
@@ -136,10 +112,8 @@ export default function Checkout() {
     paymentObject.open();
 
     paymentObject.on("payment.failed", function (response) {
-      alert("Payment failed. Please try again. Contact support for help");
-      console.log(response.razorpay_payment_id);
-      console.log(response.razorpay_order_id);
-      console.log(response.razorpay_signature);
+      toast.error("Payment failed. Please try again or contact support.");
+      console.error("Razorpay payment failed:", response.error);
     });
   };
 
@@ -154,7 +128,7 @@ export default function Checkout() {
         order.
       </p>
       <form
-        onSubmit={saveCartToDatabase}
+        onSubmit={(e) => e.preventDefault()}
         className="my-4 md:grid md:grid-cols-2 md:gap-x-6 lg:grid-cols-5 lg:gap-x-10 font-MyFont divide-x"
       >
         <div className="md:col-span-1 lg:col-span-3">

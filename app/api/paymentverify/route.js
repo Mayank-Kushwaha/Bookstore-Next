@@ -43,7 +43,6 @@ export async function POST(req) {
 
     // Get the user ID from the authorization token
     const authorizationHeader = req.headers.get('Authorization');
-    console.log('Authorization Header:', authorizationHeader);
     if (!authorizationHeader || !authorizationHeader.startsWith('Bearer ')) {
       return NextResponse.json(
         { message: 'Authorization header is missing or invalid' },
@@ -52,46 +51,25 @@ export async function POST(req) {
     }
 
     const token = authorizationHeader.split('Bearer ')[1];
-    console.log('Token:', token);
     const decodedToken = jwt.verify(token, process.env.JWT_SECRET);
     const userId = decodedToken.userId;
 
-    // Find or create a Payment record
-    let paymentRecord = await Payment.findOne({ user: userId });
-
-    if (!paymentRecord) {
-      paymentRecord = await Payment.create({
-        user: userId,
-        name,
-        email,
-        phone,
-        address,
-        payment,
-        items,
-        total,
-        razorpay_order_id,
-        razorpay_payment_id,
-        razorpay_signature,
-      });
-    } else {
-      // Update the existing Payment record if needed
-      paymentRecord = await Payment.create({
-        user: userId,
-        name,
-        email,
-        phone,
-        address,
-        payment,
-        items,
-        total,
-        razorpay_order_id,
-        razorpay_payment_id,
-        razorpay_signature,
-      });
-    }
+    const paymentRecord = await Payment.create({
+      user: userId,
+      name,
+      email,
+      phone,
+      address,
+      payment,
+      items,
+      total,
+      razorpay_order_id,
+      razorpay_payment_id,
+      razorpay_signature,
+    });
 
     return NextResponse.json(
-      { message: "success" },
+      { message: "success", paymentId: paymentRecord._id },
       { status: 200 }
     );
   } catch (error) {

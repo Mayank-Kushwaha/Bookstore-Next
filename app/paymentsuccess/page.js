@@ -2,7 +2,7 @@
 import React, { useRef } from "react";
 import { useSearchParams } from "next/navigation";
 import jsPDF from 'jspdf';
-import autoTable from 'jspdf-autotable';
+import 'jspdf-autotable';
 
 export default function Policy() {
   const searchParams = useSearchParams();
@@ -41,7 +41,6 @@ const downloadPdf = () => {
     ["Payment ID", paymentid],
     ["Payment Order", paymentorder],
     ["Razorpay Signature", razorpay_signature],
-    ["", ,]
   ];
 
   // Add the table to the PDF

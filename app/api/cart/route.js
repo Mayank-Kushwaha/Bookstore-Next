@@ -64,11 +64,11 @@ export async function GET(req) {
    const userId = decodedToken.userId;
 
    // Continue with the rest of your code, using userId as needed
-   const cart = await Cart.findOne({ user: userId }).populate("items");;
+   const cart = await Cart.findOne({ user: userId }).populate("items");
     // const cart = await Cart.findOne({ user: req.userId }).populate("items");
     if (!cart) {
       return NextResponse.json(
-        { message: "Cart not found for the current user.",error: error.message },
+        { message: "Cart not found for the current user." },
         { status: 404 }
       );
     }

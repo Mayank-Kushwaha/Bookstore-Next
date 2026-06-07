@@ -7,8 +7,13 @@ const nextConfig = {
   },
   images: {
     unoptimized: true,
-    domains: ['lh3.googleusercontent.com'],
-    domains: ['books.google.com']
+    domains: [
+      'lh3.googleusercontent.com',
+      'books.google.com',
+      'covers.openlibrary.org',
+      'archive.org',
+      'ia800000.us.archive.org',
+    ],
   },
   env: {
     Base_URL: process.env.Base_URL,

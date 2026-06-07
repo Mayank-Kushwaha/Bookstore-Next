@@ -1,12 +1,43 @@
 "use client";
 import React from "react";
-import { useCart } from "@/context/CartContext"; // Update the path to your CartContext file
+import { useCart } from "@/context/CartContext";
 import toast from "react-hot-toast";
 import Image from "next/image";
 import Link from "next/link";
+import { FiArrowLeft, FiTrash2, FiMinus, FiPlus, FiShoppingBag } from "react-icons/fi";
 
-import { BsCartDash, BsBoxSeam } from "react-icons/bs";
-import { MdArrowBackIos } from "react-icons/md";
+function QuantityStepper({ qty, onDec, onInc, label }) {
+  return (
+    <div
+      className="inline-flex items-center bg-bggray rounded-full p-1"
+      role="group"
+      aria-label={label || "Quantity"}
+    >
+      <button
+        type="button"
+        onClick={onDec}
+        aria-label="Decrease quantity"
+        className="w-8 h-8 inline-flex items-center justify-center rounded-full text-textgray hover:bg-primary transition-colors duration-200 cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-textgray"
+      >
+        <FiMinus size={14} />
+      </button>
+      <span
+        className="min-w-[28px] text-center font-MyFont text-sm font-semibold text-textgray select-none"
+        aria-live="polite"
+      >
+        {qty}
+      </span>
+      <button
+        type="button"
+        onClick={onInc}
+        aria-label="Increase quantity"
+        className="w-8 h-8 inline-flex items-center justify-center rounded-full text-textgray hover:bg-primary transition-colors duration-200 cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-textgray"
+      >
+        <FiPlus size={14} />
+      </button>
+    </div>
+  );
+}
 
 export default function Cart() {
   const {
@@ -18,284 +49,186 @@ export default function Cart() {
   } = useCart();
 
   const handleCardClick = (selfLink) => {
-    window.open(selfLink, "_blank");
+    if (selfLink) window.open(selfLink, "_blank", "noopener,noreferrer");
   };
-  console.log(cartItems);
+
+  const subtotal = calculateTotalPrice();
+  const itemCount = cartItems.reduce((sum, i) => sum + (i.quantity || 1), 0);
+  const shipping = subtotal > 0 ? 0 : 0;
+  const total = subtotal + shipping;
 
   return (
-    <div className="max-w-6xl w-full mx-auto px-4 py-6 justify-start md:px-8">
-      <h1 className="font-main text-xl my-4 font-semibold mr-auto md:text-2xl">
-        My Cart
-      </h1>
+    <div className="max-w-7xl w-full mx-auto px-6 lg:px-8 py-10">
+      <header className="mb-8">
+        <h1 className="font-main text-3xl md:text-4xl font-semibold tracking-tight text-textgray">
+          Your cart
+        </h1>
+        {cartItems.length > 0 && (
+          <p className="mt-1 font-MyFont text-sm text-gray-600">
+            {itemCount} {itemCount === 1 ? "book" : "books"} ready to ship.
+          </p>
+        )}
+      </header>
+
       {cartItems.length === 0 ? (
-        <div className="flex flex-col justify-center items-center my-32 text-lg font-MyFont">
-          <BsBoxSeam className="icon-w opacity-50" />
-          <span>Cart is empty!</span>
+        <div className="bg-bggray/60 rounded-2xl py-16 px-6 text-center">
+          <FiShoppingBag
+            size={42}
+            className="mx-auto text-gray-400"
+            aria-hidden="true"
+          />
+          <h2 className="mt-4 font-main text-xl text-textgray">
+            Your cart is empty
+          </h2>
+          <p className="mt-1 font-MyFont text-sm text-gray-600 max-w-sm mx-auto">
+            Find your next read from our curated collections.
+          </p>
+          <Link
+            href="/"
+            className="mt-6 inline-flex items-center gap-2 bg-textgray text-primary font-MyFont font-semibold text-sm rounded-full px-5 py-2.5 hover:bg-black transition-colors duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-textgray"
+          >
+            Browse the catalogue
+          </Link>
         </div>
       ) : (
-        <div className="my-4 lg:grid lg:grid-cols-3 lg:gap-x-6">
-          <div className="table-wrapper lg:col-span-2 w-full divide-y">
-            <div className="lg:min-h-[20.25rem]">
-              <table className="w-full table-fixed">
-                <thead className="hidden place-items-center  divide-x divide-y font-MyFont bg-bggray font-bold rounded w-full md:table-header-group">
-                  <tr>
-                    <th colSpan="2" className="w-[42.5%] py-1 ">
-                      Book Details
-                    </th>
-                    <th className="w-[17.5%] py-1 text-left pl-5">Price</th>
-                    <th className="w-[17.5%] py-1">Quantity</th>
-                    <th className="w-[22.5%] py-1 col-span-2">Action</th>
-                  </tr>
-                </thead>
-                <tbody className=" font-MyFont place-items-center font-semibold table-fixed">
-                  {cartItems.map((item, index) => (
-                    <div key={index}>
-                      <tr className=" hidden md:flex">
-                        <td className="w-max py-4">
-                          <div
-                            onClick={() => handleCardClick(item.preview)}
-                            className="w-max flex justify-between"
-                          >
-                            <Image
-                              src={item.image || "/default.jpg"}
-                              priority="high"
-                              unoptimized={true} // {false} | {true}
-                              width={120}
-                              height={100}
-                              alt="Picture of the author"
-                              onError={(e) => {
-                                e.target.src = "/default.jpg";
-                              }}
-                            />
-                            <div className="w-[185px] flex flex-col justify-center items-start  px-4 py-4 font-MyFont">
-                              <div>Title: {item.title}</div>
-                              <div>Author: {item.author}</div>
-                            </div>
-                          </div>
-                        </td>
-                        <td className="w-[84px] flex items-center justify-center py-4 px-6 ">
-                          <div>{item.price}&#x20B9;</div>
-                        </td>
-                        <td className="w-max py-1 px-4 flex items-center justify-center">
-                          <div className="flex flex-row h-10 w-full rounded-lg  bg-transparent mt-1">
-                            <button
-                              data-action="decrement"
-                              className=" bg-gray-300 text-gray-600 hover:text-gray-700 hover:bg-gray-400 h-full w-20 rounded-l cursor-pointer outline-none"
-                              onClick={() => decrementQuantity(item.id)}
-                            >
-                              <span className="m-auto text-2xl font-thin">
-                                −
-                              </span>
-                            </button>
-                            <input
-                              type="number"
-                              className="focus:outline-none text-center w-full bg-gray-300 font-semibold text-md hover:text-black focus:text-black md:text-base cursor-default flex items-center text-gray-900 outline-none custom-input-number"
-                              name="custom-input-number"
-                              value={item.quantity}
-                              readOnly
-                            ></input>
-                            <button
-                              data-action="increment"
-                              className="bg-gray-300 text-gray-600 hover:text-gray-700 hover:bg-gray-400 h-full w-20 rounded-r cursor-pointer"
-                              onClick={() => incrementQuantity(item.id)}
-                            >
-                              <span className="m-auto text-2xl font-thin">
-                                +
-                              </span>
-                            </button>
-                          </div>
-                        </td>
-                        <td className="w-max px-2 py-1 flex items-center justify-center">
-                          <div>
-                            <button
-                              className="px-4 py-2 inline-block text-red-600 bg-white shadow-sm border border-gray-200 rounded-md hover:bg-gray-100 cursor-pointer"
-                              onClick={() => {
-                                removeFromCart(item.id);
-                                toast.success("Book Removed Successfully");
-                              }}
-                            >
-                              Remove
-                            </button>
-                          </div>
-                        </td>
-                      </tr>
+        <div className="lg:grid lg:grid-cols-3 lg:gap-10">
+          {/* Line items */}
+          <div className="lg:col-span-2">
+            <ul className="divide-y divide-bggray">
+              {cartItems.map((item) => (
+                <li
+                  key={item.id}
+                  className="py-5 flex gap-4 sm:gap-6"
+                >
+                  <button
+                    type="button"
+                    onClick={() => handleCardClick(item.preview)}
+                    aria-label={`Preview ${item.title}`}
+                    className="shrink-0 block w-20 sm:w-24 aspect-[3/4] bg-bggray rounded-md overflow-hidden focus:outline-none focus-visible:ring-2 focus-visible:ring-textgray"
+                  >
+                    <Image
+                      src={item.image || "/default.jpg"}
+                      width={120}
+                      height={160}
+                      unoptimized
+                      alt={item.title || "Book cover"}
+                      className="w-full h-full object-cover"
+                      onError={(e) => {
+                        e.target.src = "/default.jpg";
+                      }}
+                    />
+                  </button>
 
-                      <div className="grid md:hidden">
-                        <tr>
-                          <td
-                            onClick={() => handleCardClick(item.preview)}
-                            className="flex"
-                          >
-                            <div>
-                              <Image
-                                src={item.image || "/default.jpg"}
-                                priority="high"
-                                unoptimized={true}
-                                width={200}
-                                height={100}
-                                alt="Picture of the author"
-                                onError={(e) => {
-                                  e.target.src = "/default.jpg";
-                                }}
-                              />
-                            </div>
-                            <div className="flex flex-col justify-center  px-4 text-left">
-                              <div className="flex md:hidden">
-                                Author :{item.title}
-                              </div>
-                              <div className="flex md:hidden ">
-                                Title: {item.author}
-                              </div>
-                              <div className="flex md:hidden ">
-                                Price: {item.price} &#x20B9;
-                              </div>
-                            </div>
-                          </td>
-
-                          {/* <td>
-                            <div className="px-4 text-left">
-                              <div className="flex md:hidden">
-                                Author :{item.title}
-                              </div>
-                              <div className="flex md:hidden">
-                                Title: {item.author}
-                              </div>
-                              <div className="flex md:hidden text-right">
-                                Price: {item.price} &#x20B9;
-                              </div>
-                            </div>
-                          </td> */}
-                        </tr>
-                        <tr>
-                          <td className="flex py-6 px-2">
-                            <div className="flex flex-row w-[200px] rounded-lg relative bg-transparent mt-1">
-                              <button
-                                data-action="decrement"
-                                className=" bg-gray-300 text-gray-600 hover:text-gray-700 hover:bg-gray-400 h-full w-20 rounded-l cursor-pointer outline-none"
-                                onClick={() => decrementQuantity(item.id)}
-                              >
-                                <span className="m-auto text-2xl font-thin">
-                                  −
-                                </span>
-                              </button>
-                              <input
-                                type="number"
-                                className="outline-none focus:outline-none text-center w-full bg-gray-300 font-semibold text-md hover:text-black focus:text-black md:text-base cursor-default flex items-center text-gray-900 custom-input-number"
-                                name="custom-input-number"
-                                value={item.quantity}
-                                readOnly
-                              ></input>
-                              <button
-                                data-action="increment"
-                                className="bg-gray-300 text-gray-600 hover:text-gray-700 hover:bg-gray-400 h-full w-20 rounded-r cursor-pointer"
-                                onClick={() => incrementQuantity(item.id)}
-                              >
-                                <span className="m-auto text-2xl font-thin">
-                                  +
-                                </span>
-                              </button>
-                            </div>
-                            <div className="px-4 flex">
-                              <button
-                                className="px-4 py-2 inline-block text-red-600 bg-white shadow-sm border border-gray-200 rounded-md hover:bg-gray-100 cursor-pointer"
-                                onClick={() => {
-                                  removeFromCart(item.id);
-                                  toast.success("Book Removed Successfully");
-                                }}
-                              >
-                                Remove
-                              </button>
-                            </div>
-                          </td>
-                          {/* <td className="w-max py-1 p4-8 text-center ">
-                            <div>
-                              <button
-                                className="px-4 py-2 inline-block text-red-600 bg-white shadow-sm border border-gray-200 rounded-md hover:bg-gray-100 cursor-pointer"
-                                onClick={() => {
-                                  removeFromCart(index);
-                                  toast.success("Book Removed Successfully");
-                                }}
-                              >
-                                Remove
-                              </button>
-                            </div>
-                          </td> */}
-                        </tr>
+                  <div className="flex-1 min-w-0 flex flex-col">
+                    <div className="flex items-start justify-between gap-3">
+                      <div className="min-w-0">
+                        <h3
+                          className="font-MyFont text-sm sm:text-base font-semibold text-textgray line-clamp-2"
+                          title={item.title}
+                        >
+                          {item.title}
+                        </h3>
+                        <p className="mt-0.5 font-MyFont text-xs sm:text-sm text-gray-500 line-clamp-1">
+                          {Array.isArray(item.author)
+                            ? item.author.join(", ")
+                            : item.author || "Unknown author"}
+                        </p>
                       </div>
+                      <span className="font-MyFont text-sm sm:text-base font-semibold text-textgray whitespace-nowrap">
+                        ₹{item.price}
+                      </span>
                     </div>
-                  ))}
-                </tbody>
-              </table>
-            </div>
+
+                    <div className="mt-auto pt-3 flex items-center justify-between gap-3 flex-wrap">
+                      <QuantityStepper
+                        qty={item.quantity}
+                        onDec={() => decrementQuantity(item.id)}
+                        onInc={() => incrementQuantity(item.id)}
+                      />
+                      <button
+                        type="button"
+                        onClick={() => {
+                          removeFromCart(item.id);
+                          toast.success("Removed from cart");
+                        }}
+                        className="inline-flex items-center gap-1.5 font-MyFont text-xs sm:text-sm text-gray-600 hover:text-red-600 transition-colors duration-200 cursor-pointer"
+                      >
+                        <FiTrash2 size={14} />
+                        Remove
+                      </button>
+                    </div>
+                  </div>
+                </li>
+              ))}
+            </ul>
+
             <Link
-              className="text-link hidden items-center underline decoration-dashed underline-offset-8 hover:decoration-solid lg:inline-flex font-MyFont opacity-60"
               href="/"
+              className="mt-6 inline-flex items-center gap-2 font-MyFont text-sm text-textgray hover:text-black transition-colors duration-200"
             >
-              <MdArrowBackIos />
-              Continue Shopping
+              <FiArrowLeft size={16} />
+              Continue shopping
             </Link>
           </div>
 
-          <div className="others flex flex-col justify-between lg:my-0 font-MyFont divide-y">
-            <div className="pb-4">
+          {/* Summary */}
+          <aside className="lg:col-span-1 mt-10 lg:mt-0">
+            <div className="lg:sticky lg:top-24 bg-bggray/60 rounded-2xl p-6 md:p-7">
+              <h2 className="font-main text-lg font-semibold text-textgray">
+                Order summary
+              </h2>
+
+              <dl className="mt-4 space-y-2 font-MyFont text-sm">
+                <div className="flex justify-between text-gray-600">
+                  <dt>Subtotal</dt>
+                  <dd className="text-textgray">₹{subtotal}</dd>
+                </div>
+                <div className="flex justify-between text-gray-600">
+                  <dt>Shipping</dt>
+                  <dd className="text-textgray">
+                    {shipping === 0 ? "Free" : `₹${shipping}`}
+                  </dd>
+                </div>
+              </dl>
+
+              <div className="my-4 border-t border-bggray" />
+
+              <div className="flex justify-between items-baseline">
+                <span className="font-MyFont text-sm font-semibold text-textgray">
+                  Total
+                </span>
+                <span className="font-main text-2xl font-semibold text-textgray">
+                  ₹{total}
+                </span>
+              </div>
+
               <label
                 htmlFor="order-notes"
-                className="mb-1 font-sans font-semibold"
+                className="block mt-5 font-MyFont text-sm font-semibold text-textgray"
               >
-                Order Notes
+                Order notes (optional)
               </label>
               <textarea
                 id="order-notes"
-                name="order-notes"
-                rows="4"
-                className="block w-full rounded border-2 my-1 md:pr-10 border-gray-300 bg-primary font-normal outline-skin-accent py-1 px-2 outline-skin-accent"
-              ></textarea>
-            </div>
-            {/* <div className="coupon-code-wrapper py-4 ">
-              <label
-                htmlFor="coupon-code"
-                className="mb-1 font-sans font-semibold"
-              >
-                Coupon Code
-              </label>
-              <input
-                type="text"
-                id="coupon-code"
-                className="block w-full rounded border-2 my-1 md:pr-10 border-gray-300 bg-primary font-normal outline-skin-accent py-1 px-2 outline-skin-accent"
-              ></input>
-              <span className="font-MyFont text-sm italic opacity-70">
-                Coupon code will be applied on the checkout
-              </span>
-            </div> */}
-            <div>
-              <Link
-                className="text-link inline-flex items-center underline decoration-dashed underline-offset-8 hover:decoration-solid lg:hidden font-MyFont opacity-60"
-                href="/"
-              >
-                <MdArrowBackIos />
-                Continue Shopping
-              </Link>
-              <div className="font-sans text-lg lg:block mt-4">
-                <div className="mb-4 flex items-baseline justify-between py-4">
-                  <span className="text-base">Total Price :</span>
-                  <span className="font-semibold">
-                    {calculateTotalPrice()} &#x20B9;
-                  </span>
-                </div>
+                rows="3"
+                placeholder="Gift wrap, delivery instructions, etc."
+                className="mt-1.5 block w-full bg-primary border border-transparent rounded-md font-MyFont text-sm text-textgray placeholder:text-gray-500 px-3 py-2 outline-none transition-colors duration-200 focus:border-textgray resize-none"
+              />
 
-                <Link href="/Checkout">
-                  {" "}
-                  <button
-                    type="button"
-                    className="bg-textgray text-white w-full flex justify-center py-2 px-2 mt-2 font-MyFont text-lg font-medium md:rounded md:py-1"
-                  >
-                    <BsCartDash className="mt-1 mr-3" />
-                    <span>Checkout</span>
-                  </button>
-                </Link>
-              </div>
+              <Link href="/Checkout" className="block mt-5">
+                <button
+                  type="button"
+                  className="w-full inline-flex items-center justify-center gap-2 bg-textgray text-primary font-MyFont font-semibold text-base rounded-full py-3 hover:bg-black transition-colors duration-200 cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-textgray"
+                >
+                  Checkout
+                </button>
+              </Link>
+
+              <p className="mt-3 font-MyFont text-xs text-gray-500 text-center">
+                Taxes and shipping calculated at checkout.
+              </p>
             </div>
-          </div>
+          </aside>
         </div>
       )}
     </div>

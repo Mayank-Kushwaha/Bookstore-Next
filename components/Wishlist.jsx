@@ -4,196 +4,156 @@ import Link from "next/link";
 import Image from "next/image";
 import toast from "react-hot-toast";
 import { useWishlist } from "@/context/WIshlistContext";
-import { BsBoxSeam } from "react-icons/bs";
-import { MdArrowBackIos } from "react-icons/md";
 import { useCart } from "@/context/CartContext";
+import { FiArrowLeft, FiTrash2, FiShoppingCart, FiHeart } from "react-icons/fi";
 
 export default function Wishlist() {
   const { WishlistItems, removeFromWishlist } = useWishlist();
   const { addToCart } = useCart();
+
   const handleCardClick = (selfLink) => {
-    window.open(selfLink, "_blank");
+    if (selfLink) window.open(selfLink, "_blank", "noopener,noreferrer");
   };
 
+  const moveToCart = (item) => {
+    addToCart(
+      {
+        id: item.id,
+        image: item.image,
+        title: item.title,
+        author: item.author,
+        price: item.price,
+        preview: item.preview,
+        quantity: 1,
+      },
+      item.id
+    );
+    removeFromWishlist(item.id);
+    toast.success("Moved to cart");
+  };
 
   return (
-    
-    <div className="max-w-6xl w-full mx-auto px-4 py-6 justify-start md:px-8  ">
-      <h1 className="font-main text-xl my-4 font-semibold mr-auto md:text-2xl ">
-        {" "}
-        My Wishlist
-      </h1>
+    <div className="max-w-7xl w-full mx-auto px-6 lg:px-8 py-10">
+      <header className="mb-8 flex flex-wrap items-end justify-between gap-3">
+        <div>
+          <h1 className="font-main text-3xl md:text-4xl font-semibold tracking-tight text-textgray">
+            Your wishlist
+          </h1>
+          {WishlistItems.length > 0 && (
+            <p className="mt-1 font-MyFont text-sm text-gray-600">
+              {WishlistItems.length}{" "}
+              {WishlistItems.length === 1 ? "book" : "books"} saved for later.
+            </p>
+          )}
+        </div>
+        {WishlistItems.length > 0 && (
+          <Link
+            href="/"
+            className="hidden md:inline-flex items-center gap-2 font-MyFont text-sm text-textgray hover:text-black transition-colors duration-200"
+          >
+            <FiArrowLeft size={16} />
+            Continue shopping
+          </Link>
+        )}
+      </header>
+
       {WishlistItems.length === 0 ? (
-        <div className="flex flex-col justify-center items-center my-32 text-lg font-MyFont">
-          <BsBoxSeam className="icon-w opacity-50" />
-          <span>Wishlist is empty!</span>
+        <div className="bg-bggray/60 rounded-2xl py-16 px-6 text-center">
+          <FiHeart
+            size={42}
+            className="mx-auto text-gray-400"
+            aria-hidden="true"
+          />
+          <h2 className="mt-4 font-main text-xl text-textgray">
+            No books saved yet
+          </h2>
+          <p className="mt-1 font-MyFont text-sm text-gray-600 max-w-sm mx-auto">
+            Tap the heart on any book to keep it here for later.
+          </p>
+          <Link
+            href="/"
+            className="mt-6 inline-flex items-center gap-2 bg-textgray text-primary font-MyFont font-semibold text-sm rounded-full px-5 py-2.5 hover:bg-black transition-colors duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-textgray"
+          >
+            Browse the catalogue
+          </Link>
         </div>
       ) : (
-        <div>
-          <div className="hidden md:flex py-2 px-4 justify-center text-center items-center  font-MyFont bg-bggray font-bold  rounded ">
-            <div className="w-1/2">Books Title</div>
-            <div className="w-1/4  ">Price</div>
-            <div className="w-1/4  ">Action</div>
-          </div>
-          <div className=" font-MyFont place-items-center text-center font-semibold table-fixed">
-            {WishlistItems.map((item, index) => (
-              <div key={index}>
-                <div
-                  className=" hidden md:flex justify-center items-center py-4"
-                >
-                  <div 
-                  onClick={() => handleCardClick(item.preview)}
-                  className="w-1/2 flex ">
-                    <Image
-                      src={item.image || "/default.jpg"}
-                      priority="high"
-                      unoptimized = {true}
-                      width={120}
-                      height={100}
-                      alt="Picture of the author"
-                      onError={(e) => {
-                        e.target.src = "/default.jpg";
-                      }}
-                    />
-                    <div className=" flex flex-col text-left px-4 py-8 font-MyFont">
-                      <div>Title: {item.title}</div>
-                      <div>Author: {item.author}</div>
-                    </div>
-                  </div>
-
-                  <div className="w-1/4">{item.price}&#x20B9;</div>
-
-                  <div className="w-1/4 flex justify-between">
-                    <div>
-                    <button
-                      className="px-4 py-2 inline-block text-red-600 bg-white shadow-sm border border-gray-200 rounded-md hover:bg-gray-100 cursor-pointer"
-                      onClick={() => { removeFromWishlist(item.id)
-                                toast.success("Book Removed Successfully");}
-                              }
-                    >
-                      Remove
-                    </button>
-                    </div>
-                    <div className="py-2 pr-4">
-                    <button
-                  onClick={() => {
-                    removeFromWishlist(item.id); 
-                    const bookDetails = {
-                      id: item.id,
-                      image: item.image,
-                      title: item.title,
-                      author: item.author, // Assuming authors is an array
-                      price: item.price,
-                      preview: item.preview,
-                      quantity: 1, // Price or a default value
-                      // Add more book details as needed
-                    };
-                    addToCart(bookDetails); // Pass the book details to addToCart
-                    // console.log("booksdetail", bookDetails);
-                    // console.log("preview", item.title);
-                    // console.log("preview", item.preview);
-
-             
+        <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 lg:gap-6">
+          {WishlistItems.map((item) => (
+            <li
+              key={item.id}
+              className="bg-primary border border-bggray rounded-2xl p-4 flex gap-4"
+            >
+              <button
+                type="button"
+                onClick={() => handleCardClick(item.preview)}
+                aria-label={`Preview ${item.title}`}
+                className="shrink-0 block w-24 aspect-[3/4] bg-bggray rounded-md overflow-hidden focus:outline-none focus-visible:ring-2 focus-visible:ring-textgray"
+              >
+                <Image
+                  src={item.image || "/default.jpg"}
+                  width={120}
+                  height={160}
+                  unoptimized
+                  alt={item.title || "Book cover"}
+                  className="w-full h-full object-cover"
+                  onError={(e) => {
+                    e.target.src = "/default.jpg";
                   }}
-                  className="bg-textgray justify-center px-2 py-2 font-MyFont text-primary flex-1 rounded md:px-4 text-sm font-semibold"
-                >
-                  Add To Cart
-                </button>
-                  </div>
-                    
-                  </div>
-                </div>
+                />
+              </button>
 
-                <div className="flex md:hidden justify-center items-center py-4">
-                  <div className="flex justify-between">
-                    <div 
-                     onClick={() => handleCardClick(item.preview)}
-                   >
-                      <Image
-                        src={item.image || "/default.jpg"}
-                        priority="high"
-                        unoptimized = {true}
-                        width={250}
-                        height={110}
-                        alt="Picture of the author"
-                        onError={(e) => {
-                          e.target.src = "/default.jpg";
-                        }}
-                      />
-                    </div>
-                    <div className="px-4 pt-2 text-left flex flex-col justify-between">
-                      <div>
-                      <div className="flex md:hidden">Author :{item.title}</div>
-                      <div className="flex md:hidden">Title: {item.author}</div>
-                      <div className="flex md:hidden text-right">
-                        Price: {item.price} &#x20B9;
-                      </div>
-                      </div>
-                      <div className="flex flex-col py-2 justify-between">
-                        <div className="pb-3">
-                      <button
-                      className="px-4 py-2 inline-block text-red-600 bg-white shadow-sm border border-gray-200 rounded-md hover:bg-gray-100 cursor-pointer"
-                      onClick={() => {removeFromWishlist(item.id)
-                        toast.success("Book Removed Successfully");}
-                      }
-                    >
-                      Remove
-                    </button>
-                    </div>
-                    <div className="py-2 pr-4">
-                    <button
-                  onClick={() => {
-                    removeFromWishlist(item.id); 
-                    const bookDetails = {
-                      id: item.id,
-                      image: item.image,
-                      title: item.title,
-                      author: item.author, // Assuming authors is an array
-                      price: item.price,
-                      preview: item.preview,
-                      quantity: 1, // Price or a default value
-                      // Add more book details as needed
-                    };
-                    addToCart(bookDetails);
-                    
-                   // Pass the book details to addToCart
-                    console.log("booksdetail", bookDetails);
-                    console.log("preview", item.preview);
-                    
-                  }}
-                  className="bg-textgray justify-center px-2 py-2 font-MyFont text-primary flex-1 rounded md:px-4 text-sm font-semibold"
+              <div className="flex-1 min-w-0 flex flex-col">
+                <h3
+                  className="font-MyFont text-sm font-semibold text-textgray line-clamp-2"
+                  title={item.title}
                 >
-                  Add To Cart
-                </button>
-                  </div>
-                    </div>
-                    </div>
-                  </div>
-                 
+                  {item.title}
+                </h3>
+                <p className="mt-0.5 font-MyFont text-xs text-gray-500 line-clamp-1">
+                  {Array.isArray(item.author)
+                    ? item.author.join(", ")
+                    : item.author || "Unknown author"}
+                </p>
+                <span className="mt-2 font-MyFont text-sm font-semibold text-textgray">
+                  ₹{item.price}
+                </span>
+
+                <div className="mt-auto pt-3 flex items-center gap-2">
+                  <button
+                    type="button"
+                    onClick={() => moveToCart(item)}
+                    className="inline-flex items-center gap-1.5 bg-textgray text-primary font-MyFont text-xs font-semibold px-3 py-2 rounded-full hover:bg-black transition-colors duration-200 cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-textgray"
+                  >
+                    <FiShoppingCart size={14} />
+                    Move to cart
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      removeFromWishlist(item.id);
+                      toast.success("Removed from wishlist");
+                    }}
+                    aria-label={`Remove ${item.title} from wishlist`}
+                    className="inline-flex items-center justify-center w-9 h-9 rounded-full text-gray-500 hover:text-red-600 hover:bg-bggray transition-colors duration-200 cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-textgray"
+                  >
+                    <FiTrash2 size={15} />
+                  </button>
                 </div>
               </div>
-            ))}
-          </div>
+            </li>
+          ))}
+        </ul>
+      )}
 
-          <div className="mt-6 mx-auto flex items-center justify-between ">
-            <Link
-              className="text-link hidden items-center underline decoration-dashed underline-offset-8 hover:decoration-solid md:inline-flex font-MyFont opacity-60"
-              href="/"
-            >
-              {" "}
-              <MdArrowBackIos />
-              Continue Shopping
-            </Link>
-            <Link
-              className="text-link w-full inline-flex items-center underline decoration-dashed underline-offset-8 hover:decoration-solid lg:hidden font-MyFont opacity-60"
-              href="/"
-            >
-              <MdArrowBackIos />
-              Continue Shopping
-            </Link>
-          
-          </div>
-        </div>
+      {WishlistItems.length > 0 && (
+        <Link
+          href="/"
+          className="mt-8 inline-flex md:hidden items-center gap-2 font-MyFont text-sm text-textgray hover:text-black transition-colors duration-200"
+        >
+          <FiArrowLeft size={16} />
+          Continue shopping
+        </Link>
       )}
     </div>
   );

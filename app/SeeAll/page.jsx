@@ -15,25 +15,31 @@ const SeeAll = () => {
   const [books, setBooks] = useState([]);
 
   useEffect(() => {
+    if (!heading) return;
+    const controller = new AbortController();
     async function fetchBooks() {
       try {
         setloading(true);
-        // Replace this with your API call to fetch books based on heading, order, and result
-        const apiUrl = `https://www.googleapis.com/books/v1/volumes?q=${heading}&orderBy=${order}&maxResults=${result}`;
-        const response = await fetch(apiUrl);
+        const apiUrl = `/api/books?mode=subject&subject=${encodeURIComponent(
+          heading
+        )}&orderBy=${encodeURIComponent(order || "relevance")}&maxResults=${result}`;
+        const response = await fetch(apiUrl, { signal: controller.signal });
+        if (!response.ok) {
+          throw new Error(`/api/books responded ${response.status}`);
+        }
         const data = await response.json();
-
-        console.log(data);
-
         setBooks(data.items || []);
-        setloading(false);
       } catch (error) {
+        if (error.name === "AbortError") return;
         console.error("An error occurred:", error);
         setBooks([]);
+      } finally {
+        setloading(false);
       }
     }
     fetchBooks();
-  }, []);
+    return () => controller.abort();
+  }, [heading, order, result]);
 
   return (
     <div className="max-w-6xl w-full mx-auto px-4 py-6 justify-start md:px-8">

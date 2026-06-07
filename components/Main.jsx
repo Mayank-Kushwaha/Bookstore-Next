@@ -1,70 +1,85 @@
-'use client'
-import React from 'react';
+"use client";
+import React from "react";
 import Image from "next/image";
-import { IoMailUnreadOutline } from "react-icons/io5";
-import { PiTelegramLogo } from "react-icons/pi";
-import { SlSocialInstagram } from "react-icons/sl";
-import { FiArrowDownCircle, FiFacebook } from "react-icons/fi";
 import Link from "next/link";
-import { useRouter } from 'next/navigation'
+import { FiArrowRight, FiBookOpen, FiTruck, FiTag } from "react-icons/fi";
+
+const TRUST = [
+  { Icon: FiTruck, label: "Fast delivery" },
+  { Icon: FiTag, label: "Exclusive deals" },
+  { Icon: FiBookOpen, label: "Curated picks" },
+];
 
 export default function Main() {
-  
- const router = useRouter()
   return (
-    <div className="flex flex-col justify-between mx-auto max-w-6xl gap-y-4 px-4 py-6 md:flex-row-reverse md:gap-x-4 md:px-8 lg:py-10">
-      <div>
-        <Image
-          src="/myimage.webp"
-          className="drop-shadow " 
-          unoptimized = {true}
-          priority="high"
-          width={540}
-          height={540}
-          alt="Picture of the author"
-        />
-      </div>
-      <div className="info-wrapper flex flex-1 flex-col gap-y-4 md:justify-center lg:justify-end lg:gap-y-8">
-        <h1 className="font-main text-4xl font-semibold md:!leading-tight lg:text-5xl xl:text-6xl opacity-80 ">
-          {" "}
-          Best Place to Find <br></br> Your Favourite <br></br> Books.
-        </h1>
-        <p className="font-MyFont lg:text-lg opacity-80 ">
-          Unleash your imagination with our online bookstore! Discover a vast
-          selection of books for all ages and interests, with something for
-          everyone. Shop now and find your next favorite read!
-        </p>
-        <p className="w-[125px] ring-1 ring-textgray ring-opacity-80 flex flex-row rounded py-3 px-4 text-lg opacity-75 font-MyFont font-semibold  ">
-          Browse
-          <FiArrowDownCircle 
-          onClick={() => router.push('#books', { scroll: true })}
-           className="icon-bottom ml-3 mt-2 scale-110  bounce" />
-        </p>
-        <div className="flex flex-row gap-x-8 mt-6 opacity-80 !stroke-current stroke-2 ">
-          {" "}
-          <Link href="https://www.facebook.com/">
-            {" "}
-            <FiFacebook className="icon-bottom " />{" "}
-          </Link>
-          <Link href="https://www.instagram.com/_mayank._k___/">
-            {" "}
-            <SlSocialInstagram className="icon-bottom" />{" "}
-          </Link>
-          <Link href="https://t.me/+919023373686">
-            {" "}
-            <PiTelegramLogo className="icon-bottom" />{" "}
-          </Link>
-          <Link href="mailto:mayankkush0842@gmail.com">
-            {" "}
-            <IoMailUnreadOutline className="icon-bottom" />
-          </Link>
+    <section className="relative">
+      <div className="mx-auto max-w-7xl px-6 lg:px-8 pt-10 lg:pt-16 pb-12 lg:pb-20">
+        <div className="grid grid-cols-1 md:grid-cols-12 gap-10 md:gap-12 items-center">
+          {/* Copy */}
+          <div className="md:col-span-7 order-2 md:order-1">
+            <span className="inline-flex items-center font-MyFont text-xs font-semibold uppercase tracking-[0.18em] text-gray-500">
+              Online bookstore
+            </span>
+
+            <h1 className="mt-4 font-main font-semibold tracking-tight text-textgray text-4xl sm:text-5xl lg:text-6xl leading-[1.05]">
+              The best place to find your next favourite book.
+            </h1>
+
+            <p className="mt-5 font-MyFont text-base lg:text-lg text-gray-600 max-w-xl leading-relaxed">
+              Browse a curated catalogue across fiction, biography, history,
+              manga, and more. Read previews instantly, save favourites, and
+              check out in seconds.
+            </p>
+
+            <div className="mt-7 flex flex-wrap items-center gap-3">
+              <Link
+                href="#books"
+                className="inline-flex items-center gap-2 bg-textgray text-primary font-MyFont font-semibold text-sm lg:text-base rounded-full px-5 py-3 hover:bg-black transition-colors duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-textgray"
+              >
+                Browse the catalogue
+                <FiArrowRight size={18} />
+              </Link>
+              <Link
+                href="/Search"
+                className="inline-flex items-center gap-2 bg-bggray text-textgray font-MyFont font-semibold text-sm lg:text-base rounded-full px-5 py-3 hover:bg-white border border-bggray hover:border-textgray transition-colors duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-textgray"
+              >
+                Search a title
+              </Link>
+            </div>
+          </div>
+
+          {/* Visual */}
+          <div className="md:col-span-5 order-1 md:order-2">
+            <div className="relative mx-auto w-full max-w-md">
+              <div
+                aria-hidden="true"
+                className="absolute inset-0 -z-10 bg-bggray rounded-[2rem] rotate-2"
+              />
+              <Image
+                src="/myimage.webp"
+                width={540}
+                height={540}
+                priority
+                unoptimized
+                alt="Selection of curated books"
+                className="w-full h-auto rounded-[2rem] shadow-lg"
+              />
+            </div>
+          </div>
         </div>
-        <div className="mt-12 flex gap-2 font-MyFont divide-x divide-textgray md:w-[125%] lg:w-auto">
-          <div className="">Fast Delivery</div>
-          <div className=" pl-2">Exclusive Deals</div>
-          <div className=" pl-2">Curated Collections</div>
-        </div>
       </div>
-    </div>
+
+      {/* Trust strip - sits directly under the hero, not inside it */}
+      <div className="border-y border-bggray bg-bggray/40">
+        <ul className="mx-auto max-w-7xl px-6 lg:px-8 py-4 flex flex-wrap items-center justify-center md:justify-between gap-x-8 gap-y-3 font-MyFont text-sm text-gray-600">
+          {TRUST.map(({ Icon, label }) => (
+            <li key={label} className="inline-flex items-center gap-2">
+              <Icon size={16} className="text-textgray" />
+              {label}
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
   );
 }

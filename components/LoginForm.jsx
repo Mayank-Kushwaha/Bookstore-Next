@@ -1,115 +1,193 @@
 "use client";
-import React from 'react';
-import { RiSendPlaneLine } from "react-icons/ri";
-import { useState } from "react";
+import React, { useState } from "react";
 import { signIn } from "next-auth/react";
-import cookie from 'js-cookie'
+import cookie from "js-cookie";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import toast from "react-hot-toast";
+import { FiMail, FiLock, FiEye, FiEyeOff, FiLogIn } from "react-icons/fi";
+
 export default function LoginForm() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState("");
-
+  const [loading, setLoading] = useState(false);
   const router = useRouter();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+    setError("");
+    if (!email.trim() || !password) {
+      setError("Please enter your email and password.");
+      return;
+    }
     try {
+      setLoading(true);
       const res3 = await signIn("credentials", {
         email,
         password,
         redirect: false,
       });
-      const res =  await fetch(`/api/login`,{
-        method:"POST",
-        headers:{
-          "Content-Type":"application/json"
-        },
-        body:JSON.stringify({
-          email,
-          password,
-        }),
-      })
-      const res2 = await res.json()
-      if (res2.error || res3.error) {
-        setError("Invalid Credentials");
-        console.log(error);
-        toast.error("Login error",res2.error.message,res3.error.message );
+      const res = await fetch(`/api/login`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, password }),
+      });
+      const res2 = await res.json();
+      if (res2.error || res3?.error) {
+        setError("Invalid credentials. Please try again.");
+        toast.error("Login failed");
         return;
-      }else{
-        console.log(res2)
-        console.log(res2.user)
-        cookie.set('token',res2.token, { expires: 30 * 24 * 60 * 60,})
-        cookie.set('user',res2.user)
-        toast.success("Login successfully");
-        router.push('/Dashboard')
-     }
-
-    
-      // router.replace("Dashboard");
-    } catch (error) {
-      console.log(error.message);
+      }
+      cookie.set("token", res2.token, { expires: 30 });
+      cookie.set("user", res2.user);
+      toast.success("Logged in");
+      router.push("/Dashboard");
+    } catch (err) {
+      console.error(err);
+      setError("Something went wrong. Please try again.");
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
-    <div className="max-w-6xl w-full mx-auto px-4 py-6 justify-start md:px-8">
-      <h1 className="font-main text-xl my-4 font-semibold mr-auto md:text-2xl ">
-        {" "}
-      Login 
-      </h1>
-      <div className="md:divide-x flex flex-col md:flex-row ">
-        <div className="flex pb-3 md:pb-0 md:pr-10 xl:pr-20 font-main text-xl md:text-3xl ">
-          
-         Welcome to <br className="hidden lg:flex pt-2"></br> The Website, <br className="hidden lg:flex pt-2"></br>
-         For accessing Cart<br className="hidden lg:flex pt-2"></br> and Wishlist <br className="hidden lg:flex pt-2"></br>login now!
-        
-        </div>
-        <div className="flex-1 pt-8 md:pt-0 md:pl-10 xl:pl-20">
-          <h2 className="text-xl mb-2 font-MyFont font-bold">Login Now!</h2>
-          <div className="mb-4">
-            <label className="font-MyFont font-medium">
-              Email Address
-              <input
-                   onChange={(e) => setEmail(e.target.value)}
-                placeholder="Enter Your Valid Email"
-                className="my-1 block w-full md:pr-10 rounded border-2 border-gray-300 bg-primary py-1 px-2 font-normal outline-skin-accent"
-                type="email"
-                name="email"
-              />
-            </label>
+    <div className="min-h-[calc(100vh-80px)] flex items-center">
+      <div className="w-full max-w-6xl mx-auto px-6 lg:px-8 py-10 lg:py-16">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16 items-center">
+          {/* Welcome */}
+          <div className="lg:col-span-5">
+            <span className="inline-flex font-MyFont text-xs font-semibold uppercase tracking-[0.18em] text-gray-500">
+              Member access
+            </span>
+            <h1 className="mt-3 font-main text-3xl md:text-4xl lg:text-5xl font-semibold tracking-tight text-textgray leading-[1.1]">
+              Welcome back to <br className="hidden lg:block" /> Book Odyssey.
+            </h1>
+            <p className="mt-4 font-MyFont text-base text-gray-600 leading-relaxed max-w-md">
+              Sign in to access your cart, wishlist, recent orders, and
+              personalised reading recommendations.
+            </p>
+            <p className="mt-6 font-MyFont text-sm text-gray-500">
+              New here?{" "}
+              <Link
+                href="/Register"
+                className="text-textgray font-semibold underline underline-offset-4 hover:text-black transition-colors duration-200"
+              >
+                Create an account
+              </Link>
+            </p>
           </div>
-          <div className="mb-4">
-            <label className="font-MyFont font-medium">
-              Password
-              <input
-                   onChange={(e) => setPassword(e.target.value)}
-                placeholder="Enter your password"
-                className="my-1 block w-full md:pr-10 rounded border-2 border-gray-300 bg-primary py-1 px-2 font-normal outline-skin-accent"
-                type="password"
-                name="password"
-              />
-            </label>
-          </div>
-      
-          <button
-            type="button"
-            onClick={handleSubmit}
-            className="bg-textgray text-white w-full flex justify-center py-2 px-2 mt-2 font-MyFont text-lg font-medium md:rounded md:py-1"
-          >
-            <RiSendPlaneLine className="mt-1 text-white mr-3" />
-            <span>Login</span>
-          </button>
-          {error && (
-            <div className="bg-red-500 text-white w-fit text-sm py-1 px-3 rounded-md mt-2">
-              {error}
-            </div>
-          )}
-          <div className="text-lg mt-3 flex justify-end text-right" >
-            Don't have an account? <Link href={"/Register"}> <span className="underline pl-2">  Register Here</span></Link>
+
+          {/* Form card */}
+          <div className="lg:col-span-7">
+            <form
+              onSubmit={handleSubmit}
+              noValidate
+              className="bg-bggray/60 rounded-2xl p-6 md:p-8 lg:p-10"
+            >
+              <h2 className="font-main text-xl font-semibold text-textgray">
+                Sign in
+              </h2>
+              <p className="mt-1 font-MyFont text-sm text-gray-600">
+                Enter your details below.
+              </p>
+
+              <div className="mt-6 space-y-5">
+                {/* Email */}
+                <div>
+                  <label
+                    htmlFor="login-email"
+                    className="font-MyFont text-sm font-semibold text-textgray block mb-1.5"
+                  >
+                    Email address
+                  </label>
+                  <div className="relative">
+                    <FiMail
+                      className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500 pointer-events-none"
+                      size={18}
+                      aria-hidden="true"
+                    />
+                    <input
+                      id="login-email"
+                      type="email"
+                      autoComplete="email"
+                      placeholder="you@example.com"
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                      required
+                      className="w-full font-MyFont bg-primary border border-transparent rounded-md pl-10 pr-4 py-3 text-base text-textgray placeholder:text-gray-500 outline-none transition-colors duration-200 focus:border-textgray"
+                    />
+                  </div>
+                </div>
+
+                {/* Password */}
+                <div>
+                  <label
+                    htmlFor="login-password"
+                    className="font-MyFont text-sm font-semibold text-textgray block mb-1.5"
+                  >
+                    Password
+                  </label>
+                  <div className="relative">
+                    <FiLock
+                      className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500 pointer-events-none"
+                      size={18}
+                      aria-hidden="true"
+                    />
+                    <input
+                      id="login-password"
+                      type={showPassword ? "text" : "password"}
+                      autoComplete="current-password"
+                      placeholder="Your password"
+                      value={password}
+                      onChange={(e) => setPassword(e.target.value)}
+                      required
+                      className="w-full font-MyFont bg-primary border border-transparent rounded-md pl-10 pr-12 py-3 text-base text-textgray placeholder:text-gray-500 outline-none transition-colors duration-200 focus:border-textgray"
+                    />
+                    <button
+                      type="button"
+                      onClick={() => setShowPassword((s) => !s)}
+                      aria-label={
+                        showPassword ? "Hide password" : "Show password"
+                      }
+                      className="absolute right-2 top-1/2 -translate-y-1/2 p-2 text-gray-500 hover:text-textgray transition-colors duration-200 cursor-pointer rounded-md focus:outline-none focus-visible:ring-2 focus-visible:ring-textgray"
+                    >
+                      {showPassword ? <FiEyeOff size={18} /> : <FiEye size={18} />}
+                    </button>
+                  </div>
+                </div>
+
+                {/* Error */}
+                {error && (
+                  <div
+                    role="alert"
+                    className="bg-red-50 text-red-700 border border-red-200 text-sm font-MyFont rounded-md px-3 py-2"
+                  >
+                    {error}
+                  </div>
+                )}
+
+                <button
+                  type="submit"
+                  disabled={loading}
+                  className="w-full inline-flex items-center justify-center gap-2 bg-textgray text-primary font-MyFont font-semibold text-base rounded-md py-3 hover:bg-black transition-colors duration-200 cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-textgray"
+                >
+                  <FiLogIn size={18} />
+                  {loading ? "Signing in" : "Sign in"}
+                </button>
+
+                <div className="text-center font-MyFont text-sm text-gray-600 lg:hidden">
+                  New here?{" "}
+                  <Link
+                    href="/Register"
+                    className="text-textgray font-semibold underline underline-offset-4"
+                  >
+                    Create an account
+                  </Link>
+                </div>
+              </div>
+            </form>
           </div>
         </div>
       </div>

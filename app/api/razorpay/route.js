@@ -1,44 +1,52 @@
 import { NextResponse } from "next/server";
 import Razorpay from "razorpay";
-import { nanoid } from 'nanoid'
+import { nanoid } from "nanoid";
 
-const razorpay = new Razorpay({
-  key_id: process.env.RAZORPAY_API_KEY,
-  key_secret: process.env.RAZORPAY_KEY_SECRET,
-});
+const keyId = process.env.RAZORPAY_API_KEY;
+const keySecret = process.env.RAZORPAY_KEY_SECRET;
 
 export async function POST(req) {
-  const { total } = await req.json();
-  const payment_capture = 1;
-  const amount = total;
-  const currency = "INR";
+  if (!keyId || !keySecret) {
+    return NextResponse.json(
+      {
+        message:
+          "Razorpay is not configured. Set RAZORPAY_API_KEY and RAZORPAY_KEY_SECRET environment variables.",
+      },
+      { status: 500 }
+    );
+  }
 
   try {
-    const options = {
-      amount: (amount * 100).toString(),
-      currency,
-      receipt: nanoid(),
-      payment_capture,
-    };
+    const { total } = await req.json();
+    const amount = Number(total);
+    if (!amount || amount <= 0) {
+      return NextResponse.json(
+        { message: "Invalid order total." },
+        { status: 400 }
+      );
+    }
 
-    const response = await razorpay.orders.create(options);
+    const razorpay = new Razorpay({ key_id: keyId, key_secret: keySecret });
+    const response = await razorpay.orders.create({
+      amount: Math.round(amount * 100),
+      currency: "INR",
+      receipt: nanoid(),
+      payment_capture: 1,
+    });
 
     return NextResponse.json({
       id: response.id,
       currency: response.currency,
       amount: response.amount,
+      keyId,
     });
   } catch (error) {
-   
-
-    // console.log(error);
     return NextResponse.json(
       {
-        message: "An error occurred while payment processing",
+        message: "An error occurred while creating the Razorpay order.",
         error: error.message,
       },
       { status: 400 }
-      );
-
-  } 
+    );
+  }
 }

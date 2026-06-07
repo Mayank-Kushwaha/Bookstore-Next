@@ -75,12 +75,28 @@ export default function Checkout() {
       });
       const data = await orderRes.json();
       if (!orderRes.ok || !data?.id) {
-        toast.error("Could not start payment. Please try again.");
+        toast.error(data?.message || "Could not start payment. Please try again.");
+        return;
+      }
+
+      const razorpayKey =
+        data.keyId || process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID;
+      if (!razorpayKey) {
+        toast.error(
+          "Payment is not configured. Please contact support."
+        );
+        return;
+      }
+
+      if (typeof window === "undefined" || !window.Razorpay) {
+        toast.error(
+          "Payment library is still loading. Please try again in a moment."
+        );
         return;
       }
 
       const options = {
-        key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID,
+        key: razorpayKey,
         name,
         currency: data.currency,
         amount: data.amount,

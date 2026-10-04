@@ -2,7 +2,7 @@
 import React, { useRef } from "react";
 import { useSearchParams } from "next/navigation";
 import jsPDF from 'jspdf';
-import 'jspdf-autotable';
+import autoTable from 'jspdf-autotable';
 
 export default function Policy() {
   const searchParams = useSearchParams();
@@ -44,7 +44,9 @@ const downloadPdf = () => {
   ];
 
   // Add the table to the PDF
-  pdf.autoTable(columns, rows, {
+  autoTable(pdf, {
+    head: [columns],
+    body: rows,
     startY: 40, // Start the table 30 units down
     didDrawPage: (data) => {
       // Add table header

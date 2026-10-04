@@ -14,7 +14,6 @@ export async function POST(req) {
       address,
       payment,
       items,
-      total,
       razorpay_order_id,
       razorpay_payment_id,
       razorpay_signature,

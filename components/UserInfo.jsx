@@ -18,7 +18,7 @@ import {
   FiMapPin,
 } from "react-icons/fi";
 import { jsPDF } from "jspdf";
-import "jspdf-autotable";
+import autoTable from "jspdf-autotable";
 
 function initialsFrom(name) {
   if (!name) return "U";
@@ -90,7 +90,7 @@ export default function UserInfo() {
       ["Razorpay Signature", payment.razorpay_signature],
     ];
 
-    pdf.autoTable(columns, rows, { startY: 36 });
+    autoTable(pdf, { head: [columns], body: rows, startY: 36 });
     pdf.setFontSize(10);
     pdf.text(
       "Thank you for shopping with us.",

@@ -24,7 +24,7 @@ export async function POST(req) {
    const wishlist = await Wishlist.findOne({ user: userId }); // Find the wishlist for the current user
     if (!wishlist) {
       // If the wishlist doesn't exist, create a new one
-      await wishlist.create({ user: userId});
+      await Wishlist.create({ user: userId, items });
     } else {
         // If the cart exists, update its items and total
         wishlist.items = items;
@@ -153,7 +153,7 @@ export async function PUT(req) {
     const userId = decodedToken.userId;
 
 
-    const wishlist = await wishlist.findOne({ user: userId });
+    const wishlist = await Wishlist.findOne({ user: userId });
 
     if (!wishlist) {
       return NextResponse.json(

@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import crypto from "crypto";
+import Razorpay from "razorpay";
 import Payment from "@/models/Payment";
 import { connectMongoDB } from "@/lib/mongodb";
 import jwt from "jsonwebtoken";
@@ -35,6 +36,52 @@ export async function POST(req) {
       );
     }
 
+    // Confirm the amount actually paid matches the amount of the order that
+    // Razorpay created. Never trust the client-supplied total: fetch both the
+    // order and the payment straight from Razorpay and compare them.
+    const keyId = process.env.RAZORPAY_API_KEY;
+    const keySecret = process.env.RAZORPAY_KEY_SECRET;
+    if (!keyId || !keySecret) {
+      return NextResponse.json(
+        { message: "Razorpay is not configured." },
+        { status: 500 }
+      );
+    }
+
+    const razorpay = new Razorpay({ key_id: keyId, key_secret: keySecret });
+
+    let order;
+    let capturedPayment;
+    try {
+      order = await razorpay.orders.fetch(razorpay_order_id);
+      capturedPayment = await razorpay.payments.fetch(razorpay_payment_id);
+    } catch (fetchError) {
+      return NextResponse.json(
+        {
+          message: "Could not verify the order with Razorpay.",
+          error: fetchError.message,
+        },
+        { status: 400 }
+      );
+    }
+
+    // Amounts from Razorpay are in paise. The payment must belong to this
+    // order and the amount paid must match the order amount exactly.
+    const orderAmount = Number(order?.amount);
+    const amountPaid = Number(capturedPayment?.amount);
+
+    if (
+      capturedPayment?.order_id !== razorpay_order_id ||
+      !Number.isFinite(orderAmount) ||
+      !Number.isFinite(amountPaid) ||
+      amountPaid !== orderAmount
+    ) {
+      return NextResponse.json(
+        { message: "Paid amount does not match the order amount." },
+        { status: 400 }
+      );
+    }
+
     // Get the user ID from the authorization token
     const authorizationHeader = req.headers.get('Authorization');
     if (!authorizationHeader || !authorizationHeader.startsWith('Bearer ')) {
@@ -48,19 +95,30 @@ export async function POST(req) {
     const decodedToken = jwt.verify(token, process.env.JWT_SECRET);
     const userId = decodedToken.userId;
 
-    const paymentRecord = await Payment.create({
-      user: userId,
-      name,
-      email,
-      phone,
-      address,
-      payment,
-      items,
-      total,
-      razorpay_order_id,
-      razorpay_payment_id,
-      razorpay_signature,
-    });
+    // Use the amount Razorpay reports (in rupees) rather than the client total.
+    const verifiedTotal = orderAmount / 100;
+
+    // Upsert keyed on the Razorpay identifiers so that replaying the callback
+    // updates the existing record instead of inserting a duplicate.
+    const paymentRecord = await Payment.findOneAndUpdate(
+      { razorpay_order_id, razorpay_payment_id },
+      {
+        $setOnInsert: {
+          user: userId,
+          name,
+          email,
+          phone,
+          address,
+          payment,
+          items,
+          total: verifiedTotal,
+          razorpay_order_id,
+          razorpay_payment_id,
+          razorpay_signature,
+        },
+      },
+      { upsert: true, new: true, setDefaultsOnInsert: true }
+    );
 
     return NextResponse.json(
       { message: "success", paymentId: paymentRecord._id },
